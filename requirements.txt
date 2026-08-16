@@ -5,8 +5,9 @@ pdfplumber
 # === Text Chunking ===
 langchain-text-splitters
 
-# === Embeddings ===
+# === Embeddings & Reranking ===
 sentence-transformers
+rank-bm25
 
 # === Vector Store ===
 chromadb

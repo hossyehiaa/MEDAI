@@ -1,15 +1,17 @@
 """
 Section-Aware Chunker — Splits cleaned medical document sections into
-retrieval-ready chunks with rich metadata propagation.
+retrieval-ready chunks with rich metadata propagation and exact page citations.
 
 Key design decisions:
   • Consecutive sections sharing (document_name, section_name) are merged
-    before chunking so that logical content is not split across tiny
-    per-page fragments.
+    before chunking with [[PAGE:<n>]] sentinel lines.
+  • Chunks extract precise start_page and end_page from sentinel markers,
+    then strip sentinels from stored text (e.g. References cites p.181, not p.95-708).
   • Tables from the parsed data are converted into text chunks tagged
     with ``is_table=True`` and their matched screening tools.
   • Chunks shorter than ``MIN_CHUNK_CHARS`` are discarded.
   • Token counting uses ``tiktoken`` (cl100k_base) for accurate sizing.
+  • Screening tool regex detector ensures has_screening_tools <=> non-empty screening_tools.
 
 Usage:
     from src.ingestion.chunker import chunk_cleaned_data, load_cleaned_data
@@ -40,7 +42,6 @@ from configs.settings import (
     CHUNK_OVERLAP,
     MIN_CHUNK_CHARS,
     CHUNK_SEPARATORS,
-    SCREENING_TOOL_KEYWORDS,
 )
 
 logger = logging.getLogger(__name__)
@@ -54,6 +55,32 @@ _ENCODING = tiktoken.get_encoding("cl100k_base")
 def _token_count(text: str) -> int:
     """Return the number of tokens in *text* (cl100k_base)."""
     return len(_ENCODING.encode(text, disallowed_special=()))
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Screening Tools Regex Patterns
+# ──────────────────────────────────────────────────────────────────────
+_SCREENING_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    ("PHQ-2", re.compile(r"\bPHQ-?2\b", re.IGNORECASE)),
+    ("PHQ-9", re.compile(r"\bPHQ-?9\b", re.IGNORECASE)),
+    ("PHQ-10", re.compile(r"\bPHQ-?10\b", re.IGNORECASE)),
+    ("EPDS", re.compile(r"\bEPDS\b", re.IGNORECASE)),
+    ("Edinburgh", re.compile(r"\bEdinburgh\b", re.IGNORECASE)),
+    ("BDI", re.compile(r"\bBDI\b", re.IGNORECASE)),
+    ("CES-D", re.compile(r"\bCES-?D\b", re.IGNORECASE)),
+    ("GDS", re.compile(r"\bGDS\b", re.IGNORECASE)),
+    ("C-SSRS", re.compile(r"\bC-?SSRS\b", re.IGNORECASE)),
+    ("ASQ", re.compile(r"\bASQ\b", re.IGNORECASE)),
+]
+
+
+def _detect_screening_tools(text: str) -> list[str]:
+    """Return canonical screening-tool names found in *text* via regex."""
+    found: list[str] = []
+    for name, pattern in _SCREENING_PATTERNS:
+        if pattern.search(text):
+            found.append(name)
+    return sorted(list(set(found)))
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -115,18 +142,8 @@ def _detect_topic(text: str, section_name: str) -> str:
     return "general"
 
 
-def _detect_screening_tools(text: str) -> list[str]:
-    """Return screening-tool keywords found in *text*."""
-    found: list[str] = []
-    text_lower = text.lower()
-    for kw in SCREENING_TOOL_KEYWORDS:
-        if kw.lower() in text_lower:
-            found.append(kw)
-    return found
-
-
 # ──────────────────────────────────────────────────────────────────────
-# Section Grouping
+# Section Grouping with Page Sentinels
 # ──────────────────────────────────────────────────────────────────────
 
 @dataclass
@@ -143,20 +160,21 @@ class _MergedSection:
 
 def _group_sections(sections: list[dict[str, Any]]) -> list[_MergedSection]:
     """
-    Merge consecutive sections sharing the same (document_name, section_name).
-
-    This prevents a 77-page section like "Recommendations of Others" from being
-    split into 77 tiny page-level fragments before chunking.
+    Merge consecutive sections sharing the same (document_name, section_name),
+    injecting [[PAGE:<n>]] sentinel lines for exact sub-page tracking.
     """
     groups: list[_MergedSection] = []
     prev_key: tuple[str, str] | None = None
     current: _MergedSection | None = None
 
     for sec in sections:
+        page_num = sec["page_number"]
         key = (sec["document_name"], sec["section_name"])
+        page_sentinel_text = f"[[PAGE:{page_num}]]\n{sec['text_content']}"
+
         if key == prev_key and current is not None:
-            current.text += "\n\n" + sec["text_content"]
-            current.end_page = sec["page_number"]
+            current.text += f"\n\n{page_sentinel_text}"
+            current.end_page = page_num
             for g in sec.get("detected_grades", []):
                 if g not in current.grades:
                     current.grades.append(g)
@@ -166,9 +184,9 @@ def _group_sections(sections: list[dict[str, Any]]) -> list[_MergedSection]:
             current = _MergedSection(
                 document_name=sec["document_name"],
                 section_name=sec["section_name"],
-                start_page=sec["page_number"],
-                end_page=sec["page_number"],
-                text=sec["text_content"],
+                start_page=page_num,
+                end_page=page_num,
+                text=page_sentinel_text,
                 grades=list(sec.get("detected_grades", [])),
             )
             prev_key = key
@@ -177,7 +195,7 @@ def _group_sections(sections: list[dict[str, Any]]) -> list[_MergedSection]:
         groups.append(current)
 
     logger.info(
-        "Grouped %d sections into %d merged section(s).",
+        "Grouped %d sections into %d merged section(s) with page sentinels.",
         len(sections),
         len(groups),
     )
@@ -204,7 +222,7 @@ def _table_to_text(table: dict[str, Any]) -> str:
 
 
 # ──────────────────────────────────────────────────────────────────────
-# Core Chunking
+# Core Chunking with Exact Page Citation Resolution
 # ──────────────────────────────────────────────────────────────────────
 
 def _create_splitter() -> RecursiveCharacterTextSplitter:
@@ -220,6 +238,7 @@ def _create_splitter() -> RecursiveCharacterTextSplitter:
 def chunk_sections(merged_sections: list[_MergedSection]) -> list[Chunk]:
     """
     Split merged sections into chunks using RecursiveCharacterTextSplitter.
+    Resolves exact per-page boundaries from [[PAGE:<n>]] sentinels and strips them.
 
     Parameters
     ----------
@@ -229,7 +248,7 @@ def chunk_sections(merged_sections: list[_MergedSection]) -> list[Chunk]:
     Returns
     -------
     list[Chunk]
-        Chunks with metadata, filtered by MIN_CHUNK_CHARS.
+        Chunks with exact start_page and end_page metadata.
     """
     splitter = _create_splitter()
     all_chunks: list[Chunk] = []
@@ -237,32 +256,51 @@ def chunk_sections(merged_sections: list[_MergedSection]) -> list[Chunk]:
 
     for group in merged_sections:
         raw_splits = splitter.split_text(group.text)
+        current_running_page = group.start_page
 
         for idx, fragment in enumerate(raw_splits):
-            if len(fragment.strip()) < MIN_CHUNK_CHARS:
+            # Extract page markers
+            markers = [int(p) for p in re.findall(r"\[\[PAGE:(\d+)\]\]", fragment)]
+
+            if markers:
+                # Check if text exists before the first marker in this fragment
+                prefix_before_first_marker = fragment.split("[[PAGE:")[0].strip()
+                chunk_start_page = current_running_page if prefix_before_first_marker else markers[0]
+                chunk_end_page = markers[-1]
+                current_running_page = markers[-1]
+            else:
+                chunk_start_page = current_running_page
+                chunk_end_page = current_running_page
+
+            # Strip sentinels from the final chunk text
+            clean_fragment = re.sub(r"\[\[PAGE:\d+\]\]\n?", "", fragment).strip()
+
+            if len(clean_fragment) < MIN_CHUNK_CHARS:
                 skipped += 1
                 continue
 
-            tools = _detect_screening_tools(fragment)
+            tools = _detect_screening_tools(clean_fragment)
+            has_tools = len(tools) > 0
+
             chunk = Chunk(
-                chunk_id=_make_chunk_id(group.document_name, group.section_name, idx, fragment),
+                chunk_id=_make_chunk_id(group.document_name, group.section_name, idx, clean_fragment),
                 document_name=group.document_name,
                 section_name=group.section_name,
-                start_page=group.start_page,
-                end_page=group.end_page,
-                text=fragment,
-                token_count=_token_count(fragment),
-                char_count=len(fragment),
+                start_page=chunk_start_page,
+                end_page=chunk_end_page,
+                text=clean_fragment,
+                token_count=_token_count(clean_fragment),
+                char_count=len(clean_fragment),
                 grades=list(group.grades),
-                topic=_detect_topic(fragment, group.section_name),
-                has_screening_tools=len(tools) > 0,
+                topic=_detect_topic(clean_fragment, group.section_name),
+                has_screening_tools=has_tools,
                 screening_tools=tools,
                 is_table=False,
             )
             all_chunks.append(chunk)
 
     logger.info(
-        "Produced %d text chunk(s) from %d group(s)  |  %d skipped (< %d chars).",
+        "Produced %d text chunk(s) from %d group(s) | %d skipped (< %d chars).",
         len(all_chunks),
         len(merged_sections),
         skipped,
@@ -273,9 +311,7 @@ def chunk_sections(merged_sections: list[_MergedSection]) -> list[Chunk]:
 
 def chunk_tables(tables: list[dict[str, Any]]) -> list[Chunk]:
     """
-    Convert parsed tables into individual chunks.
-
-    Only tables with at least one data row are included.
+    Convert parsed tables into individual chunks with robust screening tool tags.
     """
     table_chunks: list[Chunk] = []
     skipped = 0
@@ -290,7 +326,14 @@ def chunk_tables(tables: list[dict[str, Any]]) -> list[Chunk]:
             skipped += 1
             continue
 
-        tools = tbl.get("matched_screening_tools", [])
+        # Combine parsed table metadata tools with regex detected tools
+        raw_tools = tbl.get("matched_screening_tools", [])
+        regex_tools = _detect_screening_tools(text)
+        combined_tools = sorted(list(set(raw_tools + regex_tools)))
+        has_tools = len(combined_tools) > 0 or tbl.get("is_screening_table", False)
+        if has_tools and not combined_tools:
+            combined_tools = ["Screening Tool"]
+
         chunk = Chunk(
             chunk_id=_make_chunk_id(
                 tbl["document_name"],
@@ -307,14 +350,14 @@ def chunk_tables(tables: list[dict[str, Any]]) -> list[Chunk]:
             char_count=len(text),
             grades=[],
             topic="table",
-            has_screening_tools=tbl.get("is_screening_table", False),
-            screening_tools=tools,
+            has_screening_tools=has_tools,
+            screening_tools=combined_tools if has_tools else [],
             is_table=True,
         )
         table_chunks.append(chunk)
 
     logger.info(
-        "Produced %d table chunk(s)  |  %d skipped (empty or < %d chars).",
+        "Produced %d table chunk(s) | %d skipped (empty or < %d chars).",
         len(table_chunks),
         skipped,
         MIN_CHUNK_CHARS,
@@ -340,7 +383,7 @@ def chunk_cleaned_data(
     include_tables: bool = True,
 ) -> list[Chunk]:
     """
-    Full chunking pipeline: group sections → split → add tables.
+    Full chunking pipeline: group sections with page sentinels → split → add tables.
 
     Parameters
     ----------
@@ -357,10 +400,10 @@ def chunk_cleaned_data(
     sections = data.get("sections", [])
     tables = data.get("tables", [])
 
-    # 1. Group consecutive same-doc / same-section entries
+    # 1. Group consecutive same-doc / same-section entries with page sentinels
     merged = _group_sections(sections)
 
-    # 2. Chunk text sections
+    # 2. Chunk text sections with exact page citations
     text_chunks = chunk_sections(merged)
 
     # 3. Chunk tables

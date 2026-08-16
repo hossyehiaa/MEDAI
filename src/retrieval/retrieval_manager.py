@@ -1,0 +1,269 @@
+"""
+Retrieval Manager — High-level orchestrator for Clinical Retrieval Layer.
+
+Workflow:
+  1. Clinical Query Input
+  2. Hybrid Retrieval (ChromaDB Dense + BM25 Sparse fused via RRF k=60)
+  3. Cross-Encoder Deep Re-ranking (ms-marco-MiniLM-L-6-v2)
+  4. Section Prior Boost (Recommendation=1.15, General=1.10, etc.)
+  5. Greedy Top-3 Diversity Rule (max 1 per doc+section; fallback if slot 3 < 0.5)
+  6. Comprehensive audit logging to ``logs/retrieval.log`` (raw + boosted scores)
+
+Usage:
+    from src.retrieval.retrieval_manager import RetrievalManager
+
+    manager = RetrievalManager()
+    result = manager.retrieve("Should postpartum women be screened for depression?")
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+import time
+from pathlib import Path
+from typing import Any
+
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from configs.settings import (
+    TOP_K_RETRIEVAL,
+    TOP_K_FINAL,
+    RETRIEVAL_LOG_PATH,
+    RRF_K,
+    RERANKER_MODEL,
+    EMBEDDING_MODEL,
+    SECTION_PRIORS,
+    CONFIDENCE_THRESHOLD,
+)
+from src.retrieval.hybrid_search import HybridSearcher
+from src.retrieval.reranker import Reranker
+
+logger = logging.getLogger(__name__)
+
+
+class RetrievalManager:
+    """End-to-end clinical retrieval orchestrator with section boosting and diversity rules."""
+
+    def __init__(
+        self,
+        hybrid_searcher: HybridSearcher | None = None,
+        reranker: Reranker | None = None,
+        log_path: str | Path = RETRIEVAL_LOG_PATH,
+    ) -> None:
+        """
+        Parameters
+        ----------
+        hybrid_searcher : HybridSearcher, optional
+            Hybrid search instance.
+        reranker : Reranker, optional
+            CrossEncoder reranker instance.
+        log_path : str | Path, default="logs/retrieval.log"
+            Destination file for retrieval audit logs.
+        """
+        self.hybrid_searcher = hybrid_searcher or HybridSearcher()
+        self.reranker = reranker or Reranker()
+        self.log_path = Path(log_path)
+        self.log_path.parent.mkdir(parents=True, exist_ok=True)
+
+    def retrieve(
+        self,
+        query: str,
+        top_k_retrieval: int = TOP_K_RETRIEVAL,
+        top_k_final: int = TOP_K_FINAL,
+    ) -> dict[str, Any]:
+        """
+        Execute full multi-stage clinical retrieval pipeline.
+
+        Parameters
+        ----------
+        query : str
+            Clinical query string.
+        top_k_retrieval : int, default=15
+            Candidate pool size from hybrid search.
+        top_k_final : int, default=3
+            Final top passages after cross-encoder re-ranking & diversity selection.
+
+        Returns
+        -------
+        dict
+            Retrieval bundle containing query, final_chunks, avg_confidence, metrics.
+        """
+        t0 = time.perf_counter()
+
+        # Step 1: Hybrid Retrieval (ChromaDB Dense + BM25 Sparse with RRF)
+        t_hybrid_start = time.perf_counter()
+        hybrid_candidates = self.hybrid_searcher.search(
+            query=query,
+            top_k=top_k_retrieval,
+        )
+        hybrid_time_ms = round((time.perf_counter() - t_hybrid_start) * 1000, 2)
+
+        # Step 2: Cross-Encoder Re-ranking (all candidates)
+        t_rerank_start = time.perf_counter()
+        reranked_candidates = self.reranker.rerank(
+            query=query,
+            candidates=hybrid_candidates,
+            top_k=top_k_retrieval,
+        )
+
+        # Step 3: Apply Section Prior Boost
+        boosted_candidates: list[dict[str, Any]] = []
+        for cand in reranked_candidates:
+            c = dict(cand)
+            section = c.get("section_name", "")
+            prior = SECTION_PRIORS.get(section, 1.0)
+            raw_conf = c.get("confidence", 0.0)
+            boosted_score = raw_conf * prior
+            c["section_prior"] = round(prior, 4)
+            c["boosted_score"] = round(boosted_score, 4)
+            boosted_candidates.append(c)
+
+        # Sort candidates descending by boosted_score
+        boosted_candidates.sort(key=lambda x: x["boosted_score"], reverse=True)
+
+        # Step 4: Greedy Diversity Selection (Max 1 per doc+section in top-3)
+        final_chunks: list[dict[str, Any]] = []
+        dropped_duplicates: list[dict[str, Any]] = []
+        seen_pairs: set[tuple[str, str]] = set()
+
+        for cand in boosted_candidates:
+            pair = (cand.get("document_name", ""), cand.get("section_name", ""))
+            if pair not in seen_pairs:
+                seen_pairs.add(pair)
+                final_chunks.append(cand)
+                if len(final_chunks) == top_k_final:
+                    break
+            else:
+                dropped_duplicates.append(cand)
+
+        # Fallback: If 3rd slot could not be filled by a unique (doc, section) pair,
+        # fill from dropped duplicates if candidate has confidence >= 0.5
+        if len(final_chunks) < top_k_final and dropped_duplicates:
+            for cand in dropped_duplicates:
+                if cand.get("confidence", 0.0) >= 0.5 or not final_chunks:
+                    final_chunks.append(cand)
+                    if len(final_chunks) == top_k_final:
+                        break
+
+        # If still under top_k_final, backfill with next available candidate
+        if len(final_chunks) < top_k_final:
+            for cand in boosted_candidates:
+                if cand not in final_chunks:
+                    final_chunks.append(cand)
+                    if len(final_chunks) == top_k_final:
+                        break
+
+        # Assign final 1-indexed ranks
+        for rank_idx, chunk in enumerate(final_chunks, 1):
+            chunk["final_rank"] = rank_idx
+
+        rerank_time_ms = round((time.perf_counter() - t_rerank_start) * 1000, 2)
+        total_time_ms = round((time.perf_counter() - t0) * 1000, 2)
+
+        # Step 5: Compute Confidence Summary
+        confidences = [c.get("confidence", 0.0) for c in final_chunks]
+        avg_confidence = round(sum(confidences) / len(confidences), 4) if confidences else 0.0
+        top1_confidence = final_chunks[0].get("confidence", 0.0) if final_chunks else 0.0
+
+        # Step 6: Write Audit Log Entry
+        self._write_retrieval_log(
+            query=query,
+            hybrid_candidates=hybrid_candidates,
+            boosted_candidates=boosted_candidates,
+            final_chunks=final_chunks,
+            dropped_duplicates=dropped_duplicates,
+            avg_confidence=avg_confidence,
+            top1_confidence=top1_confidence,
+            total_time_ms=total_time_ms,
+            hybrid_time_ms=hybrid_time_ms,
+            rerank_time_ms=rerank_time_ms,
+        )
+
+        return {
+            "query": query,
+            "final_chunks": final_chunks,
+            "avg_confidence": avg_confidence,
+            "top1_confidence": top1_confidence,
+            "is_in_scope": top1_confidence >= CONFIDENCE_THRESHOLD,
+            "confidence_threshold": CONFIDENCE_THRESHOLD,
+            "hybrid_candidates_count": len(hybrid_candidates),
+            "hybrid_candidates": hybrid_candidates,
+            "retrieval_time_ms": total_time_ms,
+            "latency_breakdown_ms": {
+                "hybrid": hybrid_time_ms,
+                "rerank": rerank_time_ms,
+            },
+            "models": {
+                "embedding": EMBEDDING_MODEL,
+                "reranker": RERANKER_MODEL,
+                "rrf_k": RRF_K,
+            },
+        }
+
+    def _write_retrieval_log(
+        self,
+        query: str,
+        hybrid_candidates: list[dict[str, Any]],
+        boosted_candidates: list[dict[str, Any]],
+        final_chunks: list[dict[str, Any]],
+        dropped_duplicates: list[dict[str, Any]],
+        avg_confidence: float,
+        top1_confidence: float,
+        total_time_ms: float,
+        hybrid_time_ms: float,
+        rerank_time_ms: float,
+    ) -> None:
+        """Append a structured JSON line entry to logs/retrieval.log."""
+        try:
+            log_entry = {
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "query": query,
+                "metrics": {
+                    "total_time_ms": total_time_ms,
+                    "hybrid_time_ms": hybrid_time_ms,
+                    "rerank_time_ms": rerank_time_ms,
+                    "avg_confidence": avg_confidence,
+                    "top1_confidence": top1_confidence,
+                    "confidence_threshold": CONFIDENCE_THRESHOLD,
+                    "hybrid_candidates_count": len(hybrid_candidates),
+                    "final_chunks_count": len(final_chunks),
+                    "dropped_duplicates_count": len(dropped_duplicates),
+                },
+                "hybrid_candidates": [
+                    {
+                        "chunk_id": c.get("chunk_id"),
+                        "document": c.get("document_name"),
+                        "section": c.get("section_name"),
+                        "pages": f"p.{c.get('start_page')}-{c.get('end_page')}",
+                        "semantic_rank": c.get("semantic_rank"),
+                        "semantic_distance": c.get("semantic_distance"),
+                        "bm25_rank": c.get("bm25_rank"),
+                        "bm25_score": c.get("bm25_score"),
+                        "rrf_score": round(c.get("rrf_score", 0.0), 6),
+                    }
+                    for c in hybrid_candidates
+                ],
+                "final_chunks": [
+                    {
+                        "final_rank": c.get("final_rank"),
+                        "chunk_id": c.get("chunk_id"),
+                        "document": c.get("document_name"),
+                        "section": c.get("section_name"),
+                        "pages": f"p.{c.get('start_page')}-{c.get('end_page')}",
+                        "raw_reranker_score": c.get("reranker_score"),
+                        "raw_confidence": c.get("confidence"),
+                        "section_prior": c.get("section_prior"),
+                        "boosted_score": c.get("boosted_score"),
+                        "has_screening_tools": c.get("has_screening_tools"),
+                        "screening_tools": c.get("screening_tools"),
+                    }
+                    for c in final_chunks
+                ],
+            }
+
+            with open(self.log_path, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(log_entry, ensure_ascii=False) + "\n")
+
+        except Exception as exc:
+            logger.warning("Failed to write retrieval log to '%s': %s", self.log_path, exc)

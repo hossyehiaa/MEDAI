@@ -49,11 +49,17 @@ configs/.env.*
 # ==============================================================================
 data/vector_db/
 data/chunks.json
+data/chunks_backup_v1.json
+data/chunks_backup*.json
 data/cleaned_output.json
 data/chunks/
 
-# KEEP in git (source parsed baseline & directory placeholder):
+# KEEP in git (source parsed baseline, audit reports, evaluations & directory placeholder):
 !data/parsed_output.json
+!data/retrieval_evaluation.json
+!data/final_tuning_report.json
+!data/tuning_report.json
+!data/day1_audit_report.json
 !data/.gitkeep
 
 # ==============================================================================

@@ -1,0 +1,449 @@
+{
+  "summary": {
+    "benchmark_queries_count": 6,
+    "mean_precision_at_3": 1.0,
+    "mrr": 1.0,
+    "mean_confidence": 0.9946,
+    "targets": {
+      "precision_at_3_target": ">= 0.80",
+      "mrr_target": ">= 0.70",
+      "confidence_target": ">= 0.70"
+    },
+    "status": "PASS"
+  },
+  "query_evaluations": [
+    {
+      "query_id": "Q1_PERINATAL",
+      "query": "Should pregnant women be screened for depression?",
+      "target_concept": "Perinatal Depression Screening",
+      "expected_keywords": [
+        "pregnant",
+        "postpartum",
+        "perinatal",
+        "depression",
+        "screen"
+      ],
+      "precision_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "first_relevant_rank": 1,
+      "avg_confidence": 0.9997,
+      "retrieval_time_ms": 490.1,
+      "hits": [
+        {
+          "final_rank": 1,
+          "chunk_id": "018e0d2cff5fed45",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "References",
+          "pages": "p.95-708",
+          "confidence": 0.9999,
+          "reranker_score": 9.0152,
+          "is_relevant": true,
+          "matched_keywords": [
+            "pregnant",
+            "postpartum",
+            "perinatal",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "American Academy of Family Physicians (AAFP), 2018 The AAFP recommends screening for depression in the general adult population. Screening must be imp \u2026"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "96a8920a6e7a1d92",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "References",
+          "pages": "p.95-708",
+          "confidence": 0.9997,
+          "reranker_score": 8.1918,
+          "is_relevant": true,
+          "matched_keywords": [
+            "pregnant",
+            "postpartum",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "Table 7. Other Relevant Guidelines on Screening for Depression, Anxiety, and Suicide Condition Organization, year Recommendation(s) Improvement (ICSI) \u2026"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "44c0ad0bad55830a",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Table",
+          "pages": "p.181-181",
+          "confidence": 0.9994,
+          "reranker_score": 7.4156,
+          "is_relevant": true,
+          "matched_keywords": [
+            "pregnant",
+            "postpartum",
+            "perinatal",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | | Depression | American Academy of Family \u2026"
+        }
+      ]
+    },
+    {
+      "query_id": "Q2_GRADE_B",
+      "query": "What is the USPSTF grade for adult depression screening?",
+      "target_concept": "Recommendation Grade",
+      "expected_keywords": [
+        "grade",
+        "b",
+        "recommend",
+        "depression",
+        "mdd"
+      ],
+      "precision_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "first_relevant_rank": 1,
+      "avg_confidence": 0.9954,
+      "retrieval_time_ms": 449.43,
+      "hits": [
+        {
+          "final_rank": 1,
+          "chunk_id": "3eff1e3081c1abe3",
+          "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
+          "section_name": "General",
+          "pages": "p.1-2",
+          "confidence": 0.9969,
+          "reranker_score": 5.7575,
+          "is_relevant": true,
+          "matched_keywords": [
+            "grade",
+            "b",
+            "recommend",
+            "depression",
+            "mdd"
+          ],
+          "text_snippet": "USPSTF Clinician Summary of USPSTF Recommendation Screening for Depression and Suicide Risk in Adults June 2023 What does the USPSTF recommend? B Grad \u2026"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "cd345052e0d2a90c",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-95",
+          "confidence": 0.9954,
+          "reranker_score": 5.3699,
+          "is_relevant": true,
+          "matched_keywords": [
+            "grade",
+            "b",
+            "recommend",
+            "depression"
+          ],
+          "text_snippet": "The National Committee for Quality Assurance has also developed a number of measures related to depression screening and care for health plans.132 Rel \u2026"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "b2015a58f99431d1",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-95",
+          "confidence": 0.9938,
+          "reranker_score": 5.0702,
+          "is_relevant": true,
+          "matched_keywords": [
+            "grade",
+            "b",
+            "recommend",
+            "depression"
+          ],
+          "text_snippet": "The USPSTF has never issued a recommendation on screening for anxiety disorders for adults, but in 2022 issued a recommendation to screen for anxiety  \u2026"
+        }
+      ]
+    },
+    {
+      "query_id": "Q3_SCREENING_TOOLS",
+      "query": "What screening tools are recommended for depression?",
+      "target_concept": "Validated Instruments",
+      "expected_keywords": [
+        "phq-9",
+        "phq-2",
+        "phq",
+        "epds",
+        "screening",
+        "instrument",
+        "tool"
+      ],
+      "precision_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "first_relevant_rank": 1,
+      "avg_confidence": 0.999,
+      "retrieval_time_ms": 310.44,
+      "hits": [
+        {
+          "final_rank": 1,
+          "chunk_id": "ae75e0a27fa9bc6e",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "References",
+          "pages": "p.95-708",
+          "confidence": 0.9993,
+          "reranker_score": 7.3158,
+          "is_relevant": true,
+          "matched_keywords": [
+            "phq",
+            "epds",
+            "screening",
+            "instrument",
+            "tool"
+          ],
+          "text_snippet": "KQ 2: Limited to the most widely recommended or used screening tools: \u2022 For depression: Patient Health Questionnaire (PHQ), 2- and 9-item versions; Ce \u2026"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "023dbd5cad3aebc4",
+          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
+          "section_name": "General",
+          "pages": "p.1-13",
+          "confidence": 0.9991,
+          "reranker_score": 7.054,
+          "is_relevant": true,
+          "matched_keywords": [
+            "phq",
+            "epds",
+            "screening",
+            "instrument",
+            "tool"
+          ],
+          "text_snippet": "additional components beyond screening, such as referral support, training in diagnosis or management, and patient materials. For KQ2 (test accuracy), \u2026"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "96a8920a6e7a1d92",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "References",
+          "pages": "p.95-708",
+          "confidence": 0.9986,
+          "reranker_score": 6.5736,
+          "is_relevant": true,
+          "matched_keywords": [
+            "phq-9",
+            "phq-2",
+            "phq",
+            "screening",
+            "instrument",
+            "tool"
+          ],
+          "text_snippet": "Table 7. Other Relevant Guidelines on Screening for Depression, Anxiety, and Suicide Condition Organization, year Recommendation(s) Improvement (ICSI) \u2026"
+        }
+      ]
+    },
+    {
+      "query_id": "Q4_OLDER_ADULTS",
+      "query": "Should adults over 65 be screened for depression?",
+      "target_concept": "Older Adults Screening",
+      "expected_keywords": [
+        "older adults",
+        "65",
+        "geriatric",
+        "gds",
+        "depression",
+        "screen"
+      ],
+      "precision_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "first_relevant_rank": 1,
+      "avg_confidence": 0.9845,
+      "retrieval_time_ms": 436.37,
+      "hits": [
+        {
+          "final_rank": 1,
+          "chunk_id": "ba2009c97d434fe8",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "General",
+          "pages": "p.1-19",
+          "confidence": 0.9959,
+          "reranker_score": 5.4948,
+          "is_relevant": true,
+          "matched_keywords": [
+            "65",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data from a nat \u2026"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "018e0d2cff5fed45",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "References",
+          "pages": "p.95-708",
+          "confidence": 0.9795,
+          "reranker_score": 3.8649,
+          "is_relevant": true,
+          "matched_keywords": [
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "American Academy of Family Physicians (AAFP), 2018 The AAFP recommends screening for depression in the general adult population. Screening must be imp \u2026"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "0ebecc1311448cc3",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-95",
+          "confidence": 0.978,
+          "reranker_score": 3.7935,
+          "is_relevant": true,
+          "matched_keywords": [
+            "older adults",
+            "geriatric",
+            "gds",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "Effects in Older Adults  The trials among general adult populations included older adults but none of them reported subgroup effects by age. However,  \u2026"
+        }
+      ]
+    },
+    {
+      "query_id": "Q5_POSTPARTUM",
+      "query": "Is depression screening recommended for postpartum women?",
+      "target_concept": "Postpartum Depression",
+      "expected_keywords": [
+        "postpartum",
+        "pregnant",
+        "epds",
+        "depression",
+        "screen"
+      ],
+      "precision_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "first_relevant_rank": 1,
+      "avg_confidence": 0.9997,
+      "retrieval_time_ms": 374.43,
+      "hits": [
+        {
+          "final_rank": 1,
+          "chunk_id": "96a8920a6e7a1d92",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "References",
+          "pages": "p.95-708",
+          "confidence": 0.9998,
+          "reranker_score": 8.748,
+          "is_relevant": true,
+          "matched_keywords": [
+            "postpartum",
+            "pregnant",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "Table 7. Other Relevant Guidelines on Screening for Depression, Anxiety, and Suicide Condition Organization, year Recommendation(s) Improvement (ICSI) \u2026"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "018e0d2cff5fed45",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "References",
+          "pages": "p.95-708",
+          "confidence": 0.9997,
+          "reranker_score": 8.0703,
+          "is_relevant": true,
+          "matched_keywords": [
+            "postpartum",
+            "pregnant",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "American Academy of Family Physicians (AAFP), 2018 The AAFP recommends screening for depression in the general adult population. Screening must be imp \u2026"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "e1ec1cfea1b9cd14",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "References",
+          "pages": "p.95-708",
+          "confidence": 0.9997,
+          "reranker_score": 7.9752,
+          "is_relevant": true,
+          "matched_keywords": [
+            "postpartum",
+            "pregnant",
+            "epds",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "Table 7. Other Relevant Guidelines on Screening for Depression, Anxiety, and Suicide Condition Organization, year Recommendation(s) Association of Wom \u2026"
+        }
+      ]
+    },
+    {
+      "query_id": "Q6_HARMS_RISKS",
+      "query": "What are the harms or risks of depression screening?",
+      "target_concept": "Screening Harms & Overdiagnosis",
+      "expected_keywords": [
+        "harm",
+        "harms",
+        "adverse",
+        "false positive",
+        "overdiagnosis",
+        "suicide",
+        "risk"
+      ],
+      "precision_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "first_relevant_rank": 1,
+      "avg_confidence": 0.9894,
+      "retrieval_time_ms": 408.62,
+      "hits": [
+        {
+          "final_rank": 1,
+          "chunk_id": "d3839ef285f896d6",
+          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
+          "section_name": "General",
+          "pages": "p.1-13",
+          "confidence": 0.9947,
+          "reranker_score": 5.237,
+          "is_relevant": true,
+          "matched_keywords": [
+            "harm",
+            "harms",
+            "adverse",
+            "suicide",
+            "risk"
+          ],
+          "text_snippet": "Harms of Screening Key Question 3. What are the harms associated with screening for depression or suicide risk in primary care or comparable settings  \u2026"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "86d9f1297620a1a9",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-95",
+          "confidence": 0.9931,
+          "reranker_score": 4.9725,
+          "is_relevant": true,
+          "matched_keywords": [
+            "harm",
+            "harms",
+            "suicide",
+            "risk"
+          ],
+          "text_snippet": "KQ3. What Are the Harms Associated With Screening for Suicide Risk in Primary Care or Comparable Settings in Adults, Including Pregnant and Postpartum \u2026"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "b79452c1dfa869ac",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-95",
+          "confidence": 0.9803,
+          "reranker_score": 3.9098,
+          "is_relevant": true,
+          "matched_keywords": [
+            "harm",
+            "harms",
+            "suicide",
+            "risk"
+          ],
+          "text_snippet": "Chapter 4. Discussion  Summary of Evidence  We addressed five key questions for each of anxiety, depression, and suicide risk, with varying levels of  \u2026"
+        }
+      ]
+    }
+  ],
+  "elapsed_seconds": 7.79
+}

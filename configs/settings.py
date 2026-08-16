@@ -12,10 +12,13 @@ from pathlib import Path
 PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent
 RAW_DOCUMENTS_DIR: Path = PROJECT_ROOT / "raw_documents"
 DATA_DIR: Path = PROJECT_ROOT / "data"
+LOGS_DIR: Path = PROJECT_ROOT / "logs"
 
 CLEANED_OUTPUT_PATH: Path = DATA_DIR / "cleaned_output.json"
 CHUNKS_OUTPUT_PATH: Path = DATA_DIR / "chunks.json"
+CHUNKS_BACKUP_PATH: Path = DATA_DIR / "chunks_backup_v1.json"
 VECTOR_DB_PATH: str = str(DATA_DIR / "vector_db")
+RETRIEVAL_LOG_PATH: str = str(LOGS_DIR / "retrieval.log")
 
 # ──────────────────────────────────────────────────────────────────────
 # Chunking
@@ -27,21 +30,43 @@ MIN_CHUNK_CHARS: int = 100      # discard chunks shorter than this
 CHUNK_SEPARATORS: list[str] = ["\n\n", "\n", ". ", " ", ""]
 
 # ──────────────────────────────────────────────────────────────────────
-# Embeddings
+# Embeddings & Vector Store (ChromaDB)
 # ──────────────────────────────────────────────────────────────────────
 EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
 EMBEDDING_BATCH_SIZE: int = 64
-
-# ──────────────────────────────────────────────────────────────────────
-# Vector Store (ChromaDB)
-# ──────────────────────────────────────────────────────────────────────
 COLLECTION_NAME: str = "uspstf_depression_guidelines"
 
 # ──────────────────────────────────────────────────────────────────────
-# Screening‑tool keywords (for table tagging)
+# Retrieval & Reranking (Day 2 Optimization)
+# ──────────────────────────────────────────────────────────────────────
+TOP_K_RETRIEVAL: int = 15       # candidate count per retriever (semantic & BM25)
+TOP_K_FINAL: int = 3            # final reranked chunks returned to generator
+RRF_K: int = 60                 # Reciprocal Rank Fusion constant
+RERANKER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+# Calibrated confidence threshold for out-of-scope rejection
+# Calibrated as midpoint between max OOS top-1 confidence (69.3%) and min in-scope top-1 confidence (92.6%)
+CONFIDENCE_THRESHOLD: float = 0.81
+
+# ──────────────────────────────────────────────────────────────────────
+# Section Prior Boosts
+# ──────────────────────────────────────────────────────────────────────
+# Prior weighting based on clinical authority and direct guideline relevance
+SECTION_PRIORS: dict[str, float] = {
+    "Recommendation": 1.15,
+    "General": 1.10,
+    "Clinical Considerations": 1.05,
+    "Practice Considerations": 1.05,
+    "Table": 1.00,
+    "Recommendations of Others": 0.95,
+    "References": 0.90,
+}
+
+# ──────────────────────────────────────────────────────────────────────
+# Screening‑tool keywords & patterns (for chunk tagging & scope checks)
 # ──────────────────────────────────────────────────────────────────────
 SCREENING_TOOL_KEYWORDS: list[str] = [
-    "PHQ-2", "PHQ-9", "PHQ-A", "EPDS", "Edinburgh",
+    "PHQ-2", "PHQ-9", "PHQ-10", "EPDS", "Edinburgh",
     "BDI", "Beck Depression Inventory",
     "CES-D", "GDS", "Geriatric Depression Scale",
     "HAM-D", "HDRS", "Hamilton",

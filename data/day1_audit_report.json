@@ -1,0 +1,337 @@
+{
+  "timestamp": "2026-08-16 15:50:44",
+  "verdict": "READY",
+  "pillars": {
+    "pillar_1_coverage_quality": {
+      "total_chunks": 1800,
+      "text_chunks": 1362,
+      "table_chunks": 438,
+      "unique_documents": 3,
+      "documents": {
+        "Bookshelf_NBK592805": 1717,
+        "depression-suicide-risk-adults-clinician-summ (2)": 3,
+        "depression-suicide-risk-adults-final-evidence-summary (2)": 80
+      },
+      "duplicate_ids": 0,
+      "short_chunks_count": 0,
+      "token_stats": {
+        "min": 32,
+        "avg": 457.0,
+        "max": 2207
+      },
+      "passed": true
+    },
+    "pillar_2_metadata": {
+      "all_fields_present": true,
+      "missing_fields": {
+        "chunk_id": 0,
+        "document_name": 0,
+        "section_name": 0,
+        "start_page": 0,
+        "grades": 0,
+        "topic": 0
+      },
+      "null_fields": {
+        "chunk_id": 0,
+        "document_name": 0,
+        "section_name": 0,
+        "start_page": 0,
+        "grades": 0,
+        "topic": 0
+      },
+      "screening_tool_flagged_count": 521,
+      "phq9_count": 144,
+      "phq2_count": 38,
+      "epds_count": 186,
+      "grade_b_count": 141,
+      "passed": true
+    },
+    "pillar_3_scope_adequacy": {
+      "scope_topics": [
+        {
+          "topic": "Perinatal Population",
+          "keywords": [
+            "pregnant",
+            "postpartum",
+            "perinatal"
+          ],
+          "match_count": 415,
+          "status": "FOUND"
+        },
+        {
+          "topic": "Older Adults",
+          "keywords": [
+            "older adults",
+            "65 years",
+            "geriatric",
+            "gds"
+          ],
+          "match_count": 354,
+          "status": "FOUND"
+        },
+        {
+          "topic": "Recommendation Grade B",
+          "keywords": [
+            "grade b",
+            "recommendation grade",
+            "recommends screening"
+          ],
+          "match_count": 6,
+          "status": "FOUND"
+        },
+        {
+          "topic": "Validated Screening Tools",
+          "keywords": [
+            "phq-9",
+            "phq-2",
+            "epds",
+            "ces-d",
+            "bdi"
+          ],
+          "match_count": 302,
+          "status": "FOUND"
+        },
+        {
+          "topic": "Suicide Risk Screening",
+          "keywords": [
+            "suicide",
+            "suicidal",
+            "c-ssrs",
+            "asq",
+            "self-harm"
+          ],
+          "match_count": 590,
+          "status": "FOUND"
+        }
+      ],
+      "passed": true
+    },
+    "pillar_4_retrieval": {
+      "total_queries_run": 5,
+      "passed": true,
+      "queries": [
+        {
+          "query_id": "Q1",
+          "query": "Should pregnant women be screened for depression?",
+          "expected_concepts": [
+            "pregnant",
+            "postpartum",
+            "screen",
+            "depression"
+          ],
+          "matched_concepts": [
+            "pregnant",
+            "postpartum",
+            "screen",
+            "depression"
+          ],
+          "passed": true,
+          "top_distance": 0.28570032119750977,
+          "hits": [
+            {
+              "rank": 1,
+              "distance": 0.28570032119750977,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "References",
+              "pages": "p.95-708",
+              "text_preview": "Vilagut G, Forero CG, Barbaglia G, et al. Screening for Depression in the General Population with the Center for Epidemiologic Studies Depre …"
+            },
+            {
+              "rank": 2,
+              "distance": 0.2999732494354248,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "References",
+              "pages": "p.95-708",
+              "text_preview": "American Academy of Family Physicians (AAFP), 2018 The AAFP recommends screening for depression in the general adult population. Screening m …"
+            },
+            {
+              "rank": 3,
+              "distance": 0.3055972456932068,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "Table",
+              "pages": "p.181-181",
+              "text_preview": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | | Depression | American Academy …"
+            }
+          ]
+        },
+        {
+          "query_id": "Q2",
+          "query": "What is the USPSTF grade for adult depression screening?",
+          "expected_concepts": [
+            "grade",
+            "b",
+            "recommend",
+            "depression"
+          ],
+          "matched_concepts": [
+            "recommend",
+            "depression"
+          ],
+          "passed": true,
+          "top_distance": 0.3251810669898987,
+          "hits": [
+            {
+              "rank": 1,
+              "distance": 0.3251810669898987,
+              "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
+              "section_name": "Table",
+              "pages": "p.1-1",
+              "text_preview": "|  | | --- | | USPSTF Clinician Summary of USPSTF Recommendation Screening for Depression and Suicide Risk in Adults June 2023 | …"
+            },
+            {
+              "rank": 2,
+              "distance": 0.36185795068740845,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "References",
+              "pages": "p.95-708",
+              "text_preview": "Appendix E Table 12. Test Accuracy of the Geriatric Depression Scale to Detect MDD or Depression (KQ2) Screening test Author, year Condition …"
+            },
+            {
+              "rank": 3,
+              "distance": 0.3657248020172119,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "References",
+              "pages": "p.95-708",
+              "text_preview": "Abbreviations: CES-D = Center for Epidemiologic Studies Depression scale; EPDS = Edinburgh Postnatal Depression Scale; MINI = Mini Internati …"
+            }
+          ]
+        },
+        {
+          "query_id": "Q3",
+          "query": "What screening tools are recommended for depression?",
+          "expected_concepts": [
+            "phq",
+            "tool",
+            "screen",
+            "epds"
+          ],
+          "matched_concepts": [
+            "phq",
+            "tool",
+            "screen"
+          ],
+          "passed": true,
+          "top_distance": 0.322645366191864,
+          "hits": [
+            {
+              "rank": 1,
+              "distance": 0.322645366191864,
+              "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
+              "section_name": "References",
+              "pages": "p.13-18",
+              "text_preview": "External validation of a shortened screening tool using individual participant data meta-analysis: a case study of the Patient Health Questi …"
+            },
+            {
+              "rank": 2,
+              "distance": 0.3279997706413269,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "Recommendations of Others",
+              "pages": "p.19-95",
+              "text_preview": "While not widely used to our knowledge, tools have been developed that simultaneously screen for anxiety, depression, or suicide risk with a …"
+            },
+            {
+              "rank": 3,
+              "distance": 0.3313232660293579,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "Recommendations of Others",
+              "pages": "p.19-95",
+              "text_preview": "Chapter 4. Discussion  Summary of Evidence  We addressed five key questions for each of anxiety, depression, and suicide risk, with varying  …"
+            }
+          ]
+        },
+        {
+          "query_id": "Q4",
+          "query": "Should adults over 65 be screened for depression?",
+          "expected_concepts": [
+            "older adults",
+            "65",
+            "geriatric",
+            "screen",
+            "depression"
+          ],
+          "matched_concepts": [
+            "65",
+            "screen",
+            "depression"
+          ],
+          "passed": true,
+          "top_distance": 0.3514823317527771,
+          "hits": [
+            {
+              "rank": 1,
+              "distance": 0.3514823317527771,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "General",
+              "pages": "p.1-19",
+              "text_preview": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data  …"
+            },
+            {
+              "rank": 2,
+              "distance": 0.35883772373199463,
+              "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
+              "section_name": "References",
+              "pages": "p.13-18",
+              "text_preview": "8. O’Connor E, Rossom RC, Henninger M, et al. Screening for Depression in Adults: An Updated Systematic Evidence Review for the US Preventiv …"
+            },
+            {
+              "rank": 3,
+              "distance": 0.3612082600593567,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "References",
+              "pages": "p.95-708",
+              "text_preview": "Stefan AM, Baban A. The Romanian version of the Geriatric Depression Scale: Reliability and validity. Cognition, Brain, Behavior: An Interdi …"
+            }
+          ]
+        },
+        {
+          "query_id": "Q5",
+          "query": "Is depression screening recommended for postpartum women?",
+          "expected_concepts": [
+            "postpartum",
+            "pregnant",
+            "screen",
+            "depression",
+            "epds"
+          ],
+          "matched_concepts": [
+            "postpartum",
+            "pregnant",
+            "screen",
+            "depression"
+          ],
+          "passed": true,
+          "top_distance": 0.19576168060302734,
+          "hits": [
+            {
+              "rank": 1,
+              "distance": 0.19576168060302734,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "References",
+              "pages": "p.95-708",
+              "text_preview": "American Academy of Family Physicians (AAFP), 2018 The AAFP recommends screening for depression in the general adult population. Screening m …"
+            },
+            {
+              "rank": 2,
+              "distance": 0.2046610713005066,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "Recommendations of Others",
+              "pages": "p.19-95",
+              "text_preview": "Several professional organizations recommend universal screening for depression in the general adult population.115-119 However, the Nationa …"
+            },
+            {
+              "rank": 3,
+              "distance": 0.20684605836868286,
+              "document_name": "Bookshelf_NBK592805",
+              "section_name": "Table",
+              "pages": "p.181-181",
+              "text_preview": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | | Depression | American Academy …"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "retrieval_tests": [],
+  "reasons": [],
+  "elapsed_seconds": 7.6
+}
