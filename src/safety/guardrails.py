@@ -31,8 +31,10 @@ class GuardrailResult:
 
 # ------------------------------------------------------------------
 # CRISIS referral keywords — checked FIRST, before retrieval
+# Supports multilingual crisis detection (EN, ES, FR, ZH, VI, AR)
 # ------------------------------------------------------------------
 CRISIS_KEYWORDS: list[str] = [
+    # English
     "suicide",
     "kill myself",
     "end my life",
@@ -40,11 +42,32 @@ CRISIS_KEYWORDS: list[str] = [
     "want to die",
     "ending it all",
     "hurt myself",
+    # Spanish
+    "quiero morir",
+    "hacerme daño",
+    "matarme",
+    "suicidarme",
+    "acabar con mi vida",
+    # French
+    "je veux mourir",
+    "me suicider",
+    # Chinese
+    "想死",
+    "自杀",
+    "不想活",
+    # Vietnamese
+    "muốn chết",
+    "tự tử",
+    # Arabic
+    "أريد أن أموت",
+    "انتحر",
+    "قتل نفسي",
+    "أذية نفسي",
 ]
 
 CRISIS_MESSAGE: str = (
     "⚠️ If you are in crisis or having thoughts of suicide, "
-    "call or text 988 (Suicide & Crisis Lifeline) in the US, "
+    "call or text 988 (US) or your local emergency number, "
     "or go to your nearest emergency department immediately."
 )
 

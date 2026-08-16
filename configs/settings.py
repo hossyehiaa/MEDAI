@@ -47,8 +47,8 @@ RRF_K: int = 60                 # Reciprocal Rank Fusion constant
 RERANKER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
 # Calibrated confidence threshold for out-of-scope rejection
-# Calibrated as midpoint between max OOS top-1 confidence (69.3%) and min in-scope top-1 confidence (92.6%)
-CONFIDENCE_THRESHOLD: float = 0.81
+# Calibrated midpoint of min_in_scope_top1 and max_oos_top1; recompute after any retrieval change
+CONFIDENCE_THRESHOLD: float = 0.76
 
 # ──────────────────────────────────────────────────────────────────────
 # Section Prior Boosts (Updated: wider spread for clinical authority)
@@ -86,7 +86,7 @@ OLDER_ADULTS_QUERY_KEYWORDS: list[str] = [
 OLDER_ADULTS_CHUNK_KEYWORDS: list[str] = [
     "GDS", "Geriatric Depression Scale", "older adults", "65 years", "geriatric", "elderly",
 ]
-OLDER_ADULTS_BOOST: float = 1.20
+OLDER_ADULTS_BOOST: float = 1.10
 
 # ──────────────────────────────────────────────────────────────────────
 # Screening‑tool keywords & patterns (for chunk tagging & scope checks)

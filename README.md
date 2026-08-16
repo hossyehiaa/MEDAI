@@ -108,7 +108,7 @@ python src/evaluation/end_to_end_evaluator.py
 
 | Gate | Trigger | Response |
 |---|---|---|
-| **CRISIS** | `suicide`, `kill myself`, `end my life`, `self-harm`, `want to die`, `ending it all`, `hurt myself` | 🚨 988 Suicide & Crisis Lifeline referral |
+| **CRISIS** | Multilingual crisis language: EN (`suicide`, `kill myself`, `hurt myself`), ES (`quiero morir`, `matarme`), FR (`je veux mourir`), ZH (`想死`, `自杀`), VI (`muốn chết`), AR (`أريد أن أموت`, `انتحر`) | 🚨 988 Suicide & Crisis Lifeline referral ("Call or text 988 (US) or your local emergency number") |
 | **DOSING** | `dose`, `mg`, `prescribe`, `sertraline`, `fluoxetine`, `escitalopram`, `zoloft`, `prozac`, `lexapro` | ⛔ "This system provides screening recommendations only. Consult a licensed prescriber." |
 | **INJECTION** | Prompt injection patterns | Blocked with safety filter message |
 | **DISCLAIMER** | Every response | Always appended: USPSTF June 2023 clinical decision support disclaimer |

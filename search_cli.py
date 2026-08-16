@@ -101,9 +101,9 @@ def display_retrieval_bundle(result: dict[str, Any], query_idx: int | None = Non
     breakdown = result.get("latency_breakdown_ms", {})
 
     status_tag = "[bold green]IN-SCOPE[/bold green]" if in_scope else "[bold red]OUT-OF-SCOPE[/bold red]"
-    perinatal_tag = " [bold magenta]🤰 PERINATAL BOOST ACTIVE[/bold magenta]" if is_perinatal else ""
-    older_tag = " [bold blue]👴 OLDER ADULTS BOOST ACTIVE[/bold blue]" if is_older_adults else ""
-    diversity_tag = f" | [dim]Docs: {unique_docs}[/dim]" if not diversity_warning else " | [bold yellow]⚠️ Low Doc Diversity[/bold yellow]"
+    perinatal_tag = " [bold magenta][PERINATAL BOOST ACTIVE][/bold magenta]" if is_perinatal else ""
+    older_tag = " [bold blue][OLDER ADULTS BOOST ACTIVE][/bold blue]" if is_older_adults else ""
+    diversity_tag = f" | [dim]Docs: {unique_docs}[/dim]" if not diversity_warning else " | [bold yellow][Low Doc Diversity][/bold yellow]"
     header_title = f"Query: \"{query}\"" if query_idx is None else f"Query #{query_idx}: \"{query}\""
 
     console.print(
@@ -172,8 +172,9 @@ def display_retrieval_bundle(result: dict[str, Any], query_idx: int | None = Non
         sec = c.get("section_name", "?")
         pages = f"p.{c.get('start_page', '?')}-{c.get('end_page', '?')}"
         table_tag = " [bold magenta][Table][/bold magenta]" if c.get("is_table") else ""
-        perinatal_tag_chunk = " [magenta]🤰[/magenta]" if c.get("perinatal_boosted") else ""
-        doc_display = f"{doc[:18]}..\\n§{sec[:14]}{table_tag}{perinatal_tag_chunk} ({pages})"
+        perinatal_tag_chunk = " [magenta][Perinatal][/magenta]" if c.get("perinatal_boosted") else ""
+        older_tag_chunk = " [blue][OlderAdults][/blue]" if c.get("older_adults_boosted") else ""
+        doc_display = f"{doc[:18]}..\\n§{sec[:14]}{table_tag}{perinatal_tag_chunk}{older_tag_chunk} ({pages})"
 
         step2_table.add_row(f"#{rank}", conf, prior, boosted, doc_display)
 
