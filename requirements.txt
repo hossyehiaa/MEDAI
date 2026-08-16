@@ -1,0 +1,26 @@
+# === PDF Parsing ===
+PyMuPDF
+pdfplumber
+
+# === Text Chunking ===
+langchain-text-splitters
+
+# === Embeddings ===
+sentence-transformers
+
+# === Vector Store ===
+chromadb
+
+# === LLM ===
+openai
+
+# === Data Models & Settings ===
+pydantic
+python-dotenv
+
+# === Tokenization ===
+tiktoken
+
+# === Utilities ===
+tqdm
+rich
