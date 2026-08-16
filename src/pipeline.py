@@ -23,7 +23,11 @@ from src.ingestion.chunker import chunk_text, save_chunks
 from src.retrieval.vector_store import VectorStore
 from src.generation.prompt_builder import build_prompt
 from src.generation.llm_client import LLMClient
-from src.safety.guardrails import check_input, check_output
+from src.safety.guardrails import (
+    check_input,
+    check_output,
+    PROFESSIONAL_DISCLAIMER,
+)
 
 # Load environment variables
 load_dotenv("configs/.env")
@@ -63,10 +67,13 @@ def ingest(pdf_dir: Path = RAW_DOCS_DIR) -> None:
 
 
 def query(question: str, top_k: int = 5) -> str:
-    """Run the full RAG pipeline: validate → retrieve → generate → validate."""
-    # 1. Input guardrails
+    """Run the full RAG pipeline: validate → retrieve → generate → validate → disclaimer."""
+    # 1. Input guardrails (CRISIS + DOSING + injection checks run BEFORE retrieval)
     input_check = check_input(question)
     if not input_check.passed:
+        # For CRISIS and REFUSAL_OOS, return the user-facing message directly
+        if input_check.status in ("CRISIS", "REFUSAL_OOS"):
+            return input_check.message
         return f"⚠️  {input_check.reason}"
 
     # 2. Retrieve
@@ -81,14 +88,13 @@ def query(question: str, top_k: int = 5) -> str:
     llm = LLMClient()
     response = llm.generate(messages)
 
-    # 4. Output guardrails
+    # 4. Output guardrails (check for disclaimer in LLM output)
     output_check = check_output(response)
     if not output_check.passed:
-        # Append disclaimer automatically if missing
-        response += (
-            "\n\n---\n⚠️ **Disclaimer**: This information is for educational "
-            "purposes only and is not a substitute for professional medical advice."
-        )
+        logger.info("LLM response missing disclaimer — will be appended automatically.")
+
+    # 5. ALWAYS append professional disclaimer — regardless of output check result
+    response += f"\n\n---\n{PROFESSIONAL_DISCLAIMER}"
 
     return response
 

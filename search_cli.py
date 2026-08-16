@@ -2,6 +2,7 @@
 search_cli.py — Interactive Clinical Search & Retrieval Transparency CLI.
 
 Demonstrates transparent, multi-stage retrieval BEFORE any LLM generation:
+  • Safety Gate: CRISIS detection (988 referral) + DOSING refusal (out-of-scope)
   • Step 1: Hybrid Semantic (ChromaDB) + Lexical (BM25) RRF Candidate Fusion
   • Step 2: Cross-Encoder (ms-marco-MiniLM-L-6-v2) Deep Re-ranking & Section Priors
   • Step 3: Top-3 High-Precision Passages Table with Confidence Metrics & Diversity
@@ -44,6 +45,7 @@ from configs.settings import (
     CONFIDENCE_THRESHOLD,
 )
 from src.retrieval.retrieval_manager import RetrievalManager
+from src.safety.guardrails import check_input, PROFESSIONAL_DISCLAIMER
 
 console = Console()
 
@@ -51,8 +53,36 @@ PRESET_TEST_QUERIES: list[str] = [
     "Should pregnant women be screened for depression?",
     "What screening tools are recommended for depression in adults?",
     "What is the USPSTF recommendation grade for depression screening?",
-    "What is the dose of sertraline for depression?",
+    "I want to kill myself",                                          # CRISIS gate test
+    "What is the dose of sertraline for depression?",                 # REFUSAL_OOS gate test
 ]
+
+
+def display_safety_gate(query: str, result: Any, query_idx: int | None = None) -> None:
+    """Render a safety gate interception (CRISIS or REFUSAL_OOS)."""
+    header = f"Query: \"{query}\"" if query_idx is None else f"Query #{query_idx}: \"{query}\""
+    status = result.status
+
+    if status == "CRISIS":
+        border = "bold red"
+        status_tag = "[bold white on red] 🚨 CRISIS GATE TRIGGERED [/bold white on red]"
+    elif status == "REFUSAL_OOS":
+        border = "yellow"
+        status_tag = "[bold yellow]⛔ OUT-OF-SCOPE REFUSAL[/bold yellow]"
+    else:
+        border = "red"
+        status_tag = f"[bold red]BLOCKED: {result.reason}[/bold red]"
+
+    console.print(
+        Panel(
+            f"[bold cyan]{header}[/bold cyan]  |  {status_tag}\n\n"
+            f"[bold white]{result.message}[/bold white]\n\n"
+            f"[dim]Safety flags: {', '.join(result.flags)}[/dim]",
+            box=box.HEAVY_EDGE,
+            border_style=border,
+        )
+    )
+    console.print()
 
 
 def display_retrieval_bundle(result: dict[str, Any], query_idx: int | None = None) -> None:
@@ -63,15 +93,17 @@ def display_retrieval_bundle(result: dict[str, Any], query_idx: int | None = Non
     avg_conf = result["avg_confidence"]
     top1_conf = result.get("top1_confidence", 0.0)
     in_scope = result.get("is_in_scope", True)
+    is_perinatal = result.get("is_perinatal_query", False)
     latency = result["retrieval_time_ms"]
     breakdown = result.get("latency_breakdown_ms", {})
 
     status_tag = "[bold green]IN-SCOPE[/bold green]" if in_scope else "[bold red]OUT-OF-SCOPE[/bold red]"
+    perinatal_tag = " [bold magenta]🤰 PERINATAL BOOST ACTIVE[/bold magenta]" if is_perinatal else ""
     header_title = f"Query: \"{query}\"" if query_idx is None else f"Query #{query_idx}: \"{query}\""
 
     console.print(
         Panel(
-            f"[bold cyan]{header_title}[/bold cyan]  |  Status: {status_tag}\n"
+            f"[bold cyan]{header_title}[/bold cyan]  |  Status: {status_tag}{perinatal_tag}\n"
             f"[dim]Total Latency: {latency:.1f}ms (Hybrid: {breakdown.get('hybrid', 0):.1f}ms | "
             f"Rerank: {breakdown.get('rerank', 0):.1f}ms) | Top-1 Conf: {top1_conf:.1%} | Avg Top-3: {avg_conf:.1%} (Threshold: {CONFIDENCE_THRESHOLD:.2f})[/dim]",
             box=box.ROUNDED,
@@ -125,7 +157,6 @@ def display_retrieval_bundle(result: dict[str, Any], query_idx: int | None = Non
     step2_table.add_column("Prior", justify="right", style="dim white", width=8)
     step2_table.add_column("Boosted", justify="right", style="bold yellow", width=10)
     step2_table.add_column("Document & Section", style="white", width=32)
-    step2_table.add_column("Clinical Passage Excerpt", style="white")
 
     for c in final_chunks:
         rank = c.get("final_rank", 1)
@@ -136,33 +167,31 @@ def display_retrieval_bundle(result: dict[str, Any], query_idx: int | None = Non
         sec = c.get("section_name", "?")
         pages = f"p.{c.get('start_page', '?')}-{c.get('end_page', '?')}"
         table_tag = " [bold magenta][Table][/bold magenta]" if c.get("is_table") else ""
-        doc_display = f"{doc[:18]}..\n§{sec[:14]}{table_tag} ({pages})"
+        perinatal_tag_chunk = " [magenta]🤰[/magenta]" if c.get("perinatal_boosted") else ""
+        doc_display = f"{doc[:18]}..\\n§{sec[:14]}{table_tag}{perinatal_tag_chunk} ({pages})"
 
-        excerpt = c.get("text", "").replace("\n", " ").strip()
-        if len(excerpt) > 220:
-            excerpt = excerpt[:220] + " …"
-
-        # Highlight screening tool tags if present
-        tools = c.get("screening_tools", [])
-        if tools:
-            excerpt += f"\n[dim magenta]★ Screening tools: {', '.join(tools)}[/dim magenta]"
-
-        step2_table.add_row(f"#{rank}", conf, prior, boosted, doc_display, excerpt)
+        step2_table.add_row(f"#{rank}", conf, prior, boosted, doc_display)
 
     console.print(step2_table)
     console.print()
 
 
 def run_test_suite(manager: RetrievalManager) -> None:
-    """Run preset clinical test queries."""
+    """Run preset clinical test queries including safety gate tests."""
     console.print(
         Panel(
-            "[bold white]Executing Preset Clinical Test Suite (4 Queries: In-Scope + Out-Of-Scope)[/bold white]",
+            "[bold white]Executing Preset Clinical Test Suite (5 Queries: In-Scope + Safety Gates)[/bold white]",
             box=box.ROUNDED,
             border_style="magenta",
         )
     )
     for idx, query in enumerate(PRESET_TEST_QUERIES, 1):
+        # Run safety gate FIRST
+        safety_result = check_input(query)
+        if not safety_result.passed:
+            display_safety_gate(query, safety_result, query_idx=idx)
+            continue
+
         result = manager.retrieve(query)
         display_retrieval_bundle(result, query_idx=idx)
 
@@ -178,7 +207,7 @@ def main() -> None:
                 Text.from_markup(
                     "[bold cyan]medAI — CLINICAL RETRIEVAL TRANSPARENCY CONSOLE (Day 2)[/bold cyan]\n"
                     f"[dim]Embedder: {EMBEDDING_MODEL} | Reranker: {RERANKER_MODEL} | Collection: {COLLECTION_NAME}[/dim]\n"
-                    "[dim white]Multi-stage retrieval: ChromaDB (dense) + BM25 (sparse) → RRF (k=60) → Cross-Encoder → Prior Boost → Top 3 Diversity[/dim white]"
+                    "[dim white]Safety Gates: CRISIS (988) + DOSING (OOS) → Hybrid RRF → Cross-Encoder → Prior Boost → Diversity → Top 3[/dim white]"
                 )
             ),
             box=box.DOUBLE_EDGE,
@@ -195,6 +224,13 @@ def main() -> None:
         if args.query.strip().lower() in ("/test", "--test"):
             run_test_suite(manager)
             return
+
+        # Check safety gate first
+        safety_result = check_input(args.query.strip())
+        if not safety_result.passed:
+            display_safety_gate(args.query.strip(), safety_result)
+            return
+
         result = manager.retrieve(args.query.strip())
         display_retrieval_bundle(result)
         return
@@ -217,6 +253,12 @@ def main() -> None:
 
         if user_input.lower() == "/test":
             run_test_suite(manager)
+            continue
+
+        # Check safety gate first
+        safety_result = check_input(user_input)
+        if not safety_result.passed:
+            display_safety_gate(user_input, safety_result)
             continue
 
         result = manager.retrieve(user_input)

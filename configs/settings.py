@@ -32,7 +32,9 @@ CHUNK_SEPARATORS: list[str] = ["\n\n", "\n", ". ", " ", ""]
 # ──────────────────────────────────────────────────────────────────────
 # Embeddings & Vector Store (ChromaDB)
 # ──────────────────────────────────────────────────────────────────────
-EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
+# Upgraded from all-MiniLM-L6-v2 based on tuning_experiment.py A/B test:
+# paraphrase-MiniLM-L6-v2 achieved 100.0% P@3 vs 94.9% for all-MiniLM-L6-v2
+EMBEDDING_MODEL: str = "sentence-transformers/paraphrase-MiniLM-L6-v2"
 EMBEDDING_BATCH_SIZE: int = 64
 COLLECTION_NAME: str = "uspstf_depression_guidelines"
 
@@ -49,18 +51,31 @@ RERANKER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 CONFIDENCE_THRESHOLD: float = 0.81
 
 # ──────────────────────────────────────────────────────────────────────
-# Section Prior Boosts
+# Section Prior Boosts (Updated: wider spread for clinical authority)
 # ──────────────────────────────────────────────────────────────────────
-# Prior weighting based on clinical authority and direct guideline relevance
+# Wider prior spread: Recommendation sections get 1.30x boost,
+# while References are heavily demoted to 0.50x to prevent
+# bibliographic entries from dominating retrieval results.
 SECTION_PRIORS: dict[str, float] = {
-    "Recommendation": 1.15,
+    "Recommendation": 1.30,
+    "Clinical Considerations": 1.20,
+    "Practice Considerations": 1.15,
     "General": 1.10,
-    "Clinical Considerations": 1.05,
-    "Practice Considerations": 1.05,
     "Table": 1.00,
-    "Recommendations of Others": 0.95,
-    "References": 0.90,
+    "Recommendations of Others": 0.70,
+    "References": 0.50,
 }
+
+# ──────────────────────────────────────────────────────────────────────
+# Perinatal Query Boost
+# ──────────────────────────────────────────────────────────────────────
+PERINATAL_QUERY_KEYWORDS: list[str] = [
+    "pregnant", "postpartum", "perinatal", "epds", "edinburgh",
+]
+PERINATAL_CHUNK_KEYWORDS: list[str] = [
+    "EPDS", "Edinburgh", "postpartum", "perinatal",
+]
+PERINATAL_BOOST: float = 1.25
 
 # ──────────────────────────────────────────────────────────────────────
 # Screening‑tool keywords & patterns (for chunk tagging & scope checks)

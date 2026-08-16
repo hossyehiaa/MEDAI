@@ -5,9 +5,10 @@ Workflow:
   1. Clinical Query Input
   2. Hybrid Retrieval (ChromaDB Dense + BM25 Sparse fused via RRF k=60)
   3. Cross-Encoder Deep Re-ranking (ms-marco-MiniLM-L-6-v2)
-  4. Section Prior Boost (Recommendation=1.15, General=1.10, etc.)
-  5. Greedy Top-3 Diversity Rule (max 1 per doc+section; fallback if slot 3 < 0.5)
-  6. Comprehensive audit logging to ``logs/retrieval.log`` (raw + boosted scores)
+  4. Perinatal Boost (1.25x for EPDS/Edinburgh chunks when query is perinatal)
+  5. Section Prior Boost (Recommendation=1.30, General=1.10, References=0.50)
+  6. Greedy Top-3 Diversity Rule (max 1 per DOCUMENT; fallback if <3 unique docs)
+  7. Comprehensive audit logging to ``logs/retrieval.log`` (raw + boosted scores)
 
 Usage:
     from src.retrieval.retrieval_manager import RetrievalManager
@@ -35,11 +36,26 @@ from configs.settings import (
     EMBEDDING_MODEL,
     SECTION_PRIORS,
     CONFIDENCE_THRESHOLD,
+    PERINATAL_QUERY_KEYWORDS,
+    PERINATAL_CHUNK_KEYWORDS,
+    PERINATAL_BOOST,
 )
 from src.retrieval.hybrid_search import HybridSearcher
 from src.retrieval.reranker import Reranker
 
 logger = logging.getLogger(__name__)
+
+
+def _is_perinatal_query(query: str) -> bool:
+    """Check if the query relates to perinatal/postpartum screening."""
+    q_lower = query.lower()
+    return any(kw.lower() in q_lower for kw in PERINATAL_QUERY_KEYWORDS)
+
+
+def _chunk_matches_perinatal(chunk: dict[str, Any]) -> bool:
+    """Check if a chunk contains perinatal-relevant content."""
+    text = chunk.get("text", "")
+    return any(kw in text for kw in PERINATAL_CHUNK_KEYWORDS)
 
 
 class RetrievalManager:
@@ -107,7 +123,24 @@ class RetrievalManager:
             top_k=top_k_retrieval,
         )
 
-        # Step 3: Apply Section Prior Boost
+        # Step 3: Apply Perinatal Boost (before section priors)
+        is_perinatal = _is_perinatal_query(query)
+        perinatal_boosted_ids: list[str] = []
+
+        if is_perinatal:
+            for cand in reranked_candidates:
+                if _chunk_matches_perinatal(cand):
+                    raw_conf = cand.get("confidence", 0.0)
+                    cand["confidence"] = min(raw_conf * PERINATAL_BOOST, 1.0)
+                    cand["perinatal_boosted"] = True
+                    perinatal_boosted_ids.append(cand.get("chunk_id", ""))
+                else:
+                    cand["perinatal_boosted"] = False
+        else:
+            for cand in reranked_candidates:
+                cand["perinatal_boosted"] = False
+
+        # Step 4: Apply Section Prior Boost
         boosted_candidates: list[dict[str, Any]] = []
         for cand in reranked_candidates:
             c = dict(cand)
@@ -122,23 +155,23 @@ class RetrievalManager:
         # Sort candidates descending by boosted_score
         boosted_candidates.sort(key=lambda x: x["boosted_score"], reverse=True)
 
-        # Step 4: Greedy Diversity Selection (Max 1 per doc+section in top-3)
+        # Step 5: Greedy Diversity Selection — Max 1 per DOCUMENT in top-3
         final_chunks: list[dict[str, Any]] = []
         dropped_duplicates: list[dict[str, Any]] = []
-        seen_pairs: set[tuple[str, str]] = set()
+        seen_docs: set[str] = set()
 
         for cand in boosted_candidates:
-            pair = (cand.get("document_name", ""), cand.get("section_name", ""))
-            if pair not in seen_pairs:
-                seen_pairs.add(pair)
+            doc_name = cand.get("document_name", "")
+            if doc_name not in seen_docs:
+                seen_docs.add(doc_name)
                 final_chunks.append(cand)
                 if len(final_chunks) == top_k_final:
                     break
             else:
                 dropped_duplicates.append(cand)
 
-        # Fallback: If 3rd slot could not be filled by a unique (doc, section) pair,
-        # fill from dropped duplicates if candidate has confidence >= 0.5
+        # Fallback: If fewer than 3 unique documents have candidates,
+        # fill remaining slots from dropped duplicates (best boosted score first)
         if len(final_chunks) < top_k_final and dropped_duplicates:
             for cand in dropped_duplicates:
                 if cand.get("confidence", 0.0) >= 0.5 or not final_chunks:
@@ -161,12 +194,12 @@ class RetrievalManager:
         rerank_time_ms = round((time.perf_counter() - t_rerank_start) * 1000, 2)
         total_time_ms = round((time.perf_counter() - t0) * 1000, 2)
 
-        # Step 5: Compute Confidence Summary
+        # Step 6: Compute Confidence Summary
         confidences = [c.get("confidence", 0.0) for c in final_chunks]
         avg_confidence = round(sum(confidences) / len(confidences), 4) if confidences else 0.0
         top1_confidence = final_chunks[0].get("confidence", 0.0) if final_chunks else 0.0
 
-        # Step 6: Write Audit Log Entry
+        # Step 7: Write Audit Log Entry
         self._write_retrieval_log(
             query=query,
             hybrid_candidates=hybrid_candidates,
@@ -178,6 +211,8 @@ class RetrievalManager:
             total_time_ms=total_time_ms,
             hybrid_time_ms=hybrid_time_ms,
             rerank_time_ms=rerank_time_ms,
+            is_perinatal=is_perinatal,
+            perinatal_boosted_ids=perinatal_boosted_ids,
         )
 
         return {
@@ -187,6 +222,7 @@ class RetrievalManager:
             "top1_confidence": top1_confidence,
             "is_in_scope": top1_confidence >= CONFIDENCE_THRESHOLD,
             "confidence_threshold": CONFIDENCE_THRESHOLD,
+            "is_perinatal_query": is_perinatal,
             "hybrid_candidates_count": len(hybrid_candidates),
             "hybrid_candidates": hybrid_candidates,
             "retrieval_time_ms": total_time_ms,
@@ -213,12 +249,16 @@ class RetrievalManager:
         total_time_ms: float,
         hybrid_time_ms: float,
         rerank_time_ms: float,
+        is_perinatal: bool = False,
+        perinatal_boosted_ids: list[str] | None = None,
     ) -> None:
         """Append a structured JSON line entry to logs/retrieval.log."""
         try:
             log_entry = {
                 "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "query": query,
+                "is_perinatal_query": is_perinatal,
+                "perinatal_boosted_chunk_ids": perinatal_boosted_ids or [],
                 "metrics": {
                     "total_time_ms": total_time_ms,
                     "hybrid_time_ms": hybrid_time_ms,
@@ -255,6 +295,7 @@ class RetrievalManager:
                         "raw_confidence": c.get("confidence"),
                         "section_prior": c.get("section_prior"),
                         "boosted_score": c.get("boosted_score"),
+                        "perinatal_boosted": c.get("perinatal_boosted", False),
                         "has_screening_tools": c.get("has_screening_tools"),
                         "screening_tools": c.get("screening_tools"),
                     }
