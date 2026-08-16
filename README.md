@@ -2,7 +2,7 @@
 
 **Clinical Domain:** USPSTF Depression and Suicide Risk in Adults (Grade B, June 2023 Guidelines)  
 **System Architecture:** Multi-Stage Transparent Clinical Retrieval & Decision Support Engine  
-**Chunk Count:** 1,807 chunks | **Embedding:** `paraphrase-MiniLM-L6-v2` (384-dim) | **Reranker:** `ms-marco-MiniLM-L-6-v2`
+**Chunk Count:** 1,824 chunks | **Embedding:** `paraphrase-MiniLM-L6-v2` (384-dim) | **Reranker:** `ms-marco-MiniLM-L-6-v2`
 
 ---
 
@@ -23,28 +23,22 @@ flowchart TD
         Query --> Sparse["BM25 Sparse Search\n(rank_bm25)"]
         Dense & Sparse --> RRF["Reciprocal Rank Fusion\n(RRF_K=60)"]
         RRF --> Pool["Top-15 Candidate Pool"]
-        Pool --> Perinatal{"Perinatal Query?\n(pregnant/postpartum/EPDS)"}
-        Perinatal -- "YES" --> PBoost["Perinatal Boost 1.25x\n(EPDS/Edinburgh chunks)"]
-        Perinatal -- "NO" --> CrossEnc
-        PBoost --> CrossEnc["Cross-Encoder Reranker\n(ms-marco-MiniLM-L-6-v2)"]
+        Pool --> PopBoost{"Population Query?\n(Perinatal or Older Adults)"}
+        PopBoost -- "Perinatal" --> PBoost["Perinatal Boost 1.25x\n(EPDS/Edinburgh chunks)"]
+        PopBoost -- "Older Adults" --> OABoost["Older Adults Boost 1.20x\n(GDS/Geriatric/65+ chunks)"]
+        PopBoost -- "General" --> CrossEnc
+        PBoost & OABoost --> CrossEnc["Cross-Encoder Reranker\n(ms-marco-MiniLM-L-6-v2)"]
         CrossEnc --> SectionBoost["Section Prior Boost\n(Rec: 1.30x → Ref: 0.50x)"]
         SectionBoost --> Diversity["Greedy Top-3 Diversity\n(Max 1 per DOCUMENT)"]
-        Diversity --> Threshold{"Confidence ≥ 0.81?"}
-        Threshold -- "YES" --> InScope["IN-SCOPE → LLM Generator"]
+        Diversity --> Threshold{"Confidence ≥ 0.76?"}
+        Threshold -- "YES" --> InScope["IN-SCOPE → Generator"]
         Threshold -- "NO" --> OOS["OUT-OF-SCOPE Flag"]
-    end
-
-    subgraph Generation["Generation & Output"]
-        InScope --> Prompt["Prompt Builder\n(Source Attribution Rules)"]
-        Prompt --> LLM["LLM Generation\n(Verbatim Quote Citations)"]
-        LLM --> Disclaimer["Always-On Disclaimer\n(USPSTF June 2023)"]
-        Disclaimer --> Output["Clinical Response"]
     end
 ```
 
 ---
 
-## 📊 Retrieval Benchmark Scorecard
+## 📊 Day 2 Retrieval Benchmark Scorecard
 
 Evaluated over the **Expanded 16-Query Ground-Truth Benchmark Suite** (10 In-Scope, 3 Ambiguous, 3 Out-Of-Scope):
 
@@ -54,45 +48,58 @@ Evaluated over the **Expanded 16-Query Ground-Truth Benchmark Suite** (10 In-Sco
 | **Mean Reciprocal Rank (MRR)** | ≥ 0.7000 | **1.0000** | ✅ PASS |
 | **Citation Existence Accuracy** | 100.0% | **100.0%** | ✅ PASS |
 | **Page Precision (Span ≤ 10p)** | ≥ 90.0% | **100.0%** (exact page boundaries) | ✅ PASS |
-| **Mean Top-3 Confidence** | ≥ 70.0% | **88.9%** | ✅ PASS |
-| **OOS Confidence Separation** | > 0% margin | **+23.3%** (In: 92.6% vs OOS: 69.3%) | ✅ PASS |
-| **Calibrated Confidence Threshold** | [0.50, 0.90] | **0.81** | ✅ CALIBRATED |
+| **Mean Top-3 Confidence** | ≥ 70.0% | **90.1%** | ✅ PASS |
+| **OOS Confidence Separation** | > 0% margin | **+12.7%** (In: 82.1% vs OOS: 69.3%) | ✅ PASS |
+| **Calibrated Confidence Threshold** | [0.50, 0.90] | **0.76** | ✅ CALIBRATED |
 
-## 🛡️ End-to-End Safety & Quality Scorecard
+## 🛡️ Day 1 Ingestion Audit Scorecard
 
-| Metric | Score | Status |
+| Audit Dimension | Result | Key Findings |
 |---|---|---|
-| **Safety Gate Accuracy** | 4/4 (100%) | ✅ PASS |
-| **Crisis 988 Referral** | Active | ✅ PASS |
-| **Dosing Refusal** | Active | ✅ PASS |
-| **Disclaimer Always Appended** | YES | ✅ PASS |
-| **OOS Confidence Separation (E2E)** | +30.8% | ✅ PASS |
+| **Pillar 1: Data Coverage & Quality** | ✅ PASS | **1,824 chunks** (1,386 text + 438 tables), 0 duplicates, 0 short chunks |
+| **Pillar 2: Metadata Completeness** | ✅ PASS | 100% required fields, 429 screening tool chunks, Grade B tagged |
+| **Pillar 3: Scope Adequacy** | ✅ PASS | Perinatal, Older Adults, Screening Tools, and Grade B confirmed present |
+| **Pillar 4: Baseline Retrieval** | ✅ PASS | All clinical test queries returned relevant guideline passages |
+| **Pillar 5: Document Breakdown** | ✅ PASS | `Bookshelf_NBK592805`: 1,724 \| `evidence-summary`: 80 \| `clinician-summ`: **20 chunks** |
 
 ---
 
-## 🚀 CLI Tools & Usage
+## 🚀 Canonical Entry Points & CLI Tools
 
+The medAI system provides two primary canonical entry points:
+
+### 1. Ingestion Pipeline (`ingest.py`)
+Parses all USPSTF guideline PDFs (using dual-backend pdfplumber + PyMuPDF fallback), generates dense embeddings, and populates ChromaDB + `data/chunks.json`.
 ```bash
-# Interactive retrieval CLI with safety gates
+python ingest.py
+```
+
+### 2. Clinical Search & Retrieval Transparency Console (`search_cli.py`)
+Interactive CLI and query executor with safety gates, multi-stage hybrid retrieval, population boosts, and transparent candidate ranking before LLM generation.
+```bash
+# Interactive query console
+python search_cli.py
+
+# Direct query execution
 python search_cli.py "Should pregnant women be screened for depression?"
 
 # Run automated test suite (in-scope + crisis + dosing tests)
 python search_cli.py /test
+```
 
-# 16-query retrieval benchmark
+### Additional Evaluation & Diagnostic Commands
+```bash
+# Day 2 retrieval benchmark suite (16 queries)
 python evaluate_retrieval.py
 
-# End-to-end pipeline evaluation (safety + retrieval + citations)
-python src/evaluation/end_to_end_evaluator.py
+# Day 1 ingestion audit report generator
+python audit_day1.py
 
-# Re-ingest PDFs (rebuilds chunks.json + ChromaDB)
-python ingest.py
-
-# Ingestion unit tests
+# Ingestion validation unit tests
 python test_ingestion.py
 
-# Hyperparameter tuning & model A/B tests
-python src/evaluation/tuning_experiment.py
+# End-to-end evaluation runner
+python src/evaluation/end_to_end_evaluator.py
 ```
 
 ---
@@ -112,18 +119,17 @@ python src/evaluation/tuning_experiment.py
 
 ```
 medAI/
-├── configs/settings.py          # Central configuration (priors, thresholds, models)
+├── configs/settings.py          # Central configuration (priors, thresholds, models, boosts)
 ├── src/
 │   ├── safety/guardrails.py     # CRISIS + DOSING + injection gates
-│   ├── ingestion/               # PDF parsing, cleaning, chunking, embedding
+│   ├── ingestion/               # Dual-backend PDF parsing, cleaning, chunking, embedder
 │   ├── retrieval/               # Vector store, BM25, hybrid search, reranker, manager
 │   ├── generation/              # Prompt builder (source attribution), LLM client
-│   ├── evaluation/              # Retrieval evaluator, tuning experiments, E2E evaluator
-│   └── pipeline.py              # End-to-end RAG orchestrator with always-on disclaimer
-├── search_cli.py                # Transparent retrieval CLI
-├── evaluate_retrieval.py        # 16-query benchmark runner
-├── ingest.py                    # Document ingestion pipeline
-└── data/                        # chunks.json, evaluation reports, tuning reports
+│   └── evaluation/              # Retrieval evaluator, tuning experiments, E2E evaluator
+├── search_cli.py                # Canonical Clinical Search & Transparency CLI
+├── ingest.py                    # Canonical Document Ingestion Pipeline
+├── audit_day1.py                # Day 1 QA & Audit Script
+├── test_ingestion.py            # Ingestion Validation Tests
+├── evaluate_retrieval.py        # 16-Query Ground-Truth Benchmark
+└── data/                        # chunks.json, vector_db, audit reports, evaluation metrics
 ```
-
-All core modules verified present and functional via automated import check.

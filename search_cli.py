@@ -94,16 +94,21 @@ def display_retrieval_bundle(result: dict[str, Any], query_idx: int | None = Non
     top1_conf = result.get("top1_confidence", 0.0)
     in_scope = result.get("is_in_scope", True)
     is_perinatal = result.get("is_perinatal_query", False)
+    is_older_adults = result.get("is_older_adults_query", False)
+    diversity_warning = result.get("diversity_warning", False)
+    unique_docs = result.get("unique_documents_count", 1)
     latency = result["retrieval_time_ms"]
     breakdown = result.get("latency_breakdown_ms", {})
 
     status_tag = "[bold green]IN-SCOPE[/bold green]" if in_scope else "[bold red]OUT-OF-SCOPE[/bold red]"
     perinatal_tag = " [bold magenta]🤰 PERINATAL BOOST ACTIVE[/bold magenta]" if is_perinatal else ""
+    older_tag = " [bold blue]👴 OLDER ADULTS BOOST ACTIVE[/bold blue]" if is_older_adults else ""
+    diversity_tag = f" | [dim]Docs: {unique_docs}[/dim]" if not diversity_warning else " | [bold yellow]⚠️ Low Doc Diversity[/bold yellow]"
     header_title = f"Query: \"{query}\"" if query_idx is None else f"Query #{query_idx}: \"{query}\""
 
     console.print(
         Panel(
-            f"[bold cyan]{header_title}[/bold cyan]  |  Status: {status_tag}{perinatal_tag}\n"
+            f"[bold cyan]{header_title}[/bold cyan]  |  Status: {status_tag}{perinatal_tag}{older_tag}{diversity_tag}\n"
             f"[dim]Total Latency: {latency:.1f}ms (Hybrid: {breakdown.get('hybrid', 0):.1f}ms | "
             f"Rerank: {breakdown.get('rerank', 0):.1f}ms) | Top-1 Conf: {top1_conf:.1%} | Avg Top-3: {avg_conf:.1%} (Threshold: {CONFIDENCE_THRESHOLD:.2f})[/dim]",
             box=box.ROUNDED,

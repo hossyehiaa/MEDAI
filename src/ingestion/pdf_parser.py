@@ -1,8 +1,11 @@
 """
 PDF Parser — Extracts structured, section-aware text from USPSTF PDF documents.
 
-Uses PyMuPDF (fitz) to parse pages, detect known USPSTF section headers,
-extract USPSTF recommendation grades, and return structured records.
+Implements dual-backend extraction:
+1. Primary extractor using pdfplumber for standard multi-page documents.
+2. PyMuPDF (fitz) fallback extractor when a PDF yields fewer than 15 sections OR fewer than 2,000 characters
+   (targeting formatted multi-column summaries such as the 2-page clinician summary).
+3. Explicit logging of which backend (pdfplumber vs PyMuPDF) was selected per document.
 
 Usage:
     from src.ingestion.pdf_parser import parse_pdf, parse_all_pdfs
@@ -20,6 +23,7 @@ from pathlib import Path
 from typing import Any
 
 import fitz  # PyMuPDF
+import pdfplumber
 
 logger = logging.getLogger(__name__)
 
@@ -27,10 +31,24 @@ logger = logging.getLogger(__name__)
 # Known USPSTF section headers (order matters — matched top-down)
 # ──────────────────────────────────────────────────────────────────────
 KNOWN_SECTIONS: list[str] = [
+    # Clinician summary subheadings & questions
     "What does the USPSTF recommend",
+    "To whom does this recommendation apply",
+    "What's new",
+    "What’s new",
+    "How to implement this recommendation",
+    "What additional information should clinicians know about this recommendation",
+    "What additional information should clinicians know",
+    "Why is this recommendation and topic important",
+    "What are other relevant USPSTF recommendations",
+    "What are additional tools and resources",
+    "Where to read the full recommendation statement",
+    "Where to get more information",
+    # Standard USPSTF Evidence Report / Recommendation Sections
     "Patient Population Under Consideration",
     "Update of Previous Recommendations",
     "Treatment/Interventions",
+    "Treatment and Interventions",
     "Research Needs and Gaps",
     "Recommendations of Others",
     "Practice Considerations",
@@ -44,14 +62,11 @@ KNOWN_SECTIONS: list[str] = [
     "References",
 ]
 
-# Pre-compile a single regex that matches any known header.
-# Each header is escaped and made case-insensitive.  We look for headers
-# that start at the beginning of a line (after optional whitespace) and
-# are optionally followed by a colon, period, or newline.
+# Pre-compile header pattern supporting punctuation and question marks
 _HEADER_PATTERN: re.Pattern[str] = re.compile(
     r"^[ \t]*("
     + "|".join(re.escape(h) for h in KNOWN_SECTIONS)
-    + r")[ \t]*[:\.\-]?[ \t]*$",
+    + r")[ \t]*[\?\:\.\-]?[ \t]*$",
     re.IGNORECASE | re.MULTILINE,
 )
 
@@ -77,6 +92,11 @@ _TOC_LINE_PATTERN: re.Pattern[str] = re.compile(
 
 # Minimum text length to consider a page non-empty
 _MIN_PAGE_TEXT_LENGTH = 20
+
+# Thresholds for fallback triggering
+_MIN_SECTIONS_THRESHOLD = 15
+_MIN_CHARS_THRESHOLD = 2000
+
 
 # ──────────────────────────────────────────────────────────────────────
 # Data model
@@ -104,14 +124,12 @@ class ParsedSection:
 def _is_toc_page(text: str) -> bool:
     """Return *True* if the page looks like a Table of Contents."""
     toc_hits = _TOC_LINE_PATTERN.findall(text)
-    # If ≥3 TOC-like lines, treat the whole page as TOC
     return len(toc_hits) >= 3
 
 
 def _detect_grades(text: str) -> list[str]:
     """Extract unique USPSTF letter grades from *text*."""
     matches = _GRADE_PATTERN.findall(text)
-    # Normalise to uppercase, deduplicate, preserve discovery order
     seen: set[str] = set()
     grades: list[str] = []
     for m in matches:
@@ -122,41 +140,28 @@ def _detect_grades(text: str) -> list[str]:
     return grades
 
 
+def _normalise_header(header: str) -> str:
+    """Map a matched header back to its canonical form in KNOWN_SECTIONS."""
+    header_lower = header.lower().strip().rstrip("?:.- ")
+    for canonical in KNOWN_SECTIONS:
+        if canonical.lower() == header_lower:
+            return canonical
+    return header.strip().title()
+
+
 def _split_into_sections(
     page_text: str,
     document_name: str,
     page_number: int,
     carry_section: str,
 ) -> tuple[list[ParsedSection], str]:
-    """
-    Split a single page's text into sections based on known headers.
-
-    Parameters
-    ----------
-    page_text : str
-        Raw text of the page.
-    document_name : str
-        Stem of the source PDF filename.
-    page_number : int
-        1-indexed page number.
-    carry_section : str
-        The section name carried forward from the previous page
-        (handles headers that span page boundaries).
-
-    Returns
-    -------
-    tuple[list[ParsedSection], str]
-        A list of parsed sections for this page, and the name of the
-        last active section (to carry into the next page).
-    """
+    """Split a single page's text into sections based on known headers."""
     sections: list[ParsedSection] = []
     current_section = carry_section
 
-    # Find all header matches with their positions
     matches = list(_HEADER_PATTERN.finditer(page_text))
 
     if not matches:
-        # Entire page belongs to the carried-forward section
         content = page_text.strip()
         if content:
             sections.append(
@@ -170,7 +175,6 @@ def _split_into_sections(
             )
         return sections, current_section
 
-    # Text before the first header belongs to the carry section
     pre_header_text = page_text[: matches[0].start()].strip()
     if pre_header_text:
         sections.append(
@@ -183,14 +187,11 @@ def _split_into_sections(
             )
         )
 
-    # Process each header and the text that follows it
     for i, match in enumerate(matches):
         header_name = match.group(1).strip()
-        # Normalise header to title case for consistency
         header_name = _normalise_header(header_name)
         current_section = header_name
 
-        # Text runs from end of this header to start of next (or end of page)
         text_start = match.end()
         text_end = matches[i + 1].start() if i + 1 < len(matches) else len(page_text)
         content = page_text[text_start:text_end].strip()
@@ -209,14 +210,132 @@ def _split_into_sections(
     return sections, current_section
 
 
-def _normalise_header(header: str) -> str:
-    """Map a matched header back to its canonical form in KNOWN_SECTIONS."""
-    header_lower = header.lower().strip()
-    for canonical in KNOWN_SECTIONS:
-        if canonical.lower() == header_lower:
-            return canonical
-    # Fallback: title-case the raw match
-    return header.strip().title()
+# ──────────────────────────────────────────────────────────────────────
+# Backend Extractors
+# ──────────────────────────────────────────────────────────────────────
+
+def _parse_with_pdfplumber(pdf_path: Path) -> list[ParsedSection]:
+    """Extract sections using pdfplumber."""
+    document_name = pdf_path.stem
+    sections: list[ParsedSection] = []
+    carry_section = "General"
+
+    with pdfplumber.open(pdf_path) as pdf:
+        for page_idx, page in enumerate(pdf.pages):
+            page_number = page_idx + 1
+            text = page.extract_text() or ""
+
+            if len(text.strip()) < _MIN_PAGE_TEXT_LENGTH or _is_toc_page(text):
+                continue
+
+            page_sections, carry_section = _split_into_sections(
+                page_text=text,
+                document_name=document_name,
+                page_number=page_number,
+                carry_section=carry_section,
+            )
+            sections.extend(page_sections)
+
+    return sections
+
+
+def _parse_with_pymupdf(pdf_path: Path) -> list[ParsedSection]:
+    """Extract sections using PyMuPDF (fitz) with fine-grained block parsing."""
+    document_name = pdf_path.stem
+    sections: list[ParsedSection] = []
+    carry_section = "General"
+
+    doc = fitz.open(str(pdf_path))
+    for page_idx in range(len(doc)):
+        page = doc[page_idx]
+        page_number = page_idx + 1
+        text = page.get_text("text")
+
+        if not text or len(text.strip()) < _MIN_PAGE_TEXT_LENGTH or _is_toc_page(text):
+            continue
+
+        # Normalize multiline wrapped question headers
+        text = re.sub(
+            r"What additional information should clinicians know about\s*\n\s*this recommendation\??",
+            "What additional information should clinicians know about this recommendation?",
+            text,
+            flags=re.IGNORECASE,
+        )
+
+        lines = text.split("\n")
+        current_sec = carry_section
+        current_content: list[str] = []
+        block_idx = 1
+
+        for line in lines:
+            l_str = line.strip()
+            if not l_str:
+                continue
+
+            # Detect question / main header
+            is_hdr = False
+            for h in KNOWN_SECTIONS:
+                if l_str.lower().startswith(h.lower()) or l_str.lower() == h.lower():
+                    is_hdr = True
+                    if current_content:
+                        txt = "\n".join(current_content).strip()
+                        if len(txt) >= 35:
+                            sec_title = f"{current_sec} (Part {block_idx})" if block_idx > 1 else current_sec
+                            sections.append(
+                                ParsedSection(
+                                    document_name=document_name,
+                                    page_number=page_number,
+                                    section_name=sec_title,
+                                    text_content=txt,
+                                    detected_grades=_detect_grades(txt),
+                                )
+                            )
+                        current_content = []
+                    current_sec = _normalise_header(l_str)
+                    block_idx = 1
+                    current_content.append(l_str)
+                    break
+
+            if is_hdr:
+                continue
+
+            # Detect discrete bullet points for granular clinician summary coverage
+            if (l_str.startswith("•") or l_str.startswith("-") or l_str.startswith("*")) and current_content:
+                txt = "\n".join(current_content).strip()
+                if len(txt) >= 50:
+                    sec_title = f"{current_sec} (Part {block_idx})" if block_idx > 1 else current_sec
+                    sections.append(
+                        ParsedSection(
+                            document_name=document_name,
+                            page_number=page_number,
+                            section_name=sec_title,
+                            text_content=txt,
+                            detected_grades=_detect_grades(txt),
+                        )
+                    )
+                    block_idx += 1
+                    current_content = []
+
+            current_content.append(l_str)
+
+        if current_content:
+            txt = "\n".join(current_content).strip()
+            if len(txt) >= 35:
+                sec_title = f"{current_sec} (Part {block_idx})" if block_idx > 1 else current_sec
+                sections.append(
+                    ParsedSection(
+                        document_name=document_name,
+                        page_number=page_number,
+                        section_name=sec_title,
+                        text_content=txt,
+                        detected_grades=_detect_grades(txt),
+                    )
+                )
+
+        carry_section = current_sec
+
+    doc.close()
+    return sections
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -227,90 +346,41 @@ def parse_pdf(pdf_path: str | Path) -> list[ParsedSection]:
     """
     Parse a single USPSTF PDF and return structured section records.
 
-    Parameters
-    ----------
-    pdf_path : str | Path
-        Path to the PDF file.
-
-    Returns
-    -------
-    list[ParsedSection]
-        One record per detected section (or per page if no headers found).
-
-    Raises
-    ------
-    FileNotFoundError
-        If *pdf_path* does not exist.
+    Tries pdfplumber first; if fewer than 15 sections OR fewer than 2000 chars
+    are extracted, automatically falls back to PyMuPDF with block parsing.
     """
     pdf_path = Path(pdf_path)
     if not pdf_path.exists():
         raise FileNotFoundError(f"PDF not found: {pdf_path}")
 
-    document_name = pdf_path.stem
-    logger.info("Parsing '%s' …", pdf_path.name)
+    # Primary attempt: pdfplumber
+    sections = _parse_with_pdfplumber(pdf_path)
+    total_chars = sum(len(s.text_content) for s in sections)
 
-    doc = fitz.open(str(pdf_path))
-    total_pages = len(doc)
-    logger.info("  → %d page(s)", total_pages)
-
-    all_sections: list[ParsedSection] = []
-    carry_section = "General"
-    skipped_toc = 0
-    skipped_empty = 0
-
-    for page_idx in range(total_pages):
-        page = doc[page_idx]
-        page_number = page_idx + 1
-        text = page.get_text("text")
-
-        # ── Skip empty / image-only pages ─────────────────────────
-        if not text or len(text.strip()) < _MIN_PAGE_TEXT_LENGTH:
-            skipped_empty += 1
-            logger.debug("  Page %d: empty / image-only — skipped.", page_number)
-            continue
-
-        # ── Skip TOC pages ────────────────────────────────────────
-        if _is_toc_page(text):
-            skipped_toc += 1
-            logger.debug("  Page %d: detected as TOC — skipped.", page_number)
-            continue
-
-        # ── Extract sections ──────────────────────────────────────
-        page_sections, carry_section = _split_into_sections(
-            page_text=text,
-            document_name=document_name,
-            page_number=page_number,
-            carry_section=carry_section,
+    if len(sections) < _MIN_SECTIONS_THRESHOLD or total_chars < _MIN_CHARS_THRESHOLD:
+        logger.info(
+            "PDF '%s': pdfplumber yielded %d sections (%d chars) < threshold. Falling back to PyMuPDF.",
+            pdf_path.name,
+            len(sections),
+            total_chars,
         )
-        all_sections.extend(page_sections)
-
-    doc.close()
+        sections = _parse_with_pymupdf(pdf_path)
+        backend_used = "PyMuPDF"
+    else:
+        backend_used = "pdfplumber"
 
     logger.info(
-        "  → Done: %d section(s) extracted  |  %d TOC page(s) skipped  |  %d empty page(s) skipped",
-        len(all_sections),
-        skipped_toc,
-        skipped_empty,
+        "Parsed '%s' using backend [%s] → %d sections (%d total characters)",
+        pdf_path.name,
+        backend_used,
+        len(sections),
+        sum(len(s.text_content) for s in sections),
     )
-    return all_sections
+    return sections
 
 
 def parse_all_pdfs(directory: str | Path) -> list[ParsedSection]:
-    """
-    Parse every PDF in *directory* and return a combined list of sections.
-
-    PDFs that cannot be found or opened are skipped with a warning.
-
-    Parameters
-    ----------
-    directory : str | Path
-        Directory containing PDF files.
-
-    Returns
-    -------
-    list[ParsedSection]
-        Combined sections from all successfully parsed PDFs.
-    """
+    """Parse every PDF in *directory* and return a combined list of sections."""
     directory = Path(directory)
     if not directory.is_dir():
         logger.error("Directory not found: %s", directory)

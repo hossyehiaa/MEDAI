@@ -5,7 +5,9 @@ Workflow:
   1. Clinical Query Input
   2. Hybrid Retrieval (ChromaDB Dense + BM25 Sparse fused via RRF k=60)
   3. Cross-Encoder Deep Re-ranking (ms-marco-MiniLM-L-6-v2)
-  4. Perinatal Boost (1.25x for EPDS/Edinburgh chunks when query is perinatal)
+  4. Population Boosts:
+     - Perinatal Boost (1.25x for EPDS/Edinburgh/postpartum chunks on perinatal queries)
+     - Older Adults Boost (1.20x for GDS/Geriatric/65+ chunks on older adults queries)
   5. Section Prior Boost (Recommendation=1.30, General=1.10, References=0.50)
   6. Greedy Top-3 Diversity Rule (max 1 per DOCUMENT; fallback if <3 unique docs)
   7. Comprehensive audit logging to ``logs/retrieval.log`` (raw + boosted scores)
@@ -39,6 +41,9 @@ from configs.settings import (
     PERINATAL_QUERY_KEYWORDS,
     PERINATAL_CHUNK_KEYWORDS,
     PERINATAL_BOOST,
+    OLDER_ADULTS_QUERY_KEYWORDS,
+    OLDER_ADULTS_CHUNK_KEYWORDS,
+    OLDER_ADULTS_BOOST,
 )
 from src.retrieval.hybrid_search import HybridSearcher
 from src.retrieval.reranker import Reranker
@@ -55,11 +60,23 @@ def _is_perinatal_query(query: str) -> bool:
 def _chunk_matches_perinatal(chunk: dict[str, Any]) -> bool:
     """Check if a chunk contains perinatal-relevant content."""
     text = chunk.get("text", "")
-    return any(kw in text for kw in PERINATAL_CHUNK_KEYWORDS)
+    return any(kw.lower() in text.lower() for kw in PERINATAL_CHUNK_KEYWORDS)
+
+
+def _is_older_adults_query(query: str) -> bool:
+    """Check if the query relates to older adults/geriatric depression screening."""
+    q_lower = query.lower()
+    return any(kw.lower() in q_lower for kw in OLDER_ADULTS_QUERY_KEYWORDS)
+
+
+def _chunk_matches_older_adults(chunk: dict[str, Any]) -> bool:
+    """Check if a chunk contains older-adults-relevant content."""
+    text = chunk.get("text", "")
+    return any(kw.lower() in text.lower() for kw in OLDER_ADULTS_CHUNK_KEYWORDS)
 
 
 class RetrievalManager:
-    """End-to-end clinical retrieval orchestrator with section boosting and diversity rules."""
+    """End-to-end clinical retrieval orchestrator with population boosting, section priors, and diversity rules."""
 
     def __init__(
         self,
@@ -123,22 +140,29 @@ class RetrievalManager:
             top_k=top_k_retrieval,
         )
 
-        # Step 3: Apply Perinatal Boost (before section priors)
+        # Step 3: Apply Population-Specific Boosts (Perinatal & Older Adults)
         is_perinatal = _is_perinatal_query(query)
+        is_older_adults = _is_older_adults_query(query)
         perinatal_boosted_ids: list[str] = []
+        older_adults_boosted_ids: list[str] = []
 
-        if is_perinatal:
-            for cand in reranked_candidates:
-                if _chunk_matches_perinatal(cand):
-                    raw_conf = cand.get("confidence", 0.0)
-                    cand["confidence"] = min(raw_conf * PERINATAL_BOOST, 1.0)
-                    cand["perinatal_boosted"] = True
-                    perinatal_boosted_ids.append(cand.get("chunk_id", ""))
-                else:
-                    cand["perinatal_boosted"] = False
-        else:
-            for cand in reranked_candidates:
-                cand["perinatal_boosted"] = False
+        for cand in reranked_candidates:
+            cand["perinatal_boosted"] = False
+            cand["older_adults_boosted"] = False
+            raw_conf = cand.get("confidence", 0.0)
+
+            # Perinatal boost
+            if is_perinatal and _chunk_matches_perinatal(cand):
+                cand["confidence"] = min(raw_conf * PERINATAL_BOOST, 1.0)
+                cand["perinatal_boosted"] = True
+                perinatal_boosted_ids.append(cand.get("chunk_id", ""))
+
+            # Older Adults boost
+            if is_older_adults and _chunk_matches_older_adults(cand):
+                current_conf = cand.get("confidence", raw_conf)
+                cand["confidence"] = min(current_conf * OLDER_ADULTS_BOOST, 1.0)
+                cand["older_adults_boosted"] = True
+                older_adults_boosted_ids.append(cand.get("chunk_id", ""))
 
         # Step 4: Apply Section Prior Boost
         boosted_candidates: list[dict[str, Any]] = []
@@ -146,8 +170,8 @@ class RetrievalManager:
             c = dict(cand)
             section = c.get("section_name", "")
             prior = SECTION_PRIORS.get(section, 1.0)
-            raw_conf = c.get("confidence", 0.0)
-            boosted_score = raw_conf * prior
+            conf = c.get("confidence", 0.0)
+            boosted_score = conf * prior
             c["section_prior"] = round(prior, 4)
             c["boosted_score"] = round(boosted_score, 4)
             boosted_candidates.append(c)
@@ -194,10 +218,12 @@ class RetrievalManager:
         rerank_time_ms = round((time.perf_counter() - t_rerank_start) * 1000, 2)
         total_time_ms = round((time.perf_counter() - t0) * 1000, 2)
 
-        # Step 6: Compute Confidence Summary
+        # Step 6: Compute Confidence Summary & Diversity Checks
         confidences = [c.get("confidence", 0.0) for c in final_chunks]
         avg_confidence = round(sum(confidences) / len(confidences), 4) if confidences else 0.0
         top1_confidence = final_chunks[0].get("confidence", 0.0) if final_chunks else 0.0
+        unique_docs_count = len(set(c.get("document_name", "") for c in final_chunks))
+        has_diversity_warning = unique_docs_count < min(2, len(final_chunks))
 
         # Step 7: Write Audit Log Entry
         self._write_retrieval_log(
@@ -213,6 +239,8 @@ class RetrievalManager:
             rerank_time_ms=rerank_time_ms,
             is_perinatal=is_perinatal,
             perinatal_boosted_ids=perinatal_boosted_ids,
+            is_older_adults=is_older_adults,
+            older_adults_boosted_ids=older_adults_boosted_ids,
         )
 
         return {
@@ -223,6 +251,9 @@ class RetrievalManager:
             "is_in_scope": top1_confidence >= CONFIDENCE_THRESHOLD,
             "confidence_threshold": CONFIDENCE_THRESHOLD,
             "is_perinatal_query": is_perinatal,
+            "is_older_adults_query": is_older_adults,
+            "unique_documents_count": unique_docs_count,
+            "diversity_warning": has_diversity_warning,
             "hybrid_candidates_count": len(hybrid_candidates),
             "hybrid_candidates": hybrid_candidates,
             "retrieval_time_ms": total_time_ms,
@@ -251,6 +282,8 @@ class RetrievalManager:
         rerank_time_ms: float,
         is_perinatal: bool = False,
         perinatal_boosted_ids: list[str] | None = None,
+        is_older_adults: bool = False,
+        older_adults_boosted_ids: list[str] | None = None,
     ) -> None:
         """Append a structured JSON line entry to logs/retrieval.log."""
         try:
@@ -259,6 +292,9 @@ class RetrievalManager:
                 "query": query,
                 "is_perinatal_query": is_perinatal,
                 "perinatal_boosted_chunk_ids": perinatal_boosted_ids or [],
+                "is_older_adults_query": is_older_adults,
+                "older_adults_boost_applied": bool(older_adults_boosted_ids),
+                "older_adults_boosted_chunk_ids": older_adults_boosted_ids or [],
                 "metrics": {
                     "total_time_ms": total_time_ms,
                     "hybrid_time_ms": hybrid_time_ms,
@@ -296,6 +332,7 @@ class RetrievalManager:
                         "section_prior": c.get("section_prior"),
                         "boosted_score": c.get("boosted_score"),
                         "perinatal_boosted": c.get("perinatal_boosted", False),
+                        "older_adults_boosted": c.get("older_adults_boosted", False),
                         "has_screening_tools": c.get("has_screening_tools"),
                         "screening_tools": c.get("screening_tools"),
                     }

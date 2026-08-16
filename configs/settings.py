@@ -78,6 +78,17 @@ PERINATAL_CHUNK_KEYWORDS: list[str] = [
 PERINATAL_BOOST: float = 1.25
 
 # ──────────────────────────────────────────────────────────────────────
+# Older Adults Query Boost
+# ──────────────────────────────────────────────────────────────────────
+OLDER_ADULTS_QUERY_KEYWORDS: list[str] = [
+    "over 65", "older adults", "geriatric", "elderly", "seniors", "gds",
+]
+OLDER_ADULTS_CHUNK_KEYWORDS: list[str] = [
+    "GDS", "Geriatric Depression Scale", "older adults", "65 years", "geriatric", "elderly",
+]
+OLDER_ADULTS_BOOST: float = 1.20
+
+# ──────────────────────────────────────────────────────────────────────
 # Screening‑tool keywords & patterns (for chunk tagging & scope checks)
 # ──────────────────────────────────────────────────────────────────────
 SCREENING_TOOL_KEYWORDS: list[str] = [
