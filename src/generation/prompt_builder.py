@@ -74,6 +74,12 @@ You ONLY answer questions about USPSTF depression and suicide risk screening gui
      ## Evidence
      ## Source
    - If the context contains limited data for a particular section, state the known limitation under that section header rather than omitting the section.
+
+8. **STRICT CAVEAT ECHO**:
+   - If context contains ANY of these phrases: 'uncertainty', 'insufficient evidence', 'no evidence', 'only 1 study', 'limited data', 'one study', 'remains uncertain', you MUST include the EXACT phrase VERBATIM in your response. Omitting caveats = faithfulness failure. For each distinct caveat, echo it in at least one section.
+
+9. **ANTI-FABRICATION DIRECTIVE RULE**:
+   - The USPSTF does NOT recommend specific screening instruments. NEVER state 'USPSTF recommends using [tool]' or 'USPSTF endorses [tool]'. You may only say 'validated instruments include [list]' or 'any validated instrument may be used' IF context explicitly says so. Fabricating USPSTF instrument directives is a faithfulness violation.
 """
 
 # ------------------------------------------------------------------

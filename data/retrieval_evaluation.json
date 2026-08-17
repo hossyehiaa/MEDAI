@@ -5,12 +5,12 @@
     "oos_queries_count": 3,
     "mean_precision_at_3": 1.0,
     "mrr": 1.0,
-    "mean_confidence": 0.8898,
+    "mean_confidence": 0.8924,
     "citation_existence_accuracy": 1.0,
     "page_precision": 1.0,
-    "min_in_scope_top1_confidence": 0.7609,
+    "min_in_scope_top1_confidence": 0.7741,
     "max_oos_top1_confidence": 0.6935,
-    "oos_separation": 0.0674,
+    "oos_separation": 0.0806,
     "calibrated_confidence_threshold": 0.73,
     "current_configured_threshold": 0.76,
     "targets": {
@@ -39,7 +39,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9939,
-      "retrieval_time_ms": 418.38,
+      "retrieval_time_ms": 452.75,
       "hits": [
         {
           "final_rank": 1,
@@ -119,7 +119,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 1.0,
-      "retrieval_time_ms": 211.64,
+      "retrieval_time_ms": 255.69,
       "hits": [
         {
           "final_rank": 1,
@@ -198,50 +198,12 @@
       "precision_at_3": 1.0,
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
-      "top1_confidence": 1.0,
-      "avg_confidence": 0.9963,
-      "retrieval_time_ms": 333.39,
+      "top1_confidence": 0.9929,
+      "avg_confidence": 0.9976,
+      "retrieval_time_ms": 266.34,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "69a5ddaabb2e5c9c",
-          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
-          "section_name": "General",
-          "pages": "p.13-13",
-          "page_span": 1,
-          "confidence": 1.0,
-          "section_prior": 1.1,
-          "boosted_score": 1.1,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "older adults",
-            "depression",
-            "screen"
-          ],
-          "text_snippet": "Third, there remains uncertainty about the benefits of depression screening in older adults, and studies are needed that report outcomes using instrum …"
-        },
-        {
-          "final_rank": 2,
-          "chunk_id": "ba2009c97d434fe8",
-          "document_name": "Bookshelf_NBK592805",
-          "section_name": "General",
-          "pages": "p.18-19",
-          "page_span": 2,
-          "confidence": 0.9959,
-          "section_prior": 1.1,
-          "boosted_score": 1.0955,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "65",
-            "depression",
-            "screen"
-          ],
-          "text_snippet": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data from a nat …"
-        },
-        {
-          "final_rank": 3,
           "chunk_id": "3f42b85480dcf0a6",
           "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
           "section_name": "What additional information should clinicians know about this recommendation (Part 2)",
@@ -257,6 +219,46 @@
             "screen"
           ],
           "text_snippet": "• The USPSTF recommends screening for depression in all adults regardless of risk factors. However, there are some factors that increase risk. These i …"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "0ebecc1311448cc3",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.34-35",
+          "page_span": 2,
+          "confidence": 1.0,
+          "section_prior": 0.7,
+          "boosted_score": 0.7,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "older adults",
+            "geriatric",
+            "gds",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "Effects in Older Adults  The trials among general adult populations included older adults but none of them reported subgroup effects by age. However,  …"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "69a5ddaabb2e5c9c",
+          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
+          "section_name": "General",
+          "pages": "p.13-13",
+          "page_span": 1,
+          "confidence": 1.0,
+          "section_prior": 0.5,
+          "boosted_score": 0.5,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "older adults",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "Third, there remains uncertainty about the benefits of depression screening in older adults, and studies are needed that report outcomes using instrum …"
         }
       ]
     },
@@ -278,8 +280,8 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 0.999,
-      "avg_confidence": 0.994,
-      "retrieval_time_ms": 377.15,
+      "avg_confidence": 0.9956,
+      "retrieval_time_ms": 347.32,
       "hits": [
         {
           "final_rank": 1,
@@ -304,24 +306,6 @@
         },
         {
           "final_rank": 2,
-          "chunk_id": "2f77b8b20c3d3507",
-          "document_name": "Bookshelf_NBK592805",
-          "section_name": "General",
-          "pages": "p.8-8",
-          "page_span": 1,
-          "confidence": 0.9936,
-          "section_prior": 1.1,
-          "boosted_score": 1.093,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "screening",
-            "tool"
-          ],
-          "text_snippet": "Tables Table 1. Percent of U.S. Adults With a Major Depressive Episode in the Past Year, 2019 Table 2. 12-Month Prevalence of DSM-IV/WMH-CIDI Disorder …"
-        },
-        {
-          "final_rank": 3,
           "chunk_id": "01de390a6d2c6dbb",
           "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
           "section_name": "General",
@@ -336,6 +320,27 @@
             "screening"
           ],
           "text_snippet": "USPSTF Clinician Summary of USPSTF Recommendation Screening for Depression and Suicide Risk in Adults June 2023 …"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "04e8fdcecad9628e",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.24-24",
+          "page_span": 1,
+          "confidence": 0.9982,
+          "section_prior": 0.7,
+          "boosted_score": 0.6987,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "phq",
+            "epds",
+            "screening",
+            "instrument",
+            "tool"
+          ],
+          "text_snippet": "For KQ 2 (test accuracy), we limited inclusion to only the most widely used or recommended screening tools for anxiety and depression but had no restr …"
         }
       ]
     },
@@ -355,8 +360,8 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 0.993,
-      "avg_confidence": 0.8904,
-      "retrieval_time_ms": 393.47,
+      "avg_confidence": 0.8872,
+      "retrieval_time_ms": 1708.71,
       "hits": [
         {
           "final_rank": 1,
@@ -378,22 +383,23 @@
         },
         {
           "final_rank": 2,
-          "chunk_id": "ba2009c97d434fe8",
+          "chunk_id": "d4b0ea040f91668a",
           "document_name": "Bookshelf_NBK592805",
           "section_name": "General",
-          "pages": "p.18-19",
-          "page_span": 2,
-          "confidence": 0.9905,
+          "pages": "p.11-11",
+          "page_span": 1,
+          "confidence": 0.9808,
           "section_prior": 1.1,
-          "boosted_score": 1.0896,
+          "boosted_score": 1.0789,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
             "b",
             "recommend",
-            "depression"
+            "depression",
+            "mdd"
           ],
-          "text_snippet": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data from a nat …"
+          "text_snippet": "Chapter 1. Introduction  Purpose  The Agency for Healthcare Research and Quality (AHRQ) has requested a review on screening and treatment for depressi …"
         },
         {
           "final_rank": 3,
@@ -403,8 +409,8 @@
           "pages": "p.2-2",
           "page_span": 1,
           "confidence": 0.6878,
-          "section_prior": 1.1,
-          "boosted_score": 0.7566,
+          "section_prior": 0.5,
+          "boosted_score": 0.3439,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -435,7 +441,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9947,
       "avg_confidence": 0.9951,
-      "retrieval_time_ms": 447.49,
+      "retrieval_time_ms": 674.18,
       "hits": [
         {
           "final_rank": 1,
@@ -516,7 +522,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9961,
       "avg_confidence": 0.9147,
-      "retrieval_time_ms": 402.13,
+      "retrieval_time_ms": 453.85,
       "hits": [
         {
           "final_rank": 1,
@@ -592,52 +598,12 @@
       "precision_at_3": 1.0,
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
-      "top1_confidence": 0.9933,
-      "avg_confidence": 0.9898,
-      "retrieval_time_ms": 454.6,
+      "top1_confidence": 0.9998,
+      "avg_confidence": 0.9918,
+      "retrieval_time_ms": 382.91,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "ba2009c97d434fe8",
-          "document_name": "Bookshelf_NBK592805",
-          "section_name": "General",
-          "pages": "p.18-19",
-          "page_span": 2,
-          "confidence": 0.9933,
-          "section_prior": 1.1,
-          "boosted_score": 1.0926,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "adults",
-            "screen",
-            "depression",
-            "recommend"
-          ],
-          "text_snippet": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data from a nat …"
-        },
-        {
-          "final_rank": 2,
-          "chunk_id": "69a5ddaabb2e5c9c",
-          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
-          "section_name": "General",
-          "pages": "p.13-13",
-          "page_span": 1,
-          "confidence": 0.9762,
-          "section_prior": 1.1,
-          "boosted_score": 1.0738,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "adults",
-            "screen",
-            "depression",
-            "recommend"
-          ],
-          "text_snippet": "Third, there remains uncertainty about the benefits of depression screening in older adults, and studies are needed that report outcomes using instrum …"
-        },
-        {
-          "final_rank": 3,
           "chunk_id": "3f42b85480dcf0a6",
           "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
           "section_name": "What additional information should clinicians know about this recommendation (Part 2)",
@@ -655,6 +621,47 @@
             "recommend"
           ],
           "text_snippet": "• The USPSTF recommends screening for depression in all adults regardless of risk factors. However, there are some factors that increase risk. These i …"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "96ce83024b0fa8eb",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-20",
+          "page_span": 2,
+          "confidence": 0.9995,
+          "section_prior": 0.7,
+          "boosted_score": 0.6996,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "adults",
+            "general",
+            "screen",
+            "depression",
+            "recommend"
+          ],
+          "text_snippet": "Several professional organizations recommend universal screening for depression in the general adult population.115-119 However, the National Institut …"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "69a5ddaabb2e5c9c",
+          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
+          "section_name": "General",
+          "pages": "p.13-13",
+          "page_span": 1,
+          "confidence": 0.9762,
+          "section_prior": 0.5,
+          "boosted_score": 0.4881,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "adults",
+            "screen",
+            "depression",
+            "recommend"
+          ],
+          "text_snippet": "Third, there remains uncertainty about the benefits of depression screening in older adults, and studies are needed that report outcomes using instrum …"
         }
       ]
     },
@@ -675,31 +682,12 @@
       "precision_at_3": 1.0,
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
-      "top1_confidence": 0.9763,
-      "avg_confidence": 0.7918,
-      "retrieval_time_ms": 516.5,
+      "top1_confidence": 0.9735,
+      "avg_confidence": 0.7994,
+      "retrieval_time_ms": 452.18,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "ba2009c97d434fe8",
-          "document_name": "Bookshelf_NBK592805",
-          "section_name": "General",
-          "pages": "p.18-19",
-          "page_span": 2,
-          "confidence": 0.9763,
-          "section_prior": 1.1,
-          "boosted_score": 1.0739,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "12",
-            "depression",
-            "screen"
-          ],
-          "text_snippet": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data from a nat …"
-        },
-        {
-          "final_rank": 2,
           "chunk_id": "01de390a6d2c6dbb",
           "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
           "section_name": "General",
@@ -715,6 +703,26 @@
             "screen"
           ],
           "text_snippet": "USPSTF Clinician Summary of USPSTF Recommendation Screening for Depression and Suicide Risk in Adults June 2023 …"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "b2015a58f99431d1",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.21-22",
+          "page_span": 2,
+          "confidence": 0.9991,
+          "section_prior": 0.7,
+          "boosted_score": 0.6994,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "adolescent",
+            "18",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "The USPSTF has never issued a recommendation on screening for anxiety disorders for adults, but in 2022 issued a recommendation to screen for anxiety  …"
         },
         {
           "final_rank": 3,
@@ -755,7 +763,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.783,
-      "retrieval_time_ms": 419.22,
+      "retrieval_time_ms": 509.92,
       "hits": [
         {
           "final_rank": 1,
@@ -804,8 +812,8 @@
           "pages": "p.2-2",
           "page_span": 1,
           "confidence": 0.34887500000000005,
-          "section_prior": 1.1,
-          "boosted_score": 0.3838,
+          "section_prior": 0.5,
+          "boosted_score": 0.1744,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -835,30 +843,12 @@
       "precision_at_3": 1.0,
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
-      "top1_confidence": 0.8208,
+      "top1_confidence": 0.7741,
       "avg_confidence": 0.8517,
-      "retrieval_time_ms": 416.46,
+      "retrieval_time_ms": 435.58,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "ba2009c97d434fe8",
-          "document_name": "Bookshelf_NBK592805",
-          "section_name": "General",
-          "pages": "p.18-19",
-          "page_span": 2,
-          "confidence": 0.8208,
-          "section_prior": 1.1,
-          "boosted_score": 0.9029,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "time",
-            "screen"
-          ],
-          "text_snippet": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data from a nat …"
-        },
-        {
-          "final_rank": 2,
           "chunk_id": "01de390a6d2c6dbb",
           "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
           "section_name": "General",
@@ -875,7 +865,7 @@
           "text_snippet": "USPSTF Clinician Summary of USPSTF Recommendation Screening for Depression and Suicide Risk in Adults June 2023 …"
         },
         {
-          "final_rank": 3,
+          "final_rank": 2,
           "chunk_id": "96ce83024b0fa8eb",
           "document_name": "Bookshelf_NBK592805",
           "section_name": "Recommendations of Others",
@@ -890,6 +880,24 @@
             "screen"
           ],
           "text_snippet": "Several professional organizations recommend universal screening for depression in the general adult population.115-119 However, the National Institut …"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "ba2009c97d434fe8",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "General",
+          "pages": "p.18-19",
+          "page_span": 2,
+          "confidence": 0.8208,
+          "section_prior": 0.5,
+          "boosted_score": 0.4104,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "time",
+            "screen"
+          ],
+          "text_snippet": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data from a nat …"
         }
       ]
     },
@@ -910,8 +918,8 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 0.9613,
-      "avg_confidence": 0.7568,
-      "retrieval_time_ms": 397.75,
+      "avg_confidence": 0.7811,
+      "retrieval_time_ms": 383.83,
       "hits": [
         {
           "final_rank": 1,
@@ -935,22 +943,23 @@
         },
         {
           "final_rank": 2,
-          "chunk_id": "ba2009c97d434fe8",
+          "chunk_id": "96ce83024b0fa8eb",
           "document_name": "Bookshelf_NBK592805",
-          "section_name": "General",
-          "pages": "p.18-19",
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-20",
           "page_span": 2,
-          "confidence": 0.8265,
-          "section_prior": 1.1,
-          "boosted_score": 0.9092,
+          "confidence": 0.8995,
+          "section_prior": 0.7,
+          "boosted_score": 0.6296,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
             "adults",
+            "risk",
             "screen",
             "depression"
           ],
-          "text_snippet": "Current Clinical Practice in the United States and Recent Recommendations  Despite the USPSTF recommendation to screen for depression, data from a nat …"
+          "text_snippet": "Several professional organizations recommend universal screening for depression in the general adult population.115-119 However, the National Institut …"
         },
         {
           "final_rank": 3,
@@ -960,8 +969,8 @@
           "pages": "p.4-4",
           "page_span": 1,
           "confidence": 0.4826,
-          "section_prior": 1.1,
-          "boosted_score": 0.5309,
+          "section_prior": 0.5,
+          "boosted_score": 0.2413,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -991,34 +1000,12 @@
       "precision_at_3": 1.0,
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
-      "top1_confidence": 0.7609,
+      "top1_confidence": 0.997,
       "avg_confidence": 0.6099,
-      "retrieval_time_ms": 398.92,
+      "retrieval_time_ms": 355.44,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "10eade4cda81e29b",
-          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
-          "section_name": "General",
-          "pages": "p.2-2",
-          "page_span": 1,
-          "confidence": 0.7609,
-          "section_prior": 1.1,
-          "boosted_score": 0.837,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "system",
-            "support",
-            "adequate",
-            "diagnosis",
-            "treatment",
-            "follow-up"
-          ],
-          "text_snippet": "D epressionisacommonmentaldisorderintheUS,withsubstantialeconomiccosts.In2019,anestimated7.8%ofUS adultsexperiencedatleast1majordepressiveepisodeand 5 …"
-        },
-        {
-          "final_rank": 2,
           "chunk_id": "0d400ff40a47ced0",
           "document_name": "Bookshelf_NBK592805",
           "section_name": "Recommendations of Others",
@@ -1038,6 +1025,28 @@
             "care"
           ],
           "text_snippet": "Healthcare System Supports to Ensure Appropriate Diagnosis, Followup, and Treatment (Contextual Question 3)  Relatedly, an ongoing issue of concern ha …"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "10eade4cda81e29b",
+          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
+          "section_name": "General",
+          "pages": "p.2-2",
+          "page_span": 1,
+          "confidence": 0.7609,
+          "section_prior": 0.5,
+          "boosted_score": 0.3805,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "system",
+            "support",
+            "adequate",
+            "diagnosis",
+            "treatment",
+            "follow-up"
+          ],
+          "text_snippet": "D epressionisacommonmentaldisorderintheUS,withsubstantialeconomiccosts.In2019,anestimated7.8%ofUS adultsexperiencedatleast1majordepressiveepisodeand 5 …"
         },
         {
           "final_rank": 3,
@@ -1076,7 +1085,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.0914,
       "avg_confidence": 0.0574,
-      "retrieval_time_ms": 409.67,
+      "retrieval_time_ms": 332.74,
       "hits": [
         {
           "final_rank": 1,
@@ -1150,7 +1159,7 @@
       "first_relevant_rank": 3,
       "top1_confidence": 0.6935,
       "avg_confidence": 0.25,
-      "retrieval_time_ms": 411.8,
+      "retrieval_time_ms": 376.77,
       "hits": [
         {
           "final_rank": 1,
@@ -1218,7 +1227,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.6699,
       "avg_confidence": 0.2287,
-      "retrieval_time_ms": 410.38,
+      "retrieval_time_ms": 335.85,
       "hits": [
         {
           "final_rank": 1,
@@ -1270,5 +1279,5 @@
       ]
     }
   ],
-  "elapsed_seconds": 10.94
+  "elapsed_seconds": 12.72
 }

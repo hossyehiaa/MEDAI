@@ -338,6 +338,21 @@ def check_output(response: str) -> GuardrailResult:
         for missing in schema_result["missing_sections"]:
             flags.append(f"missing_section:{missing}")
 
+    # Fix 7: Citation Count and Section Attribution Verification
+    norm_resp = re.sub(r"(?:\[|【|「)Doc:", "[Doc:", response)
+    citation_pattern = re.compile(r'\[Doc:[^\]]+\]', re.IGNORECASE)
+    if len(citation_pattern.findall(norm_resp)) < 4:
+        flags.append("missing_minimum_citations")
+        
+    sections_to_check = ["## Recommendation", "## Population", "## Screening Tool", "## Harms & Considerations", "## Evidence"]
+    for sec in sections_to_check:
+        sec_name = sec.replace("## ", "").lower()
+        match = re.search(rf"^{sec}\s*\n(.*?)(?=^##|\Z)", norm_resp, re.IGNORECASE | re.MULTILINE | re.DOTALL)
+        if match:
+            content = match.group(1).lower()
+            if "[doc:" not in content and "insufficient context" not in content and "limited data" not in content:
+                flags.append(f"MISSING_SECTION_CITATIONS:{sec_name}")
+
     if flags:
         logger.warning("Output guardrail triggered: %s", flags)
         return GuardrailResult(
@@ -642,11 +657,17 @@ def check_faithfulness(
                         flags.append("MISMATCHED_CITATION")
                         break
 
-    # 7. Anti-Recycling and Section-Quote Topical Alignment (Day 3.8 Fix 5)
-    all_quotes = re.findall(r'Quote:\s*"([^"]+)"', norm_response, re.IGNORECASE)
-    norm_all_quotes = [re.sub(r"[^\w\s]", "", q.lower().strip()) for q in all_quotes]
-    if len(norm_all_quotes) != len(set(norm_all_quotes)):
+    # 7. Anti-Recycling and Section-Quote Topical Alignment (Day 3.8 Fix 5 & Day 4 Fix 2 & 6)
+    citation_pattern = re.compile(r'\[Doc:[^\]]+\]', re.IGNORECASE)
+    full_citations = citation_pattern.findall(norm_response)
+    from collections import Counter
+    cit_counts = Counter([re.sub(r"[^\w\s]", "", c.lower().strip()) for c in full_citations])
+    
+    if any(count > 2 for count in cit_counts.values()):
         flags.append("CITATION_RECYCLING")
+        
+    if len(cit_counts) < 4:
+        flags.append("INSUFFICIENT_CITATION_DIVERSITY")
 
     # (a) Population section quote must contain population/age terms
     if pop_section_match:

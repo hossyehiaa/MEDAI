@@ -68,6 +68,24 @@ def _extract_gemini_text(resp: Any) -> str:
     return ""
 
 
+def _is_degenerate(text: str) -> tuple[bool, str]:
+    """Check for degenerate repetition via 3-grams."""
+    words = text.split()
+    if len(words) < 10:
+        return False, ""
+    trigrams = [" ".join(words[i:i+3]).lower() for i in range(len(words)-2)]
+    if not trigrams:
+        return False, ""
+    from collections import Counter
+    counts = Counter(trigrams)
+    max_freq = max(counts.values())
+    unique_ratio = len(counts) / len(trigrams)
+    if max_freq > 10 or len(counts) < 0.3 * len(words):
+        most_common = counts.most_common(1)[0]
+        return True, f"'{most_common[0]}' repeated {most_common[1]} times. Ratio: {unique_ratio:.2f}"
+    return False, ""
+
+
 def _extract_clean_verbatim_quote(chunk: dict[str, Any]) -> tuple[str, str, str, str]:
     """
     Extract a valid, non-table, non-metadata verbatim quote >= 40 chars from a chunk.
@@ -278,6 +296,22 @@ class LLMClient:
         Generate a response using Google Gemini as primary, cascading to Groq and Mock.
         """
         t0 = time.perf_counter()
+        
+        is_deg_prompt, deg_reason_prompt = _is_degenerate(prompt)
+        if is_deg_prompt:
+            latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+            result = {
+                "response": "Prompt is degenerate.",
+                "provider": "input",
+                "model": "input",
+                "endpoint_status": "success",
+                "status": "REFUSAL_QUALITY_FAILED",
+                "reason": "Degenerate repetition detected",
+                "latency_ms": latency_ms,
+            }
+            logger.warning("Degenerate repetition detected in prompt: %s.", deg_reason_prompt)
+            self._log_generation(prompt, result)
+            return result
 
         # ── 1. PRIMARY: GOOGLE GEMINI ───────────────────────────────────
         if self.provider == "gemini" and self._gemini_configured:
@@ -326,6 +360,23 @@ class LLMClient:
 
                         # Accept response if it contains markdown headers and is non-empty (>= 150 chars)
                         if c and len(c) >= 150 and "##" in c:
+                            is_deg, deg_reason = _is_degenerate(c)
+                            if is_deg:
+                                latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+                                result = {
+                                    "response": c,
+                                    "provider": "gemini",
+                                    "model": m,
+                                    "model_used": m,
+                                    "endpoint_status": "success" if m == self.model else "fallback",
+                                    "status": "REFUSAL_QUALITY_FAILED",
+                                    "reason": "Degenerate repetition detected",
+                                    "latency_ms": latency_ms,
+                                }
+                                logger.warning("Degenerate repetition detected: %s. Response len: %d", deg_reason, len(c))
+                                self._log_generation(prompt, result)
+                                return result
+                                
                             latency_ms = round((time.perf_counter() - t0) * 1000, 2)
                             endpoint_status = "success" if m == self.model else "fallback"
                             result = {
@@ -394,6 +445,23 @@ class LLMClient:
                             c = c[idx:].strip()
 
                         if c and len(c) >= 200:
+                            is_deg, deg_reason = _is_degenerate(c)
+                            if is_deg:
+                                latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+                                result = {
+                                    "response": c,
+                                    "provider": "groq",
+                                    "model": fb,
+                                    "model_used": fb,
+                                    "endpoint_status": "fallback",
+                                    "status": "REFUSAL_QUALITY_FAILED",
+                                    "reason": "Degenerate repetition detected",
+                                    "latency_ms": latency_ms,
+                                }
+                                logger.warning("Degenerate repetition detected: %s. Response len: %d", deg_reason, len(c))
+                                self._log_generation(prompt, result)
+                                return result
+
                             latency_ms = round((time.perf_counter() - t0) * 1000, 2)
                             result = {
                                 "response": c,

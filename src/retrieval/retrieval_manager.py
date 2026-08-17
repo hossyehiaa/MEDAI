@@ -244,6 +244,8 @@ class RetrievalManager:
             else:
                 section = c.get("section_name", "")
                 prior = SECTION_PRIORS.get(section, 1.0)
+                if section == "General" and any(k in text_lower for k in ["percent", "screening rate", "namcs", "2014", "statistics", "prevalence", "percent of adults"]):
+                    prior = 0.50
             conf = c.get("confidence", 0.0)
             boosted_score = conf * prior
             c["section_prior"] = round(prior, 4)

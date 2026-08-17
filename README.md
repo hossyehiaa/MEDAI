@@ -61,13 +61,13 @@ Evaluated over the **Expanded 16-Query Ground-Truth Benchmark Suite** + Dedicate
 | **Mean Reciprocal Rank (MRR)** | ≥ 0.7000 | **1.0000** | ✅ PASS |
 | **Citation Existence Accuracy** | 100.0% | **100.0%** | ✅ PASS |
 | **Page Precision (Span ≤ 10p)** | ≥ 90.0% | **100.0%** (exact page boundaries) | ✅ PASS |
-| **6-Section Schema Adherence** | ≥ 90.0% | **93.8%** (15/16) | ✅ PASS |
-| **Caveat Preservation Rate** | 100.0% | **84.6%** (11/13 in-scope) | ⚠️ NEAR TARGET |
+| **6-Section Schema Adherence** | ≥ 90.0% | **0.0%** (Not collected/0) | ⚠️ FAILED |
+| **Caveat Preservation Rate** | 100.0% | **92.3%** (12/13 in-scope) | ⚠️ NEAR TARGET |
 | **988 Lifeline Touchpoint on In-Scope** | 100.0% | **100.0%** | ✅ PASS |
 | **OOS Confidence Separation** | ≥ 10.0% | **+50.7%** (0.961 in-scope vs 0.455 OOS) | ✅ PASS |
 | **Calibrated Confidence Threshold** | 0.76 | **0.76** | ✅ CALIBRATED |
-| **Overall Benchmark Pass Rate** | 100.0% | **14/16 (87.5%)** | ✅ VALIDATED |
-| **Generation Test Suite (test_generation.py)** | 10/10 | **9/10 (90.0%)** | ✅ PASS |
+| **Overall Benchmark Pass Rate** | 100.0% | **11/16 (68.75%)** | ⚠️ FAILED |
+| **Generation Test Suite (test_generation.py)** | 10/10 | **7/10 (70.0%)** | ⚠️ FAILED |
 
 ---
 
@@ -144,6 +144,6 @@ medAI/
 
 ## ⚠️ Known Limitations
 
-1. **Degraded Mode on Complete Network Disconnect**: When all configured Groq endpoints are completely unreachable or rate-limited, the system returns `REFUSAL_LLM_UNREACHABLE` without producing unverified clinical claims.
-2. **Universal 988 Touchpoint**: As an intentional clinical safety design decision, the 988 Suicide & Crisis Lifeline referral is appended to all in-scope responses alongside the USPSTF disclaimer.
-3. **Endpoint Dependency**: Full 6-section grounded generation requires access to an active Groq LLM endpoint (`allam-2-7b`, `groq/compound`, `openai/gpt-oss-120b`, or `groq/compound-mini`). If API limits are reached, the system gracefully falls back to structured refusals.
+1. **Model Cascade & Endpoint Dependencies**: The system relies on a multi-stage LLM cascade (Google Gemini primary → Groq fallback → Mock fallback). Full 6-section grounded generation requires access to an active LLM endpoint. Rate limits (e.g., Gemini's free tier 20/day) frequently force cascading.
+2. **Mock Fallback Behavior**: When all configured LLM endpoints (Gemini and Groq) are completely unreachable or rate-limited, the system falls back to a Mock fallback which returns a generic simulated error or refusal without producing unverified clinical claims.
+3. **Universal 988 Touchpoint**: As an intentional clinical safety design decision, the 988 Suicide & Crisis Lifeline referral is appended to all in-scope responses alongside the USPSTF disclaimer.
