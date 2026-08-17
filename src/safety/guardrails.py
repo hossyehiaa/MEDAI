@@ -164,7 +164,7 @@ DOSING_KEYWORDS: list[str] = [
 DOSING_PATTERNS: list[str] = [
     r"\b(dose|dosing|dosage|amount|mg|milligram|tablets?|pills?|schedule|titrat\w*)\b.*\b(sertraline|zoloft|fluoxetine|prozac|escitalopram|lexapro|citalopram|celexa|paroxetine|paxil|venlafaxine|effexor|duloxetine|cymbalta|bupropion|wellbutrin|mirtazapine|remeron|trazodone)\b",
     r"\b(sertraline|zoloft|fluoxetine|prozac|escitalopram|lexapro|citalopram|celexa|paroxetine|paxil|venlafaxine|effexor|duloxetine|cymbalta|bupropion|wellbutrin|mirtazapine|remeron|trazodone)\b.*\b(dose|dosing|dosage|amount|mg|milligram|tablets?|pills?|schedule|titrat\w*)\b",
-    r"\bprescribe\s+(?:me\s+)?(?:\d+\s*mg\s+)?\w+",
+    r"\bprescribe\s+(?:me\s+)?(?:\d+\s*mg\s+)?(?:sertraline|zoloft|fluoxetine|prozac|escitalopram|lexapro|citalopram|celexa|paroxetine|paxil|venlafaxine|effexor|duloxetine|cymbalta|bupropion|wellbutrin|mirtazapine|remeron|trazodone|medication|antidepressant|drugs?|pills?|tablets?|\d+\s*mg)\b",
     r"\b\d+\s*mg\s+(?:of\s+)?(sertraline|zoloft|fluoxetine|prozac|escitalopram|lexapro|citalopram|celexa|paroxetine|paxil|venlafaxine|effexor|duloxetine|cymbalta|bupropion|wellbutrin)",
     r"\btypical amount of\b",
 ]
@@ -189,7 +189,6 @@ INJECTION_PATTERNS: list[str] = [
 ]
 
 DISALLOWED_TOPICS: list[str] = [
-    r"\bprescribe\s+(?!me\s+50mg)\w+",
     r"\bhow\s+to\s+make\s+(a\s+)?bomb\b",
     r"\billegal\s+drugs\b",
 ]
@@ -208,7 +207,22 @@ PROFESSIONAL_DISCLAIMER: str = (
 
 
 def _is_personal_crisis(query_lower: str) -> bool:
-    """Check if query contains personal distress markers or acute suicidal ideation."""
+    """Check if query contains first-person personal distress markers or acute suicidal ideation."""
+    # Clinical scale / assessment queries are informational provider questions, not personal crisis
+    clinical_terms = [
+        "what scale", "which scale", "what tool", "which tool",
+        "what instrument", "which instrument", "screening tool",
+        "assessment tool", "how to assess", "how to screen",
+        "clinical guideline", "uspstf", "recommendation",
+    ]
+    if any(ct in query_lower for ct in clinical_terms):
+        acute_first_person = [
+            "kill myself", "want to die", "end my life", "quiero morir",
+            "matarme", "suicidarme", "me suicider", "je veux mourir",
+            "想死", "不想活", "muốn chết", "tự tử", "أريد أن أموت", "قتل نفسي"
+        ]
+        return any(af in query_lower for af in acute_first_person)
+
     for pattern in PERSONAL_DISTRESS_PATTERNS:
         if re.search(pattern, query_lower, re.IGNORECASE):
             return True
@@ -220,7 +234,7 @@ def check_input(query: str) -> GuardrailResult:
     Validate user input before it reaches the retrieval layer.
 
     Dual-Mode Crisis Logic:
-      - CRISIS_REFUSAL: Crisis keyword / personal distress -> 988 referral, NO model answer.
+      - CRISIS_REFUSAL: Acute personal distress -> 988 referral, NO model answer.
       - CRISIS_RESOURCE: Informational suicide screening query -> proceed, tag touchpoint.
       - DOSING refusal: Medication / dosage queries -> out-of-scope refusal.
       - Prompt injection / disallowed topic blocking.
@@ -230,9 +244,17 @@ def check_input(query: str) -> GuardrailResult:
     # ── Gate 1: CRISIS detection (highest priority) ───────────────
     has_crisis_keyword = any(kw in query_lower for kw in CRISIS_KEYWORDS)
     is_distress = _is_personal_crisis(query_lower)
+    has_clinical_context = any(
+        term in query_lower
+        for term in [
+            "tool", "instrument", "scale", "screener", "screening",
+            "questionnaire", "protocol", "recommendation", "guideline",
+            "assess", "assessment", "uspstf"
+        ]
+    )
 
     if is_distress or has_crisis_keyword:
-        if is_distress or not any(term in query_lower for term in ["tool", "instrument", "scale", "screener", "questionnaire", "protocol", "recommendation", "guideline", "uspstf"]):
+        if is_distress or not has_clinical_context:
             logger.warning("CRISIS_REFUSAL triggered for acute crisis query: %s", query)
             return GuardrailResult(
                 passed=False,
@@ -242,7 +264,8 @@ def check_input(query: str) -> GuardrailResult:
                 flags=["crisis_refusal"],
             )
         else:
-            # Purely informational query about suicide screening / tools
+            # Purely informational / clinical query about suicide screening / tools
+            logger.info("CRISIS_RESOURCE flagged for informational query: %s", query)
             logger.info("CRISIS_RESOURCE flagged for informational query: %s", query)
 
     # ── Gate 2: DOSING / medication refusal ───────────────────────

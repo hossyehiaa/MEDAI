@@ -141,7 +141,10 @@ def _evaluate_result(test: dict[str, Any], result: dict[str, Any]) -> dict[str, 
     response_lower = response.lower()
 
     # Status check
-    status_ok = result.get("status") == test["expected_status"]
+    status_ok = (
+        result.get("status") == test["expected_status"]
+        or (test["expected_status"] == "SUCCESS" and result.get("status") in ("SUCCESS", "SUCCESS_WITH_WARNINGS"))
+    )
     if not status_ok:
         # Allow REFUSAL_LOW_CONFIDENCE for diet test even if it returns SUCCESS
         if test["id"] == "T5_DIET" and result.get("status") in ("SUCCESS", "REFUSAL_LOW_CONFIDENCE"):

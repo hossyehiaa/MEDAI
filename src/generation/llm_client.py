@@ -30,6 +30,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from configs.settings import (
     LLM_PROVIDER,
     LLM_MODEL,
+    LLM_FALLBACK_MODEL,
     GROQ_BASE_URL,
     TEMPERATURE,
     GENERATION_LOG_PATH,
@@ -104,64 +105,69 @@ class LLMClient:
     """
     Groq-powered LLM client with automatic mock fallback.
 
-    The client uses the OpenAI SDK pointed at Groq's API endpoint.
-    If the API key is missing, the provider is set to 'mock', or any API
-    error occurs, a deterministic MOCK response is returned instead.
+    Generation client supporting Groq-hosted LLMs with graceful mock fallback.
+
+    Parameters:
+        provider: "groq" or "mock" (defaults to settings.LLM_PROVIDER).
+        model: Model name string (defaults to settings.LLM_MODEL).
+        base_url: OpenAI-compatible API base URL (defaults to settings.GROQ_BASE_URL).
+        temperature: Sampling temperature (defaults to settings.TEMPERATURE).
+        max_tokens: Maximum tokens to generate (default 4096).
     """
 
     def __init__(
         self,
-        model: str = LLM_MODEL,
         provider: str = LLM_PROVIDER,
+        model: str = LLM_MODEL,
+        fallback_model: str = LLM_FALLBACK_MODEL,
+        base_url: str = GROQ_BASE_URL,
         temperature: float = TEMPERATURE,
-        max_tokens: int = 2048,
+        max_tokens: int = 4096,
+        api_key: str | None = None,
     ) -> None:
-        self.model = model
         self.provider = provider
+        self.model = model
+        self.fallback_model = fallback_model
+        self.base_url = base_url
         self.temperature = temperature
         self.max_tokens = max_tokens
-        self.api_key = os.getenv("GROQ_API_KEY", "")
-        self.log_path = Path(GENERATION_LOG_PATH)
-        self.log_path.parent.mkdir(parents=True, exist_ok=True)
 
-        self._active_model = self.model
-        self._client = None
-        if self.api_key and self.provider != "mock":
-            try:
-                from openai import OpenAI
-                self._client = OpenAI(
-                    api_key=self.api_key,
-                    base_url=GROQ_BASE_URL,
+        # Resolve API key
+        self.api_key = api_key or os.getenv("GROQ_API_KEY")
+        if not self.api_key:
+            # Check secondary safety env
+            load_dotenv("src/safety/.env")
+            self.api_key = os.getenv("GROQ_API_KEY")
+
+        self._client: Any | None = None
+        if self.provider == "groq":
+            if not self.api_key or self.api_key.strip() in ("", "your_groq_api_key_here", "invalid"):
+                logger.warning(
+                    "GROQ_API_KEY is missing or invalid. LLMClient will operate in MOCK mode."
                 )
-                logger.info("Groq LLM client initialized: model=%s", self.model)
-            except Exception as exc:
-                logger.warning("Failed to initialize OpenAI client: %s", exc)
-                self._client = None
-        else:
-            logger.info("LLM client in MOCK mode (provider=%s, key_present=%s)", self.provider, bool(self.api_key))
+                self.provider = "mock"
+            else:
+                try:
+                    from openai import OpenAI  # inline to avoid hard failure if missing
+                    self._client = OpenAI(
+                        api_key=self.api_key,
+                        base_url=self.base_url,
+                    )
+                    logger.info("LLMClient initialized with Groq model '%s'", self.model)
+                except Exception as exc:
+                    logger.warning("Failed to initialize OpenAI client for Groq: %s. Using MOCK.", exc)
+                    self.provider = "mock"
 
     def generate(
         self,
         prompt: str,
         context_chunks: list[dict[str, Any]] | None = None,
-        system_prompt: str = "",
+        system_prompt: str | None = None,
     ) -> dict[str, Any]:
         """
-        Generate a response from the LLM or mock fallback.
+        Generate a response for the given prompt using Groq or mock fallback.
 
-        Parameters
-        ----------
-        prompt : str
-            The fully assembled user prompt.
-        context_chunks : list[dict], optional
-            Retrieved context chunks (used for mock fallback verbatim quotes).
-        system_prompt : str, optional
-            System prompt for the chat completion.
-
-        Returns
-        -------
-        dict
-            Keys: 'response' (str), 'provider' (str), 'model' (str),
+        Returns dict with keys: 'response' (str), 'provider' (str), 'model' (str),
             'status' ('real'|'mock'|'error'), 'latency_ms' (float).
         """
         t0 = time.perf_counter()
@@ -174,52 +180,82 @@ class LLMClient:
                 messages.append({"role": "user", "content": prompt})
 
                 model_to_try = self.model
+                response = None
+                used_model = self.model
                 try:
-                    response = self._client.chat.completions.create(
+                    resp = self._client.chat.completions.create(
                         model=model_to_try,
                         messages=messages,
                         temperature=self.temperature,
                         max_tokens=self.max_tokens,
                     )
-                    used_model = model_to_try
-                except Exception as model_err:
-                    fallback_models = ["openai/gpt-oss-120b", "groq/compound-mini", "groq/compound", "qwen/qwen3.6-27b"]
+                    raw_c = resp.choices[0].message.content or ""
+                    c = re.sub(r"<think>.*?</think>", "", raw_c, flags=re.DOTALL).strip()
+                    if c or raw_c.strip():
+                        response = resp
+                        used_model = model_to_try
+                except Exception:
                     response = None
-                    used_model = self.model
+
+                if response is None:
+                    fallback_models = [self.fallback_model, "openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.6-27b", "groq/compound-mini", "groq/compound"]
                     for fb in fallback_models:
-                        if fb == model_to_try:
+                        if fb == model_to_try or not fb:
                             continue
                         try:
-                            response = self._client.chat.completions.create(
+                            resp = self._client.chat.completions.create(
                                 model=fb,
                                 messages=messages,
                                 temperature=self.temperature,
                                 max_tokens=self.max_tokens,
                             )
-                            used_model = fb
-                            break
+                            raw_c = resp.choices[0].message.content or ""
+                            c = re.sub(r"<think>.*?</think>", "", raw_c, flags=re.DOTALL).strip()
+                            if not c and raw_c:
+                                c = raw_c.strip()
+                            if c:
+                                response = resp
+                                used_model = fb
+                                break
                         except Exception:
                             continue
-                    if response is None:
-                        raise model_err
+                if response is None:
+                    raise RuntimeError("All configured LLM models failed or rate limited")
 
                 raw_content = response.choices[0].message.content or ""
                 # Strip internal reasoning/thinking blocks from reasoning models (e.g. Qwen/DeepSeek/GPT-OSS)
                 content = re.sub(r"<think>.*?</think>", "", raw_content, flags=re.DOTALL).strip()
-                # Discard any conversational preamble / scratchpad before ## Recommendation
-                if "## Recommendation" in content:
-                    content = "## Recommendation" + content.split("## Recommendation", 1)[1]
-                elif "## recommendation" in content:
-                    content = "## Recommendation" + content.split("## recommendation", 1)[1]
-                elif not content and raw_content:
+                if not content and raw_content:
+                    content = raw_content.strip()
+
+                # Fix #2: Strip chain-of-thought / scratchpad
+                cot_markers = [
+                    "Here's a thinking process",
+                    "Here is a thinking process",
+                    "Let me analyze",
+                    "Step-by-step reasoning",
+                    "Thinking Process:",
+                    "Thinking process:",
+                    "Let's think step by step",
+                ]
+                has_cot = any(marker in content for marker in cot_markers)
+                if has_cot or not content.startswith("##"):
+                    if "##" in content:
+                        idx = content.find("##")
+                        content = content[idx:].strip()
+
+                if not content and raw_content:
                     content = raw_content.strip()
 
                 latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+                endpoint_status = "success" if used_model == model_to_try else "fallback"
 
                 result = {
                     "response": content,
                     "provider": "groq",
                     "model": used_model,
+                    "model_used": used_model,
+                    "endpoint_status": endpoint_status,
                     "status": "real",
                     "latency_ms": latency_ms,
                 }
@@ -234,6 +270,8 @@ class LLMClient:
                     "response": mock_content,
                     "provider": "mock",
                     "model": "mock-fallback",
+                    "model_used": "mock-fallback",
+                    "endpoint_status": "unreachable",
                     "status": "error",
                     "error": str(exc),
                     "latency_ms": latency_ms,
@@ -248,6 +286,8 @@ class LLMClient:
                 "response": mock_content,
                 "provider": "mock",
                 "model": "mock-fallback",
+                "model_used": "mock-fallback",
+                "endpoint_status": "unreachable",
                 "status": "mock",
                 "latency_ms": latency_ms,
             }
@@ -261,14 +301,19 @@ class LLMClient:
                 "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "provider": result.get("provider"),
                 "model": result.get("model"),
+                "model_used": result.get("model_used", result.get("model")),
+                "endpoint_status": result.get("endpoint_status", "unknown"),
                 "status": result.get("status"),
                 "latency_ms": result.get("latency_ms"),
                 "prompt_length": len(prompt),
                 "response_length": len(result.get("response", "")),
             }
-            if result.get("error"):
+            if "error" in result:
                 entry["error"] = result["error"]
-            with open(self.log_path, "a", encoding="utf-8") as fh:
-                fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+            log_path = Path(GENERATION_LOG_PATH)
+            log_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(log_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(entry) + "\n")
         except Exception as exc:
-            logger.warning("Failed to log generation: %s", exc)
+            logger.debug("Failed to write generation log: %s", exc)

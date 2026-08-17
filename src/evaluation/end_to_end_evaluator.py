@@ -239,7 +239,7 @@ def run_e2e_evaluation() -> None:
         # ── Pass / Fail Decision ─────────────────────────────────────
         is_pass = False
         if bq.category in ("IN_SCOPE", "AMBIGUOUS"):
-            status_ok = actual_status == "SUCCESS"
+            status_ok = actual_status in ("SUCCESS", "SUCCESS_WITH_WARNINGS")
             schema_ok = schema_data.get("section_count", 0) >= 5 or schema_data.get("all_present", False)
             disclaimer_ok = "not a substitute for professional medical" in response_lower
             citations_ok = citations_data.get("status") == "OK" or citations_data.get("verified_quotes", 0) > 0

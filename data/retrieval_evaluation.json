@@ -39,7 +39,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9939,
-      "retrieval_time_ms": 400.63,
+      "retrieval_time_ms": 417.4,
       "hits": [
         {
           "final_rank": 1,
@@ -119,7 +119,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 1.0,
-      "retrieval_time_ms": 208.41,
+      "retrieval_time_ms": 669.09,
       "hits": [
         {
           "final_rank": 1,
@@ -200,7 +200,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9963,
-      "retrieval_time_ms": 368.59,
+      "retrieval_time_ms": 451.87,
       "hits": [
         {
           "final_rank": 1,
@@ -279,7 +279,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.999,
       "avg_confidence": 0.994,
-      "retrieval_time_ms": 379.8,
+      "retrieval_time_ms": 408.94,
       "hits": [
         {
           "final_rank": 1,
@@ -356,7 +356,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.993,
       "avg_confidence": 0.8904,
-      "retrieval_time_ms": 320.92,
+      "retrieval_time_ms": 405.82,
       "hits": [
         {
           "final_rank": 1,
@@ -435,7 +435,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9947,
       "avg_confidence": 0.9951,
-      "retrieval_time_ms": 319.81,
+      "retrieval_time_ms": 403.3,
       "hits": [
         {
           "final_rank": 1,
@@ -516,7 +516,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9961,
       "avg_confidence": 0.9147,
-      "retrieval_time_ms": 360.82,
+      "retrieval_time_ms": 417.99,
       "hits": [
         {
           "final_rank": 1,
@@ -594,7 +594,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9933,
       "avg_confidence": 0.989,
-      "retrieval_time_ms": 316.53,
+      "retrieval_time_ms": 434.79,
       "hits": [
         {
           "final_rank": 1,
@@ -677,7 +677,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9763,
       "avg_confidence": 0.7918,
-      "retrieval_time_ms": 334.21,
+      "retrieval_time_ms": 396.8,
       "hits": [
         {
           "final_rank": 1,
@@ -755,7 +755,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 1.0,
-      "retrieval_time_ms": 386.14,
+      "retrieval_time_ms": 400.59,
       "hits": [
         {
           "final_rank": 1,
@@ -836,7 +836,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.8208,
       "avg_confidence": 0.8517,
-      "retrieval_time_ms": 386.45,
+      "retrieval_time_ms": 383.8,
       "hits": [
         {
           "final_rank": 1,
@@ -910,7 +910,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9613,
       "avg_confidence": 0.7568,
-      "retrieval_time_ms": 504.95,
+      "retrieval_time_ms": 383.48,
       "hits": [
         {
           "final_rank": 1,
@@ -992,7 +992,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.7609,
       "avg_confidence": 0.6099,
-      "retrieval_time_ms": 396.98,
+      "retrieval_time_ms": 430.41,
       "hits": [
         {
           "final_rank": 1,
@@ -1075,7 +1075,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.0914,
       "avg_confidence": 0.0574,
-      "retrieval_time_ms": 335.87,
+      "retrieval_time_ms": 427.37,
       "hits": [
         {
           "final_rank": 1,
@@ -1149,7 +1149,7 @@
       "first_relevant_rank": 3,
       "top1_confidence": 0.6935,
       "avg_confidence": 0.25,
-      "retrieval_time_ms": 337.94,
+      "retrieval_time_ms": 421.04,
       "hits": [
         {
           "final_rank": 1,
@@ -1217,7 +1217,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.6699,
       "avg_confidence": 0.2287,
-      "retrieval_time_ms": 330.88,
+      "retrieval_time_ms": 402.06,
       "hits": [
         {
           "final_rank": 1,
@@ -1269,5 +1269,5 @@
       ]
     }
   ],
-  "elapsed_seconds": 11.62
+  "elapsed_seconds": 11.48
 }

@@ -220,18 +220,26 @@ def run_pipeline(
         "latency_ms": generation_result.get("latency_ms"),
     })
 
-    # ── Step 5: Citation Verification & Faithfulness Check ─────────────
+    # ── Step 5: Citation, Faithfulness & Schema Verification ────────────
     citation_result = verify_citations(llm_response, context_chunks)
     faithfulness_result = check_faithfulness(query, llm_response, context_chunks)
+    schema_result = check_response_schema(llm_response)
 
+    # Fix #4: Retry if citation failed, faithfulness failed, or schema missing sections
     needs_retry = (
-        citation_result["status"] == "CITATION_VERIFICATION_FAILED"
-        or not faithfulness_result["passed"]
+        generation_result.get("provider") != "mock"
+        and (
+            citation_result["status"] != "OK"
+            or not faithfulness_result["passed"]
+            or not schema_result["all_present"]
+        )
     )
 
     if needs_retry:
         retry_notes: list[str] = []
-        if citation_result["status"] == "CITATION_VERIFICATION_FAILED":
+        if not schema_result["all_present"]:
+            retry_notes.append("You MUST structure response with ALL 6 markdown sections: ## Recommendation, ## Population, ## Screening Tool, ## Harms & Considerations, ## Evidence, ## Source.")
+        if citation_result["status"] != "OK":
             retry_notes.append("Ensure EVERY Quote: \"...\" uses an EXACT substantive verbatim phrase (>=25 alphanumeric chars, no table syntax, no PMIDs, no document titles) from the context.")
         if "CAVEAT_SUPPRESSED" in faithfulness_result["flags"]:
             retry_notes.append("You MUST state explicit caveats ('no evidence on frequency', 'uncertainty', 'only 1 study') and NOT claim adequate evidence.")
@@ -250,6 +258,7 @@ def run_pipeline(
             + "\n".join(f"- {n}" for n in retry_notes)
         )
 
+        logger.info("Triggering pipeline regeneration retry with %d notes", len(retry_notes))
         generation_result_2 = client.generate(
             prompt=stricter_prompt,
             context_chunks=context_chunks,
@@ -263,26 +272,32 @@ def run_pipeline(
             llm_response_2 = "## Recommendation" + llm_response_2.split("## recommendation", 1)[1]
         citation_result_2 = verify_citations(llm_response_2, context_chunks)
         faithfulness_result_2 = check_faithfulness(query, llm_response_2, context_chunks)
+        schema_result_2 = check_response_schema(llm_response_2)
 
         if (
-            citation_result_2["status"] == "OK"
-            or citation_result_2["verified_quotes"] >= citation_result["verified_quotes"]
+            schema_result_2["section_count"] >= schema_result["section_count"]
+            and (
+                citation_result_2["status"] == "OK"
+                or citation_result_2["verified_quotes"] >= citation_result["verified_quotes"]
+            )
         ):
             llm_response = llm_response_2
             citation_result = citation_result_2
             faithfulness_result = faithfulness_result_2
+            schema_result = schema_result_2
             generation_result = generation_result_2
             steps.append({
                 "step": "5_retry",
-                "name": "faithfulness_retry",
+                "name": "regeneration_retry",
                 "status": "IMPROVED",
                 "citation_status": citation_result["status"],
                 "faithfulness_flags": faithfulness_result["flags"],
+                "schema_sections": schema_result["section_count"],
             })
         else:
             steps.append({
                 "step": "5_retry",
-                "name": "faithfulness_retry",
+                "name": "regeneration_retry",
                 "status": "STILL_FAILED",
                 "unverified": citation_result.get("unverified_quotes", []),
             })
@@ -295,6 +310,7 @@ def run_pipeline(
         "total_quotes": citation_result["total_quotes"],
         "faithfulness_passed": faithfulness_result["passed"],
         "faithfulness_flags": faithfulness_result["flags"],
+        "schema_sections": schema_result["section_count"],
     })
 
     # ── Step 6: Append Crisis Resource & Professional Disclaimer ──────
@@ -306,9 +322,6 @@ def run_pipeline(
         + PROFESSIONAL_DISCLAIMER
     )
 
-    # Schema check
-    schema_result = check_response_schema(llm_response)
-
     steps.append({
         "step": 6,
         "name": "disclaimer_appended",
@@ -319,9 +332,21 @@ def run_pipeline(
 
     total_ms = round((time.perf_counter() - t0) * 1000, 2)
 
+    # Fix #3: Determine distinct status codes
+    if generation_result.get("provider") == "mock" or generation_result.get("status") == "error":
+        pipeline_status = "REFUSAL_LLM_UNREACHABLE"
+    elif schema_result["section_count"] == 0:
+        pipeline_status = "REFUSAL_SCHEMA_FAILED"
+    elif citation_result["status"] == "OK" and faithfulness_result["passed"] and (schema_result["all_present"] or schema_result["section_count"] >= 5):
+        pipeline_status = "SUCCESS"
+    elif schema_result["section_count"] >= 5:
+        pipeline_status = "SUCCESS_WITH_WARNINGS"
+    else:
+        pipeline_status = "REFUSAL_QUALITY_FAILED"
+
     return {
         "query": query,
-        "status": "SUCCESS",
+        "status": pipeline_status,
         "response": full_response,
         "llm_response_raw": llm_response,
         "citations": citation_result,

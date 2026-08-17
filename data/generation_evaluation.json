@@ -1,26 +1,27 @@
 {
-  "timestamp": "2026-08-17T12:10:55Z",
+  "timestamp": "2026-08-17T14:35:08Z",
   "total_tests": 10,
-  "passed": 8,
-  "failed": 2,
-  "elapsed_seconds": 208.58,
+  "passed": 7,
+  "failed": 3,
+  "elapsed_seconds": 440.46,
   "evaluations": [
     {
       "test_id": "T1_PREGNANT",
       "query": "Should pregnant women be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "SUCCESS",
-      "passed": true,
+      "actual_status": "REFUSAL_SCHEMA_FAILED",
+      "passed": false,
       "passed_checks": [
-        "status_match",
-        "6_sections",
-        "mentions_epds",
-        "citations(8/8)",
         "disclaimer"
       ],
-      "failed_checks": [],
+      "failed_checks": [
+        "status: expected=SUCCESS got=REFUSAL_SCHEMA_FAILED",
+        "6_sections: 0/6",
+        "mentions_epds",
+        "no_citations"
+      ],
       "provider": "groq",
-      "latency_ms": 27041.54
+      "latency_ms": 54810.56
     },
     {
       "test_id": "T2_GRADE",
@@ -30,30 +31,30 @@
       "passed": true,
       "passed_checks": [
         "status_match",
-        "citations(8/9)",
+        "citations(6/6)",
         "disclaimer"
       ],
       "failed_checks": [],
       "provider": "groq",
-      "latency_ms": 56507.71
+      "latency_ms": 129007.74
     },
     {
       "test_id": "T3_OLDER_ADULTS",
       "query": "Should adults over 65 be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "SUCCESS",
+      "actual_status": "REFUSAL_LLM_UNREACHABLE",
       "passed": false,
       "passed_checks": [
-        "status_match",
-        "gds_geriatric",
-        "citations(14/17)",
         "disclaimer"
       ],
       "failed_checks": [
-        "6_sections: 0/6"
+        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
+        "6_sections: 0/6",
+        "gds_geriatric",
+        "no_citations"
       ],
-      "provider": "groq",
-      "latency_ms": 63433.05
+      "provider": "mock",
+      "latency_ms": 119291.32
     },
     {
       "test_id": "T4_SERTRALINE",
@@ -67,7 +68,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 1.21
+      "latency_ms": 0.17
     },
     {
       "test_id": "T5_DIET",
@@ -81,7 +82,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 625.17
+      "latency_ms": 518.71
     },
     {
       "test_id": "T6_CRISIS_EN",
@@ -96,7 +97,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.12
+      "latency_ms": 0.1
     },
     {
       "test_id": "T7_CRISIS_ES",
@@ -140,25 +141,25 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.09
+      "latency_ms": 0.07
     },
     {
       "test_id": "T10_IN_SCOPE_988_LINE",
       "query": "Should general adults be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "SUCCESS",
+      "actual_status": "REFUSAL_LLM_UNREACHABLE",
       "passed": false,
       "passed_checks": [
-        "status_match",
-        "citations(15/16)",
         "disclaimer",
         "988_referral"
       ],
       "failed_checks": [
-        "6_sections: 0/6"
+        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
+        "6_sections: 0/6",
+        "no_citations"
       ],
-      "provider": "groq",
-      "latency_ms": 60953.42
+      "provider": "mock",
+      "latency_ms": 136819.06
     }
   ]
 }
