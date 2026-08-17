@@ -129,7 +129,7 @@ SCREENING_TOOL_KEYWORDS: list[str] = [
 # LLM Generation (Day 3 — Groq)
 # ──────────────────────────────────────────────────────────────────────
 LLM_PROVIDER: str = "groq"
-LLM_MODEL: str = "groq/compound-mini"
+LLM_MODEL: str = "openai/gpt-oss-120b"
 GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
 TEMPERATURE: float = 0.0
 MAX_CONTEXT_CHUNKS: int = 3

@@ -217,12 +217,17 @@ class RetrievalManager:
                 cand["older_adults_boosted"] = True
                 older_adults_boosted_ids.append(cand.get("chunk_id", ""))
 
-        # Step 5: Apply Section Prior Boost
+        # Step 5: Apply Section Prior Boost (with AAFP recommendation table demotion to 0.40x)
         boosted_candidates: list[dict[str, Any]] = []
         for cand in reranked_candidates:
             c = dict(cand)
-            section = c.get("section_name", "")
-            prior = SECTION_PRIORS.get(section, 1.0)
+            text_lower = c.get("text", "").lower()
+            # Defect 3: Demote AAFP recommendation table header pattern polluting Q02 and Q13
+            if "| condition |" in text_lower and "| organization" in text_lower and "| recommendation" in text_lower:
+                prior = 0.40
+            else:
+                section = c.get("section_name", "")
+                prior = SECTION_PRIORS.get(section, 1.0)
             conf = c.get("confidence", 0.0)
             boosted_score = conf * prior
             c["section_prior"] = round(prior, 4)

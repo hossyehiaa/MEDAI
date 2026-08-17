@@ -5,13 +5,13 @@
     "oos_queries_count": 3,
     "mean_precision_at_3": 1.0,
     "mrr": 1.0,
-    "mean_confidence": 0.9009,
+    "mean_confidence": 0.9064,
     "citation_existence_accuracy": 1.0,
     "page_precision": 1.0,
-    "min_in_scope_top1_confidence": 0.8208,
+    "min_in_scope_top1_confidence": 0.7609,
     "max_oos_top1_confidence": 0.6935,
-    "oos_separation": 0.1273,
-    "calibrated_confidence_threshold": 0.76,
+    "oos_separation": 0.0674,
+    "calibrated_confidence_threshold": 0.73,
     "current_configured_threshold": 0.76,
     "targets": {
       "precision_at_3_target": ">= 0.80",
@@ -39,7 +39,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9939,
-      "retrieval_time_ms": 477.1,
+      "retrieval_time_ms": 400.63,
       "hits": [
         {
           "final_rank": 1,
@@ -62,14 +62,14 @@
         },
         {
           "final_rank": 2,
-          "chunk_id": "44c0ad0bad55830a",
+          "chunk_id": "96ce83024b0fa8eb",
           "document_name": "Bookshelf_NBK592805",
-          "section_name": "Table",
-          "pages": "p.181-181",
-          "page_span": 1,
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-20",
+          "page_span": 2,
           "confidence": 1.0,
-          "section_prior": 0.85,
-          "boosted_score": 0.85,
+          "section_prior": 0.7,
+          "boosted_score": 0.7,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -79,7 +79,7 @@
             "depression",
             "screen"
           ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | | Depression | American Academy of Family …"
+          "text_snippet": "Several professional organizations recommend universal screening for depression in the general adult population.115-119 However, the National Institut …"
         },
         {
           "final_rank": 3,
@@ -119,7 +119,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 1.0,
-      "retrieval_time_ms": 376.86,
+      "retrieval_time_ms": 208.41,
       "hits": [
         {
           "final_rank": 1,
@@ -142,35 +142,34 @@
         },
         {
           "final_rank": 2,
-          "chunk_id": "37c93edda8a9cf62",
+          "chunk_id": "96ce83024b0fa8eb",
           "document_name": "Bookshelf_NBK592805",
-          "section_name": "Table",
-          "pages": "p.183-183",
-          "page_span": 1,
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-20",
+          "page_span": 2,
           "confidence": 1.0,
-          "section_prior": 0.85,
-          "boosted_score": 0.85,
+          "section_prior": 0.7,
+          "boosted_score": 0.7,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
             "postpartum",
             "pregnant",
-            "epds",
             "depression",
             "screen"
           ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | |  | Improvement (ICSI), 2016 |  |  |  |  …"
+          "text_snippet": "Several professional organizations recommend universal screening for depression in the general adult population.115-119 However, the National Institut …"
         },
         {
           "final_rank": 3,
-          "chunk_id": "dd874bc2a64267f6",
+          "chunk_id": "89aba8c6fb1d9307",
           "document_name": "Bookshelf_NBK592805",
-          "section_name": "Table",
-          "pages": "p.184-184",
-          "page_span": 1,
+          "section_name": "Recommendations of Others",
+          "pages": "p.30-31",
+          "page_span": 2,
           "confidence": 1.0,
-          "section_prior": 0.85,
-          "boosted_score": 0.85,
+          "section_prior": 0.7,
+          "boosted_score": 0.7,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -179,7 +178,7 @@
             "depression",
             "screen"
           ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | |  | Association of Women’s Health, Obste …"
+          "text_snippet": "Depression  KQ1. Do Depression Screening Programs in Primary Care or Comparable Settings Result in Improved Health Outcomes in Adults, Including Pregn …"
         }
       ]
     },
@@ -201,7 +200,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9963,
-      "retrieval_time_ms": 393.98,
+      "retrieval_time_ms": 368.59,
       "hits": [
         {
           "final_rank": 1,
@@ -280,7 +279,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.999,
       "avg_confidence": 0.994,
-      "retrieval_time_ms": 345.84,
+      "retrieval_time_ms": 379.8,
       "hits": [
         {
           "final_rank": 1,
@@ -357,7 +356,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.993,
       "avg_confidence": 0.8904,
-      "retrieval_time_ms": 351.83,
+      "retrieval_time_ms": 320.92,
       "hits": [
         {
           "final_rank": 1,
@@ -436,7 +435,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9947,
       "avg_confidence": 0.9951,
-      "retrieval_time_ms": 330.45,
+      "retrieval_time_ms": 319.81,
       "hits": [
         {
           "final_rank": 1,
@@ -517,7 +516,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9961,
       "avg_confidence": 0.9147,
-      "retrieval_time_ms": 318.66,
+      "retrieval_time_ms": 360.82,
       "hits": [
         {
           "final_rank": 1,
@@ -595,7 +594,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9933,
       "avg_confidence": 0.989,
-      "retrieval_time_ms": 371.18,
+      "retrieval_time_ms": 316.53,
       "hits": [
         {
           "final_rank": 1,
@@ -678,7 +677,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9763,
       "avg_confidence": 0.7918,
-      "retrieval_time_ms": 327.54,
+      "retrieval_time_ms": 334.21,
       "hits": [
         {
           "final_rank": 1,
@@ -755,8 +754,8 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
-      "avg_confidence": 0.9845,
-      "retrieval_time_ms": 327.33,
+      "avg_confidence": 1.0,
+      "retrieval_time_ms": 386.14,
       "hits": [
         {
           "final_rank": 1,
@@ -798,24 +797,23 @@
         },
         {
           "final_rank": 3,
-          "chunk_id": "44c0ad0bad55830a",
+          "chunk_id": "01e0d99970b05fcc",
           "document_name": "Bookshelf_NBK592805",
-          "section_name": "Table",
-          "pages": "p.181-181",
-          "page_span": 1,
-          "confidence": 0.9536250000000001,
-          "section_prior": 0.85,
-          "boosted_score": 0.8106,
+          "section_name": "Recommendations of Others",
+          "pages": "p.94-95",
+          "page_span": 2,
+          "confidence": 1.0,
+          "section_prior": 0.7,
+          "boosted_score": 0.7,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
             "perinatal",
-            "pregnant",
             "postpartum",
             "evidence",
             "screen"
           ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | | Depression | American Academy of Family …"
+          "text_snippet": "clinicians is associated with lower likelihood of screening some patients or the likelihood of appropriate diagnosis and treatment.  For anxiety scree …"
         }
       ]
     },
@@ -837,8 +835,8 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 0.8208,
-      "avg_confidence": 0.7986,
-      "retrieval_time_ms": 324.65,
+      "avg_confidence": 0.8517,
+      "retrieval_time_ms": 386.45,
       "hits": [
         {
           "final_rank": 1,
@@ -877,21 +875,20 @@
         },
         {
           "final_rank": 3,
-          "chunk_id": "37c93edda8a9cf62",
+          "chunk_id": "96ce83024b0fa8eb",
           "document_name": "Bookshelf_NBK592805",
-          "section_name": "Table",
-          "pages": "p.183-183",
-          "page_span": 1,
-          "confidence": 0.801,
-          "section_prior": 0.85,
-          "boosted_score": 0.6809,
+          "section_name": "Recommendations of Others",
+          "pages": "p.19-20",
+          "page_span": 2,
+          "confidence": 0.9602,
+          "section_prior": 0.7,
+          "boosted_score": 0.6721,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
-            "screen",
-            "evidence"
+            "screen"
           ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | |  | Improvement (ICSI), 2016 |  |  |  |  …"
+          "text_snippet": "Several professional organizations recommend universal screening for depression in the general adult population.115-119 However, the National Institut …"
         }
       ]
     },
@@ -913,7 +910,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9613,
       "avg_confidence": 0.7568,
-      "retrieval_time_ms": 328.56,
+      "retrieval_time_ms": 504.95,
       "hits": [
         {
           "final_rank": 1,
@@ -993,33 +990,12 @@
       "precision_at_3": 1.0,
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
-      "top1_confidence": 0.988,
-      "avg_confidence": 0.6069,
-      "retrieval_time_ms": 384.95,
+      "top1_confidence": 0.7609,
+      "avg_confidence": 0.6099,
+      "retrieval_time_ms": 396.98,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "44c0ad0bad55830a",
-          "document_name": "Bookshelf_NBK592805",
-          "section_name": "Table",
-          "pages": "p.181-181",
-          "page_span": 1,
-          "confidence": 0.988,
-          "section_prior": 0.85,
-          "boosted_score": 0.8398,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "system",
-            "adequate",
-            "diagnosis",
-            "treatment",
-            "care"
-          ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | | Depression | American Academy of Family …"
-        },
-        {
-          "final_rank": 2,
           "chunk_id": "10eade4cda81e29b",
           "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
           "section_name": "General",
@@ -1039,6 +1015,28 @@
             "follow-up"
           ],
           "text_snippet": "D epressionisacommonmentaldisorderintheUS,withsubstantialeconomiccosts.In2019,anestimated7.8%ofUS adultsexperiencedatleast1majordepressiveepisodeand 5 …"
+        },
+        {
+          "final_rank": 2,
+          "chunk_id": "0d400ff40a47ced0",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Recommendations of Others",
+          "pages": "p.91-91",
+          "page_span": 1,
+          "confidence": 0.997,
+          "section_prior": 0.7,
+          "boosted_score": 0.6979,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "system",
+            "support",
+            "adequate",
+            "diagnosis",
+            "treatment",
+            "care"
+          ],
+          "text_snippet": "Healthcare System Supports to Ensure Appropriate Diagnosis, Followup, and Treatment (Contextual Question 3)  Relatedly, an ongoing issue of concern ha …"
         },
         {
           "final_rank": 3,
@@ -1077,7 +1075,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.0914,
       "avg_confidence": 0.0574,
-      "retrieval_time_ms": 311.7,
+      "retrieval_time_ms": 335.87,
       "hits": [
         {
           "final_rank": 1,
@@ -1151,7 +1149,7 @@
       "first_relevant_rank": 3,
       "top1_confidence": 0.6935,
       "avg_confidence": 0.25,
-      "retrieval_time_ms": 373.58,
+      "retrieval_time_ms": 337.94,
       "hits": [
         {
           "final_rank": 1,
@@ -1219,7 +1217,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.6699,
       "avg_confidence": 0.2287,
-      "retrieval_time_ms": 346.58,
+      "retrieval_time_ms": 330.88,
       "hits": [
         {
           "final_rank": 1,
@@ -1271,5 +1269,5 @@
       ]
     }
   ],
-  "elapsed_seconds": 15.08
+  "elapsed_seconds": 11.62
 }

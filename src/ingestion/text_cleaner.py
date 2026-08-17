@@ -151,6 +151,10 @@ def clean_section_text(
 
     repeated_headers = repeated_headers or set()
 
+    # Rule 0 (Defect 9): Remove zero-width spaces and normalize non-breaking spaces
+    text = re.sub(r"[\u200B\u200C\u200D\uFEFF]", "", text)
+    text = text.replace("\u00a0", " ")
+
     # Rule 4: Fix hyphenated line breaks ("screen-\ning" -> "screening")
     text = HYPHENATED_LINEBREAK_PATTERN.sub(r"\1\2", text)
 
@@ -177,6 +181,7 @@ def clean_section_text(
 
         # Rule 5: Collapse multiple horizontal spaces within the line
         collapsed_line = re.sub(r"[^\S\r\n]+", " ", stripped)
+        collapsed_line = re.sub(r"[ ]{2,}", " ", collapsed_line)
         cleaned_lines.append(collapsed_line)
 
     # Rule 5: Recombine and collapse 3+ consecutive newlines into 2

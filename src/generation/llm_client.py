@@ -86,83 +86,17 @@ def _build_mock_response(
     prompt: str = "",
 ) -> str:
     """
-    Build a deterministic, faithful MOCK response in valid 6-section format.
-    Preserves caveats, population boundaries, and valid verbatim citations.
+    Build a deterministic, unhallucinated MOCK response when LLM is unreachable.
+    Contains ZERO clinical claims (no SMD, effect sizes, drug names, or specific citations).
     """
-    prompt_lower = prompt.lower()
-
-    if context_chunks and len(context_chunks) > 0:
-        doc, sec, page, quote = _extract_clean_verbatim_quote(context_chunks[0])
-    else:
-        doc = "USPSTF Clinician Summary (JAMA 2023)"
-        sec = "Recommendation"
-        page = "1"
-        quote = "The USPSTF recommends screening for depression in the general adult population"
-
-    # Context & prompt feature detection
-    is_adolescent = any(w in prompt_lower for w in ["adolescent", "adolescents", "teen", "children", "child", "pediatric"])
-    is_interval = any(w in prompt_lower for w in ["interval", "frequency", "how often", "annual"])
-    is_harms = any(w in prompt_lower for w in ["harm", "harms", "risk", "risks", "adverse", "overdiagnosis"])
-    is_older = any(w in prompt_lower for w in ["older adults", "over 65", "65 years", "geriatric", "gds"])
-    is_suicide = "suicide" in prompt_lower
-    has_aafp = context_chunks and any("aafp" in c.get("text", "").lower() for c in context_chunks)
-
-    # 1. Recommendation section
-    rec_text = "The USPSTF recommends screening for major depressive disorder (MDD) in adults (Grade B recommendation)."
-    if is_adolescent:
-        rec_text += " Note: This guideline does not address adolescents or children; the following recommendations apply to adults aged 18 years and older only."
-    if has_aafp:
-        rec_text += "\nNote: This is AAFP's recommendation, which aligns with but is distinct from USPSTF guidance."
-
-    # 2. Population section
-    if is_older:
-        pop_text = "Applies to adults aged 18 years and older, including older adults (65 years or older) and pregnant/postpartum persons."
-    elif is_adolescent:
-        pop_text = "This recommendation applies to adults aged 18 years and older only. It does not address pediatric or adolescent populations."
-    else:
-        pop_text = "All adults aged 18 years and older, including pregnant and postpartum persons."
-
-    # 3. Screening Tool section
-    if is_suicide:
-        tool_text = "PHQ-9 and EPDS are depression screening instruments. Specific suicide risk assessment instruments (such as C-SSRS and ASQ) have limited evidence in unselected primary care populations."
-    elif is_older:
-        tool_text = "Commonly used screening instruments include the Patient Health Questionnaire (PHQ-9, PHQ-2), and the Geriatric Depression Scale (GDS) for older adults."
-    else:
-        tool_text = "Common instruments include PHQ-2, PHQ-9, and the Edinburgh Postnatal Depression Scale (EPDS) for perinatal persons."
-
-    # 4. Harms & Considerations section
-    if is_harms:
-        harms_text = "The USPSTF identified limited evidence on harms, with only 1 study evaluating direct harms of screening such as false-positive results, unnecessary referral, and potential labeling effects."
-    elif is_interval:
-        harms_text = "The USPSTF found no evidence on the optimal frequency of screening for depression; screening interval remains an area of clinical uncertainty in the evidence base."
-    else:
-        harms_text = "The USPSTF found adequate evidence that screening for depression has small to minimal harms in adult populations."
-
-    # 5. Evidence section
-    if is_interval:
-        ev_text = "Evidence on screening frequency is lacking (no evidence on frequency). In the absence of evidence, pragmatic approaches may be considered."
-    elif is_older:
-        ev_text = "Evidence supports depression screening in adults, though evidence for older adults and specific subgroup outcomes has areas of uncertainty."
-    else:
-        ev_text = "Evidence demonstrates moderate net benefit for depression screening in adults when adequate systems for diagnosis and treatment are in place."
-
-    # 6. Source section
-    source_text = f"{doc}, Section: {sec}, p.{page}. Grade B."
-
     return (
-        f"## Recommendation\n"
-        f"{rec_text}\n"
-        f'[Doc: {doc} | Sec: {sec} | Pg: {page} | Quote: "{quote}"]\n\n'
-        f"## Population\n"
-        f"{pop_text}\n\n"
-        f"## Screening Tool\n"
-        f"{tool_text}\n\n"
-        f"## Harms & Considerations\n"
-        f"{harms_text}\n\n"
-        f"## Evidence\n"
-        f"{ev_text}\n\n"
-        f"## Source\n"
-        f"{source_text}\n"
+        "MOCK FALLBACK MODE: LLM endpoint unreachable. This system is operating in degraded mode "
+        "and cannot generate clinical claims. Please retry when connectivity is restored.\n\n"
+        "⚠️ If you or someone you know is struggling or in crisis, help is available. "
+        "Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\n"
+        "This information is based on USPSTF guidance current as of June 2023 and is for clinical "
+        "decision support only. It is not a substitute for professional medical judgment. "
+        "Always verify current guidelines and consult appropriate specialists for individual patient care."
     )
 
 
@@ -239,7 +173,7 @@ class LLMClient:
                     messages.append({"role": "system", "content": system_prompt})
                 messages.append({"role": "user", "content": prompt})
 
-                model_to_try = self._active_model
+                model_to_try = self.model
                 try:
                     response = self._client.chat.completions.create(
                         model=model_to_try,
@@ -249,7 +183,7 @@ class LLMClient:
                     )
                     used_model = model_to_try
                 except Exception as model_err:
-                    fallback_models = ["openai/gpt-oss-120b", "qwen/qwen3.6-27b", "groq/compound-mini", "groq/compound", "allam-2-7b"]
+                    fallback_models = ["openai/gpt-oss-120b", "groq/compound-mini", "groq/compound", "qwen/qwen3.6-27b"]
                     response = None
                     used_model = self.model
                     for fb in fallback_models:
@@ -263,7 +197,6 @@ class LLMClient:
                                 max_tokens=self.max_tokens,
                             )
                             used_model = fb
-                            self._active_model = fb  # Cache working model for future calls
                             break
                         except Exception:
                             continue
@@ -273,7 +206,12 @@ class LLMClient:
                 raw_content = response.choices[0].message.content or ""
                 # Strip internal reasoning/thinking blocks from reasoning models (e.g. Qwen/DeepSeek/GPT-OSS)
                 content = re.sub(r"<think>.*?</think>", "", raw_content, flags=re.DOTALL).strip()
-                if not content and raw_content:
+                # Discard any conversational preamble / scratchpad before ## Recommendation
+                if "## Recommendation" in content:
+                    content = "## Recommendation" + content.split("## Recommendation", 1)[1]
+                elif "## recommendation" in content:
+                    content = "## Recommendation" + content.split("## recommendation", 1)[1]
+                elif not content and raw_content:
                     content = raw_content.strip()
 
                 latency_ms = round((time.perf_counter() - t0) * 1000, 2)

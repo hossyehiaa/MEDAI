@@ -206,6 +206,10 @@ def run_pipeline(
     )
     llm_response = generation_result.get("response", "")
     llm_response = re.sub(r"<think>.*?</think>", "", llm_response, flags=re.DOTALL).strip()
+    if "## Recommendation" in llm_response:
+        llm_response = "## Recommendation" + llm_response.split("## Recommendation", 1)[1]
+    elif "## recommendation" in llm_response:
+        llm_response = "## Recommendation" + llm_response.split("## recommendation", 1)[1]
 
     steps.append({
         "step": 4,
@@ -228,13 +232,17 @@ def run_pipeline(
     if needs_retry:
         retry_notes: list[str] = []
         if citation_result["status"] == "CITATION_VERIFICATION_FAILED":
-            retry_notes.append("Ensure EVERY Quote: \"...\" uses an EXACT substantive verbatim phrase (>=40 chars, no table syntax, no PMIDs) from the context.")
+            retry_notes.append("Ensure EVERY Quote: \"...\" uses an EXACT substantive verbatim phrase (>=25 alphanumeric chars, no table syntax, no PMIDs, no document titles) from the context.")
         if "CAVEAT_SUPPRESSED" in faithfulness_result["flags"]:
             retry_notes.append("You MUST state explicit caveats ('no evidence on frequency', 'uncertainty', 'only 1 study') and NOT claim adequate evidence.")
         if "ATTRIBUTION_MISSING" in faithfulness_result["flags"]:
             retry_notes.append("You MUST state: 'Note: This is [Organization]'s recommendation, which aligns with but is distinct from USPSTF guidance.'")
         if "SCOPE_UNACKNOWLEDGED" in faithfulness_result["flags"]:
             retry_notes.append("You MUST explicitly state: 'This guideline does not address adolescents or children; the following applies to adults only.'")
+        if "UNGROUNDED_CLAIM" in faithfulness_result["flags"]:
+            retry_notes.append("Every clinical claim MUST have an inline [Doc: ...] citation within 100 characters.")
+        if "MISMATCHED_CITATION" in faithfulness_result["flags"]:
+            retry_notes.append("Ensure citations in ## Population cite chunks regarding populations/ages, NOT screening intervals/frequency.")
 
         stricter_prompt = (
             user_prompt
@@ -249,6 +257,10 @@ def run_pipeline(
         )
         llm_response_2 = generation_result_2.get("response", "")
         llm_response_2 = re.sub(r"<think>.*?</think>", "", llm_response_2, flags=re.DOTALL).strip()
+        if "## Recommendation" in llm_response_2:
+            llm_response_2 = "## Recommendation" + llm_response_2.split("## Recommendation", 1)[1]
+        elif "## recommendation" in llm_response_2:
+            llm_response_2 = "## Recommendation" + llm_response_2.split("## recommendation", 1)[1]
         citation_result_2 = verify_citations(llm_response_2, context_chunks)
         faithfulness_result_2 = check_faithfulness(query, llm_response_2, context_chunks)
 
