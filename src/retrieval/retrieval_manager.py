@@ -187,6 +187,22 @@ class RetrievalManager:
                     existing_candidate_ids.add(cid)
                 forced_inclusions.append(cid)
 
+        # Fix 8: Context relevance filter for general adults queries
+        q_lower = query.lower()
+        is_general_adults = "general adult" in q_lower or "all adult" in q_lower or "general population" in q_lower
+        if is_general_adults:
+            filtered_pool = []
+            for c in candidate_pool:
+                c_text_start = c.get("text", "")[:200].lower()
+                c_sec = c.get("section_name", "").lower()
+                has_perinatal_focus = any(p in c_text_start for p in ["perinatal", "pregnancy", "postpartum"])
+                is_rec = "recommendation" in c_sec or "clinician summary" in c_sec or "practice considerations" in c_sec
+                if has_perinatal_focus and not is_rec:
+                    continue
+                filtered_pool.append(c)
+            if len(filtered_pool) >= top_k_final:
+                candidate_pool = filtered_pool
+
         # Step 3: Cross-Encoder Re-ranking (all candidate pool including forced inclusions)
         t_rerank_start = time.perf_counter()
         reranked_candidates = self.reranker.rerank(

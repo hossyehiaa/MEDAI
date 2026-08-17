@@ -237,6 +237,8 @@ def run_pipeline(
 
     if needs_retry:
         retry_notes: list[str] = []
+        if "CITATION_RECYCLING" in faithfulness_result["flags"]:
+            retry_notes.append("Each claim MUST have a UNIQUE, TOPICALLY-ALIGNED citation. Do NOT reuse or recycle the same quote for multiple sections.")
         if not schema_result["all_present"]:
             retry_notes.append("You MUST structure response with ALL 6 markdown sections: ## Recommendation, ## Population, ## Screening Tool, ## Harms & Considerations, ## Evidence, ## Source.")
         if citation_result["status"] != "OK":
@@ -314,13 +316,18 @@ def run_pipeline(
     })
 
     # ── Step 6: Append Crisis Resource & Professional Disclaimer ──────
-    full_response = (
-        llm_response.strip()
-        + "\n\n---\n\n"
-        + CRISIS_RESOURCE_LINE
-        + "\n\n"
-        + PROFESSIONAL_DISCLAIMER
-    )
+    # Fix 7: Deduplicate disclaimer and 988 touchpoint if already present in response
+    clean_llm_response = llm_response.strip()
+    appendices: list[str] = []
+    if "988" not in clean_llm_response and "⚠️" not in clean_llm_response:
+        appendices.append(CRISIS_RESOURCE_LINE)
+    if "This information is based on USPSTF guidance" not in clean_llm_response and "not a substitute for professional" not in clean_llm_response:
+        appendices.append(PROFESSIONAL_DISCLAIMER)
+
+    if appendices:
+        full_response = clean_llm_response + "\n\n---\n\n" + "\n\n".join(appendices)
+    else:
+        full_response = clean_llm_response
 
     steps.append({
         "step": 6,

@@ -642,6 +642,33 @@ def check_faithfulness(
                         flags.append("MISMATCHED_CITATION")
                         break
 
+    # 7. Anti-Recycling and Section-Quote Topical Alignment (Day 3.8 Fix 5)
+    all_quotes = re.findall(r'Quote:\s*"([^"]+)"', norm_response, re.IGNORECASE)
+    norm_all_quotes = [re.sub(r"[^\w\s]", "", q.lower().strip()) for q in all_quotes]
+    if len(norm_all_quotes) != len(set(norm_all_quotes)):
+        flags.append("CITATION_RECYCLING")
+
+    # (a) Population section quote must contain population/age terms
+    if pop_section_match:
+        pop_text = pop_section_match.group(1)
+        pop_quotes = re.findall(r'Quote:\s*"([^"]+)"', pop_text, re.IGNORECASE)
+        pop_terms = ["adult", "age", "18", "pregnant", "postpartum", "older", "geriatric", "elderly", "women", "population", "person", "individual", "perinatal"]
+        for pq in pop_quotes:
+            if not any(term in pq.lower() for term in pop_terms):
+                flags.append("CITATION_RECYCLING")
+                break
+
+    # (b) Screening Tool section quote must mention instruments or screening
+    tool_section_match = re.search(r"## Screening Tool\s*\n(.*?)(?=^##|\Z)", norm_response, re.DOTALL | re.MULTILINE)
+    if tool_section_match:
+        tool_text = tool_section_match.group(1)
+        tool_quotes = re.findall(r'Quote:\s*"([^"]+)"', tool_text, re.IGNORECASE)
+        tool_terms = ["tool", "instrument", "scale", "phq", "epds", "gds", "bdi", "ces-d", "screen", "questionnaire", "ham-d", "madrs", "accuracy", "test"]
+        for tq in tool_quotes:
+            if not any(term in tq.lower() for term in tool_terms):
+                flags.append("CITATION_RECYCLING")
+                break
+
     passed = len(flags) == 0
     return {
         "passed": passed,

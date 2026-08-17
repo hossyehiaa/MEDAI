@@ -31,6 +31,7 @@ from configs.settings import (
     LLM_PROVIDER,
     LLM_MODEL,
     LLM_FALLBACK_MODEL,
+    LLM_TIMEOUT_SEC,
     GROQ_BASE_URL,
     TEMPERATURE,
     GENERATION_LOG_PATH,
@@ -122,7 +123,8 @@ class LLMClient:
         fallback_model: str = LLM_FALLBACK_MODEL,
         base_url: str = GROQ_BASE_URL,
         temperature: float = TEMPERATURE,
-        max_tokens: int = 4096,
+        max_tokens: int = 1500,
+        timeout: int = LLM_TIMEOUT_SEC,
         api_key: str | None = None,
     ) -> None:
         self.provider = provider
@@ -131,6 +133,7 @@ class LLMClient:
         self.base_url = base_url
         self.temperature = temperature
         self.max_tokens = max_tokens
+        self.timeout = timeout
 
         # Resolve API key
         self.api_key = api_key or os.getenv("GROQ_API_KEY")
@@ -152,11 +155,51 @@ class LLMClient:
                     self._client = OpenAI(
                         api_key=self.api_key,
                         base_url=self.base_url,
+                        timeout=self.timeout,
                     )
-                    logger.info("LLMClient initialized with Groq model '%s'", self.model)
+                    logger.info("LLMClient initialized with Groq client.")
+                    # Fix 2: Health check on init; switch to fallback model immediately if primary fails
+                    self.health_check()
                 except Exception as exc:
                     logger.warning("Failed to initialize OpenAI client for Groq: %s. Using MOCK.", exc)
                     self.provider = "mock"
+
+    def health_check(self) -> bool:
+        """
+        Check Groq endpoint reachability. If primary model fails, switch to fallback model immediately.
+        """
+        if not self._client or self.provider == "mock":
+            return False
+
+        candidate_models = [
+            self.model,
+            self.fallback_model,
+            "allam-2-7b",
+            "groq/compound",
+            "groq/compound-mini",
+            "openai/gpt-oss-120b",
+            "openai/gpt-oss-20b",
+            "qwen/qwen3.6-27b",
+        ]
+        for m in candidate_models:
+            if not m:
+                continue
+            try:
+                test_resp = self._client.chat.completions.create(
+                    model=m,
+                    messages=[{"role": "user", "content": "ping"}],
+                    max_tokens=20,
+                    timeout=min(self.timeout, 10),
+                )
+                if test_resp and test_resp.choices:
+                    if self.model != m:
+                        logger.warning("Primary model unavailable. Switched active model to '%s'", m)
+                        self.model = m
+                    return True
+            except Exception as e:
+                logger.warning("Health check failed for model '%s': %s", m, e)
+                continue
+        return False
 
     def generate(
         self,
@@ -198,7 +241,7 @@ class LLMClient:
                     response = None
 
                 if response is None:
-                    fallback_models = [self.fallback_model, "openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.6-27b", "groq/compound-mini", "groq/compound"]
+                    fallback_models = [self.fallback_model, "allam-2-7b", "groq/compound", "groq/compound-mini", "openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.6-27b"]
                     for fb in fallback_models:
                         if fb == model_to_try or not fb:
                             continue
@@ -217,7 +260,9 @@ class LLMClient:
                                 response = resp
                                 used_model = fb
                                 break
-                        except Exception:
+                        except Exception as fb_err:
+                            if "429" in str(fb_err) or "rate_limit" in str(fb_err):
+                                time.sleep(2.0)
                             continue
                 if response is None:
                     raise RuntimeError("All configured LLM models failed or rate limited")

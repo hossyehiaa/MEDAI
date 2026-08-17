@@ -149,9 +149,8 @@ def clean_section_text(
     if not text:
         return ""
 
-    repeated_headers = repeated_headers or set()
-
-    # Rule 0 (Defect 9): Remove zero-width spaces and normalize non-breaking spaces
+    # Rule 0 (Defect 9 & Day 3.8 Fix 6): Map font control codes to Unicode symbols and remove zero-width spaces
+    text = text.replace("\x03", "≥").replace("\x04", "≤").replace("\x05", "≠").replace("\x06", "±")
     text = re.sub(r"[\u200B\u200C\u200D\uFEFF]", "", text)
     text = text.replace("\u00a0", " ")
 

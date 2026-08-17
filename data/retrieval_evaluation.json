@@ -5,7 +5,7 @@
     "oos_queries_count": 3,
     "mean_precision_at_3": 1.0,
     "mrr": 1.0,
-    "mean_confidence": 0.9064,
+    "mean_confidence": 0.8898,
     "citation_existence_accuracy": 1.0,
     "page_precision": 1.0,
     "min_in_scope_top1_confidence": 0.7609,
@@ -39,7 +39,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9939,
-      "retrieval_time_ms": 417.4,
+      "retrieval_time_ms": 418.38,
       "hits": [
         {
           "final_rank": 1,
@@ -119,7 +119,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 1.0,
-      "retrieval_time_ms": 669.09,
+      "retrieval_time_ms": 211.64,
       "hits": [
         {
           "final_rank": 1,
@@ -200,7 +200,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9963,
-      "retrieval_time_ms": 451.87,
+      "retrieval_time_ms": 333.39,
       "hits": [
         {
           "final_rank": 1,
@@ -279,7 +279,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.999,
       "avg_confidence": 0.994,
-      "retrieval_time_ms": 408.94,
+      "retrieval_time_ms": 377.15,
       "hits": [
         {
           "final_rank": 1,
@@ -356,7 +356,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.993,
       "avg_confidence": 0.8904,
-      "retrieval_time_ms": 405.82,
+      "retrieval_time_ms": 393.47,
       "hits": [
         {
           "final_rank": 1,
@@ -435,7 +435,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9947,
       "avg_confidence": 0.9951,
-      "retrieval_time_ms": 403.3,
+      "retrieval_time_ms": 447.49,
       "hits": [
         {
           "final_rank": 1,
@@ -516,7 +516,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9961,
       "avg_confidence": 0.9147,
-      "retrieval_time_ms": 417.99,
+      "retrieval_time_ms": 402.13,
       "hits": [
         {
           "final_rank": 1,
@@ -593,8 +593,8 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 0.9933,
-      "avg_confidence": 0.989,
-      "retrieval_time_ms": 434.79,
+      "avg_confidence": 0.9898,
+      "retrieval_time_ms": 454.6,
       "hits": [
         {
           "final_rank": 1,
@@ -623,9 +623,9 @@
           "section_name": "General",
           "pages": "p.13-13",
           "page_span": 1,
-          "confidence": 0.974,
+          "confidence": 0.9762,
           "section_prior": 1.1,
-          "boosted_score": 1.0714,
+          "boosted_score": 1.0738,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -677,7 +677,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9763,
       "avg_confidence": 0.7918,
-      "retrieval_time_ms": 396.8,
+      "retrieval_time_ms": 516.5,
       "hits": [
         {
           "final_rank": 1,
@@ -754,30 +754,11 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
-      "avg_confidence": 1.0,
-      "retrieval_time_ms": 400.59,
+      "avg_confidence": 0.783,
+      "retrieval_time_ms": 419.22,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "69a5ddaabb2e5c9c",
-          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
-          "section_name": "General",
-          "pages": "p.13-13",
-          "page_span": 1,
-          "confidence": 1.0,
-          "section_prior": 1.1,
-          "boosted_score": 1.1,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "postpartum",
-            "evidence",
-            "screen"
-          ],
-          "text_snippet": "Third, there remains uncertainty about the benefits of depression screening in older adults, and studies are needed that report outcomes using instrum …"
-        },
-        {
-          "final_rank": 2,
           "chunk_id": "13bc0771e701aa02",
           "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
           "section_name": "How to implement this recommendation (Part 4)",
@@ -796,7 +777,7 @@
           "text_snippet": "• The USPSTF found no evidence on the optimal frequency of screening for depression. In the absence of evidence, a pragmatic approach might include sc …"
         },
         {
-          "final_rank": 3,
+          "final_rank": 2,
           "chunk_id": "01e0d99970b05fcc",
           "document_name": "Bookshelf_NBK592805",
           "section_name": "Recommendations of Others",
@@ -814,6 +795,26 @@
             "screen"
           ],
           "text_snippet": "clinicians is associated with lower likelihood of screening some patients or the likelihood of appropriate diagnosis and treatment.  For anxiety scree …"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "10eade4cda81e29b",
+          "document_name": "depression-suicide-risk-adults-final-evidence-summary (2)",
+          "section_name": "General",
+          "pages": "p.2-2",
+          "page_span": 1,
+          "confidence": 0.34887500000000005,
+          "section_prior": 1.1,
+          "boosted_score": 0.3838,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "pregnant",
+            "postpartum",
+            "evidence",
+            "screen"
+          ],
+          "text_snippet": "D epressionisacommonmentaldisorderintheUS,withsubstantialeconomiccosts.In2019,anestimated7.8%ofUS adultsexperiencedatleast1majordepressiveepisodeand 5 …"
         }
       ]
     },
@@ -836,7 +837,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.8208,
       "avg_confidence": 0.8517,
-      "retrieval_time_ms": 383.8,
+      "retrieval_time_ms": 416.46,
       "hits": [
         {
           "final_rank": 1,
@@ -910,7 +911,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9613,
       "avg_confidence": 0.7568,
-      "retrieval_time_ms": 383.48,
+      "retrieval_time_ms": 397.75,
       "hits": [
         {
           "final_rank": 1,
@@ -992,7 +993,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.7609,
       "avg_confidence": 0.6099,
-      "retrieval_time_ms": 430.41,
+      "retrieval_time_ms": 398.92,
       "hits": [
         {
           "final_rank": 1,
@@ -1075,7 +1076,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.0914,
       "avg_confidence": 0.0574,
-      "retrieval_time_ms": 427.37,
+      "retrieval_time_ms": 409.67,
       "hits": [
         {
           "final_rank": 1,
@@ -1149,7 +1150,7 @@
       "first_relevant_rank": 3,
       "top1_confidence": 0.6935,
       "avg_confidence": 0.25,
-      "retrieval_time_ms": 421.04,
+      "retrieval_time_ms": 411.8,
       "hits": [
         {
           "final_rank": 1,
@@ -1217,7 +1218,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.6699,
       "avg_confidence": 0.2287,
-      "retrieval_time_ms": 402.06,
+      "retrieval_time_ms": 410.38,
       "hits": [
         {
           "final_rank": 1,
@@ -1269,5 +1270,5 @@
       ]
     }
   ],
-  "elapsed_seconds": 11.48
+  "elapsed_seconds": 10.94
 }

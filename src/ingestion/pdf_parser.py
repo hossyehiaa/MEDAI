@@ -223,7 +223,7 @@ def _parse_with_pdfplumber(pdf_path: Path) -> list[ParsedSection]:
     with pdfplumber.open(pdf_path) as pdf:
         for page_idx, page in enumerate(pdf.pages):
             page_number = page_idx + 1
-            text = page.extract_text() or ""
+            text = _normalize_extracted_unicode(page.extract_text() or "")
 
             if len(text.strip()) < _MIN_PAGE_TEXT_LENGTH or _is_toc_page(text):
                 continue
@@ -249,7 +249,8 @@ def _parse_with_pymupdf(pdf_path: Path) -> list[ParsedSection]:
     for page_idx in range(len(doc)):
         page = doc[page_idx]
         page_number = page_idx + 1
-        text = page.get_text("text")
+        raw_text = page.get_text("text")
+        text = _normalize_extracted_unicode(raw_text)
 
         if not text or len(text.strip()) < _MIN_PAGE_TEXT_LENGTH or _is_toc_page(text):
             continue

@@ -273,7 +273,8 @@ def _table_to_text(table: dict[str, Any]) -> str:
     for row in rows:
         lines.append("| " + " | ".join(str(c) for c in row) + " |")
 
-    return "\n".join(lines)
+    raw_tbl = "\n".join(lines)
+    return raw_tbl.replace("\x03", "≥").replace("\x04", "≤").replace("\x05", "≠").replace("\x06", "±")
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -327,8 +328,9 @@ def chunk_sections(merged_sections: list[_MergedSection]) -> list[Chunk]:
                 chunk_start_page = current_running_page
                 chunk_end_page = current_running_page
 
-            # Strip sentinels from the final chunk text
+            # Strip sentinels from the final chunk text and preserve Unicode symbols
             clean_fragment = re.sub(r"\[\[PAGE:\d+\]\]\n?", "", fragment).strip()
+            clean_fragment = clean_fragment.replace("\x03", "≥").replace("\x04", "≤").replace("\x05", "≠").replace("\x06", "±")
 
             if len(clean_fragment) < MIN_CHUNK_CHARS:
                 skipped += 1
