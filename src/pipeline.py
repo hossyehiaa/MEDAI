@@ -66,6 +66,25 @@ def _get_llm_client() -> LLMClient:
     return _llm_client
 
 
+def clean_llm_response(text: str) -> str:
+    """Strip think blocks, prompt echoes, and normalize markdown headers."""
+    text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+    for marker in [
+        "### Response Instructions",
+        "### Strict Grounding",
+        "### Strict Citation Rules",
+        "### Strict Grounding & Citation Rules",
+        "CRITICAL FIXES REQUIRED",
+    ]:
+        if marker in text:
+            text = text.split(marker)[0].strip()
+    if "## Recommendation" in text:
+        text = "## Recommendation" + text.split("## Recommendation", 1)[1]
+    elif "## recommendation" in text:
+        text = "## Recommendation" + text.split("## recommendation", 1)[1]
+    return text.strip()
+
+
 def run_pipeline(
     query: str,
     retrieval_manager: RetrievalManager | None = None,
@@ -204,12 +223,7 @@ def run_pipeline(
         context_chunks=context_chunks,
         system_prompt=system_prompt,
     )
-    llm_response = generation_result.get("response", "")
-    llm_response = re.sub(r"<think>.*?</think>", "", llm_response, flags=re.DOTALL).strip()
-    if "## Recommendation" in llm_response:
-        llm_response = "## Recommendation" + llm_response.split("## Recommendation", 1)[1]
-    elif "## recommendation" in llm_response:
-        llm_response = "## Recommendation" + llm_response.split("## recommendation", 1)[1]
+    llm_response = clean_llm_response(generation_result.get("response", ""))
 
     steps.append({
         "step": 4,
@@ -266,12 +280,7 @@ def run_pipeline(
             context_chunks=context_chunks,
             system_prompt=system_prompt,
         )
-        llm_response_2 = generation_result_2.get("response", "")
-        llm_response_2 = re.sub(r"<think>.*?</think>", "", llm_response_2, flags=re.DOTALL).strip()
-        if "## Recommendation" in llm_response_2:
-            llm_response_2 = "## Recommendation" + llm_response_2.split("## Recommendation", 1)[1]
-        elif "## recommendation" in llm_response_2:
-            llm_response_2 = "## Recommendation" + llm_response_2.split("## recommendation", 1)[1]
+        llm_response_2 = clean_llm_response(generation_result_2.get("response", ""))
         citation_result_2 = verify_citations(llm_response_2, context_chunks)
         faithfulness_result_2 = check_faithfulness(query, llm_response_2, context_chunks)
         schema_result_2 = check_response_schema(llm_response_2)
@@ -317,17 +326,17 @@ def run_pipeline(
 
     # ── Step 6: Append Crisis Resource & Professional Disclaimer ──────
     # Fix 7: Deduplicate disclaimer and 988 touchpoint if already present in response
-    clean_llm_response = llm_response.strip()
+    normalized_text = llm_response.strip()
     appendices: list[str] = []
-    if "988" not in clean_llm_response and "⚠️" not in clean_llm_response:
+    if "988" not in normalized_text and "⚠️" not in normalized_text:
         appendices.append(CRISIS_RESOURCE_LINE)
-    if "This information is based on USPSTF guidance" not in clean_llm_response and "not a substitute for professional" not in clean_llm_response:
+    if "This information is based on USPSTF guidance" not in normalized_text and "not a substitute for professional" not in normalized_text:
         appendices.append(PROFESSIONAL_DISCLAIMER)
 
     if appendices:
-        full_response = clean_llm_response + "\n\n---\n\n" + "\n\n".join(appendices)
+        full_response = normalized_text + "\n\n---\n\n" + "\n\n".join(appendices)
     else:
-        full_response = clean_llm_response
+        full_response = normalized_text
 
     steps.append({
         "step": 6,

@@ -64,16 +64,16 @@ You ONLY answer questions about USPSTF depression and suicide risk screening gui
    - The quote under ## Screening Tool MUST contain explicit instrument or screening terms (e.g. 'instrument', 'tool', 'scale', 'PHQ', 'EPDS', 'screening').
    - The quoted phrase MUST be substantive clinical prose appearing verbatim in the context.
    - Do NOT quote table pipes (|), markdown table headers, PMIDs, or bibliography lines.
-   - If a section cannot be grounded in a unique, topically-aligned quote from the context, state "Insufficient context in retrieved guidelines for this section" and omit that section.
 
-7. **6-SECTION RESPONSE SCHEMA**:
-   - Structure your response using exactly these 6 markdown sections:
+7. **MANDATORY 6-SECTION RESPONSE SCHEMA**:
+   - You MUST include ALL 6 markdown sections in every response without omitting any:
      ## Recommendation
      ## Population
      ## Screening Tool
      ## Harms & Considerations
      ## Evidence
      ## Source
+   - If the context contains limited data for a particular section, state the known limitation under that section header rather than omitting the section.
 """
 
 # ------------------------------------------------------------------
@@ -85,22 +85,39 @@ USER_PROMPT_TEMPLATE = """### Retrieved Context Passages
 ### Clinical Question
 {question}
 
-### Response Instructions
-1. Answer using ONLY the context passages above.
-2. Structure your response using exactly these 6 sections:
-   ## Recommendation
-   ## Population
-   ## Screening Tool
-   ## Harms & Considerations
-   ## Evidence
-   ## Source
-3. Preserve every caveat ("no evidence on frequency", "uncertainty", "only 1 study", "insufficient evidence") verbatim.
-4. If the query asks about pregnant or postpartum persons, explicitly include the Edinburgh Postnatal Depression Scale (EPDS) under ## Screening Tool.
-5. If the query asks about adolescents/children, explicitly state the scope limitation (applies to adults only).
-6. If citing AAFP/ICSI/other organizations, state: "Note: This is [Organization]'s recommendation, which aligns with but is distinct from USPSTF guidance."
-7. Each citation MUST be unique and used EXACTLY ONCE. Do NOT recycle quotes across sections. The Population quote MUST contain population terms. The Screening Tool quote MUST contain instrument/screening terms.
-8. For every factual claim, include an exact verbatim citation:
+### Response Instructions & Output Format
+You MUST fill out ALL 6 sections below using ONLY the retrieved passages:
+
+## Recommendation
+[Summarize USPSTF recommendation grade and primary directive with citation]
+
+## Population
+[Specify target population including age boundaries, perinatal status, and adult scope with citation]
+
+## Screening Tool
+[Detail validated screening instruments, explicitly including EPDS for perinatal queries, with citation]
+
+## Harms & Considerations
+[Detail clinical harms and implementation considerations with citation]
+
+## Evidence
+[Detail clinical evidence base and diagnostic accuracy findings with citation]
+
+## Source
+[Cite official USPSTF guidance and evidence review sources with citation]
+
+### Strict Grounding & Citation Rules:
+1. Preserve every caveat ("no evidence on frequency", "uncertainty", "only 1 study", "insufficient evidence") verbatim.
+2. For pregnant or postpartum queries, you MUST explicitly mention the Edinburgh Postnatal Depression Scale (EPDS) under ## Screening Tool.
+3. For adolescents/children queries, explicitly state that guidelines apply to adults aged 18+ only.
+4. If citing external bodies (AAFP, ICSI, etc.), state: "Note: This is [Organization]'s recommendation, which aligns with but is distinct from USPSTF guidance."
+5. Every factual claim MUST include an exact verbatim quote citation formatted EXACTLY like this:
    [Doc: <Source Name> | Sec: <Section Name> | Pg: <Page> | Quote: "<verbatim clinical text>"]
+6. Use each citation quote EXACTLY ONCE across the entire response without recycling.
+
+### Citation Format Example:
+## Recommendation
+The USPSTF recommends screening for depression in the adult population [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: "recommends screening for depression in the adult population, including pregnant and postpartum persons."].
 """
 
 

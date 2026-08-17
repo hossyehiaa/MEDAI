@@ -14,6 +14,7 @@ chromadb
 
 # === LLM ===
 openai
+google-generativeai
 
 # === Data Models & Settings ===
 pydantic
@@ -25,3 +26,4 @@ tiktoken
 # === Utilities ===
 tqdm
 rich
+

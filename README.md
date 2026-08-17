@@ -2,7 +2,7 @@
 
 **Clinical Domain:** USPSTF Depression and Suicide Risk in Adults (Grade B, June 2023 Guidelines)  
 **System Architecture:** Multi-Stage Clinical Decision Support Engine with Grounded LLM Generation & Verbatim Verification  
-**Chunk Count:** 1,824 chunks | **Embedding:** `paraphrase-MiniLM-L6-v2` (384-dim) | **Reranker:** `ms-marco-MiniLM-L-6-v2` | **LLM:** Groq (`llama-3.3-70b-versatile` / `groq/compound-mini`)
+**Chunk Count:** 1,824 chunks | **Embedding:** `paraphrase-MiniLM-L6-v2` (384-dim) | **Reranker:** `ms-marco-MiniLM-L-6-v2` | **Primary LLM:** Google Gemini (`gemini-3.6-flash` / `gemini-3.7-flash`) | **Fallback LLM:** Groq (`allam-2-7b` / `groq/compound`)
 
 ---
 
@@ -35,9 +35,10 @@ flowchart TD
         Threshold -- "NO" --> LowConf["Low Confidence Refusal"]
     end
 
-    subgraph Generation["Grounded LLM Generation Layer (Day 3)"]
-        PromptBuild --> GroqLLM["Groq LLM Client\n(llama-3.3-70b-versatile, temp=0.0)"]
-        GroqLLM --> CitVerify{"Citation Verifier\n(Verbatim Quote Regex Check)"}
+    subgraph Generation["Grounded LLM Generation Layer (Google Gemini Primary)"]
+        PromptBuild --> GeminiLLM["Google Gemini Client\n(gemini-3.6-flash, temp=0.0)"]
+        GeminiLLM -- "Rate Limit / 429" --> GroqFB["Groq Fallback Client\n(allam-2-7b / groq/compound)"]
+        GeminiLLM & GroqFB --> CitVerify{"Citation Verifier\n(Verbatim Quote Regex Check)"}
         CitVerify -- "FAILED" --> RetryOnce["Stricter Prompt Retry (1x)"]
         RetryOnce --> CitVerify
         CitVerify -- "OK" --> AddDiscl["Append Medical Disclaimer"]

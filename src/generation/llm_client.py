@@ -1,16 +1,16 @@
 """
-LLM Client — Groq-powered generation with OpenAI SDK and robust mock fallback.
+LLM Client — Google Gemini powered generation with Groq fallback and robust mock fallback.
 
-Uses OpenAI SDK pointed at Groq's API endpoint for llama-3.3-70b-versatile.
-Falls back to a deterministic MOCK response (valid 6-section format + verbatim quote)
-when the API key is missing, provider is "mock", or an API error occurs.
+Uses Google Gemini (gemini-3.6-flash / gemini-3.7-flash / gemini-flash-latest) via google.generativeai as primary LLM.
+Falls back to Groq (allam-2-7b / groq/compound) when Gemini is unavailable or rate-limited,
+and to a deterministic MOCK response when all endpoints are unreachable.
 
 Every generation attempt is logged to logs/generation.log.
 
 Usage:
     from src.generation.llm_client import LLMClient
     client = LLMClient()
-    response = client.generate(prompt_text)
+    response = client.generate(prompt_text, system_prompt=system_prompt)
 """
 
 from __future__ import annotations
@@ -31,6 +31,8 @@ from configs.settings import (
     LLM_PROVIDER,
     LLM_MODEL,
     LLM_FALLBACK_MODEL,
+    LLM_FALLBACK_PROVIDER,
+    GEMINI_FALLBACK_MODELS,
     LLM_TIMEOUT_SEC,
     GROQ_BASE_URL,
     TEMPERATURE,
@@ -44,6 +46,26 @@ logger = logging.getLogger(__name__)
 _project_root = Path(__file__).resolve().parent.parent.parent
 load_dotenv(_project_root / ".env")
 load_dotenv(_project_root / "src" / "safety" / ".env")
+
+
+def _extract_gemini_text(resp: Any) -> str:
+    """Safely extract text from Gemini response even if finish_reason truncated or parts nested."""
+    try:
+        if hasattr(resp, "text") and resp.text:
+            return resp.text
+    except Exception:
+        pass
+
+    if hasattr(resp, "candidates") and resp.candidates:
+        cand = resp.candidates[0]
+        if hasattr(cand, "content") and hasattr(cand.content, "parts"):
+            parts_text = []
+            for part in cand.content.parts:
+                if hasattr(part, "text") and part.text:
+                    parts_text.append(part.text)
+            if parts_text:
+                return "".join(parts_text)
+    return ""
 
 
 def _extract_clean_verbatim_quote(chunk: dict[str, Any]) -> tuple[str, str, str, str]:
@@ -104,16 +126,17 @@ def _build_mock_response(
 
 class LLMClient:
     """
-    Groq-powered LLM client with automatic mock fallback.
-
-    Generation client supporting Groq-hosted LLMs with graceful mock fallback.
+    Multi-provider LLM client with Google Gemini as primary, Groq as fallback, and Mock.
 
     Parameters:
-        provider: "groq" or "mock" (defaults to settings.LLM_PROVIDER).
+        provider: "gemini", "groq", or "mock" (defaults to settings.LLM_PROVIDER).
         model: Model name string (defaults to settings.LLM_MODEL).
-        base_url: OpenAI-compatible API base URL (defaults to settings.GROQ_BASE_URL).
-        temperature: Sampling temperature (defaults to settings.TEMPERATURE).
-        max_tokens: Maximum tokens to generate (default 4096).
+        fallback_model: Model name string for fallback.
+        base_url: OpenAI-compatible API base URL for Groq.
+        temperature: Sampling temperature.
+        max_tokens: Maximum tokens to generate.
+        timeout: Request timeout in seconds.
+        api_key: Optional explicit API key.
     """
 
     def __init__(
@@ -121,84 +144,128 @@ class LLMClient:
         provider: str = LLM_PROVIDER,
         model: str = LLM_MODEL,
         fallback_model: str = LLM_FALLBACK_MODEL,
+        fallback_provider: str = LLM_FALLBACK_PROVIDER,
         base_url: str = GROQ_BASE_URL,
         temperature: float = TEMPERATURE,
         max_tokens: int = 1500,
         timeout: int = LLM_TIMEOUT_SEC,
         api_key: str | None = None,
     ) -> None:
-        self.provider = provider
+        self.provider = provider.lower() if provider else "gemini"
         self.model = model
         self.fallback_model = fallback_model
+        self.fallback_provider = fallback_provider
         self.base_url = base_url
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.timeout = timeout
 
-        # Resolve API key
-        self.api_key = api_key or os.getenv("GROQ_API_KEY")
-        if not self.api_key:
-            # Check secondary safety env
-            load_dotenv("src/safety/.env")
-            self.api_key = os.getenv("GROQ_API_KEY")
+        # Resolve API keys
+        self.gemini_api_key = api_key if self.provider == "gemini" else None
+        if not self.gemini_api_key:
+            self.gemini_api_key = os.getenv("GEMINI_API_KEY")
 
-        self._client: Any | None = None
-        if self.provider == "groq":
-            if not self.api_key or self.api_key.strip() in ("", "your_groq_api_key_here", "invalid"):
-                logger.warning(
-                    "GROQ_API_KEY is missing or invalid. LLMClient will operate in MOCK mode."
+        self.groq_api_key = api_key if self.provider == "groq" else None
+        if not self.groq_api_key:
+            self.groq_api_key = os.getenv("GROQ_API_KEY")
+
+        if not self.gemini_api_key or not self.groq_api_key:
+            load_dotenv(_project_root / "src" / "safety" / ".env")
+            load_dotenv(_project_root / ".env")
+            if not self.gemini_api_key:
+                self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+            if not self.groq_api_key:
+                self.groq_api_key = os.getenv("GROQ_API_KEY")
+
+        self._gemini_configured = False
+        self._groq_client: Any | None = None
+
+        # Setup Gemini
+        if self.gemini_api_key and self.gemini_api_key.strip() not in ("", "invalid", "your_gemini_api_key_here"):
+            try:
+                import google.generativeai as genai
+                genai.configure(api_key=self.gemini_api_key)
+                self._gemini_configured = True
+            except Exception as e:
+                logger.warning("Failed to configure Google Gemini SDK: %s", e)
+
+        # Setup Groq client
+        if self.groq_api_key and self.groq_api_key.strip() not in ("", "invalid", "your_groq_api_key_here"):
+            try:
+                from openai import OpenAI
+                self._groq_client = OpenAI(
+                    api_key=self.groq_api_key,
+                    base_url=self.base_url,
+                    timeout=self.timeout,
                 )
-                self.provider = "mock"
-            else:
-                try:
-                    from openai import OpenAI  # inline to avoid hard failure if missing
-                    self._client = OpenAI(
-                        api_key=self.api_key,
-                        base_url=self.base_url,
-                        timeout=self.timeout,
-                    )
-                    logger.info("LLMClient initialized with Groq client.")
-                    # Fix 2: Health check on init; switch to fallback model immediately if primary fails
-                    self.health_check()
-                except Exception as exc:
-                    logger.warning("Failed to initialize OpenAI client for Groq: %s. Using MOCK.", exc)
-                    self.provider = "mock"
+            except Exception as e:
+                logger.warning("Failed to initialize OpenAI client for Groq: %s", e)
+
+        # Perform initial health check
+        self.health_check()
 
     def health_check(self) -> bool:
         """
-        Check Groq endpoint reachability. If primary model fails, switch to fallback model immediately.
+        Check endpoint reachability. If primary Gemini fails, tests fallback models or switches to Groq.
         """
-        if not self._client or self.provider == "mock":
-            return False
+        if self.provider == "gemini" and self._gemini_configured:
+            import google.generativeai as genai
+            candidate_models = [
+                self.model,
+                "gemini-3.6-flash",
+                "gemini-3.7-flash",
+                "gemini-flash-latest",
+                "gemini-3.5-flash",
+                "gemini-2.5-flash",
+            ]
+            for m in candidate_models:
+                if not m:
+                    continue
+                try:
+                    g_model = genai.GenerativeModel(m)
+                    resp = g_model.generate_content(
+                        "ping",
+                        generation_config=genai.types.GenerationConfig(
+                            temperature=0.0,
+                            max_output_tokens=50,
+                        ),
+                    )
+                    text = _extract_gemini_text(resp)
+                    if text:
+                        if self.model != m:
+                            logger.info("Primary Gemini model switched to '%s'", m)
+                            self.model = m
+                        return True
+                except Exception as exc:
+                    logger.warning("Gemini health check failed for model '%s': %s", m, exc)
 
-        candidate_models = [
-            self.model,
-            self.fallback_model,
-            "allam-2-7b",
-            "groq/compound",
-            "groq/compound-mini",
-            "openai/gpt-oss-120b",
-            "openai/gpt-oss-20b",
-            "qwen/qwen3.6-27b",
-        ]
-        for m in candidate_models:
-            if not m:
-                continue
-            try:
-                test_resp = self._client.chat.completions.create(
-                    model=m,
-                    messages=[{"role": "user", "content": "ping"}],
-                    max_tokens=20,
-                    timeout=min(self.timeout, 10),
-                )
-                if test_resp and test_resp.choices:
-                    if self.model != m:
-                        logger.warning("Primary model unavailable. Switched active model to '%s'", m)
-                        self.model = m
-                    return True
-            except Exception as e:
-                logger.warning("Health check failed for model '%s': %s", m, e)
-                continue
+        # If Gemini is not configured or failed, check Groq fallback
+        if self._groq_client:
+            candidate_groq = [
+                self.fallback_model,
+                "allam-2-7b",
+                "groq/compound",
+                "groq/compound-mini",
+                "openai/gpt-oss-120b",
+                "openai/gpt-oss-20b",
+                "qwen/qwen3.6-27b",
+            ]
+            for m in candidate_groq:
+                if not m:
+                    continue
+                try:
+                    resp = self._groq_client.chat.completions.create(
+                        model=m,
+                        messages=[{"role": "user", "content": "ping"}],
+                        max_tokens=20,
+                        timeout=min(self.timeout, 10),
+                    )
+                    if resp and resp.choices:
+                        logger.info("Groq fallback healthy on model '%s'", m)
+                        return True
+                except Exception as exc:
+                    logger.warning("Groq health check failed for model '%s': %s", m, exc)
+
         return False
 
     def generate(
@@ -208,136 +275,158 @@ class LLMClient:
         system_prompt: str | None = None,
     ) -> dict[str, Any]:
         """
-        Generate a response for the given prompt using Groq or mock fallback.
-
-        Returns dict with keys: 'response' (str), 'provider' (str), 'model' (str),
-            'status' ('real'|'mock'|'error'), 'latency_ms' (float).
+        Generate a response using Google Gemini as primary, cascading to Groq and Mock.
         """
         t0 = time.perf_counter()
 
-        if self._client and self.provider != "mock":
+        # ── 1. PRIMARY: GOOGLE GEMINI ───────────────────────────────────
+        if self.provider == "gemini" and self._gemini_configured:
+            try:
+                import google.generativeai as genai
+                candidate_gemini = [
+                    self.model,
+                    "gemini-3.6-flash",
+                    "gemini-3.7-flash",
+                    "gemini-flash-latest",
+                    "gemini-3.5-flash",
+                    "gemini-2.5-flash",
+                ]
+                for m in candidate_gemini:
+                    if not m:
+                        continue
+                    try:
+                        g_model = genai.GenerativeModel(
+                            m,
+                            system_instruction=system_prompt if system_prompt else None,
+                        )
+                        gen_config = genai.types.GenerationConfig(
+                            temperature=self.temperature,
+                            max_output_tokens=self.max_tokens,
+                        )
+                        resp = g_model.generate_content(prompt, generation_config=gen_config)
+                        raw_c = _extract_gemini_text(resp)
+                        c = re.sub(r"<think>.*?</think>", "", raw_c, flags=re.DOTALL).strip()
+                        if not c and raw_c:
+                            c = raw_c.strip()
+
+                        # Strip chain-of-thought preamble if any
+                        cot_markers = [
+                            "Here's a thinking process",
+                            "Here is a thinking process",
+                            "Let me analyze",
+                            "Step-by-step reasoning",
+                            "Thinking Process:",
+                            "Thinking process:",
+                            "Let's think step by step",
+                        ]
+                        has_cot = any(marker in c for marker in cot_markers)
+                        if (has_cot or not c.startswith("##")) and "##" in c:
+                            idx = c.find("##")
+                            c = c[idx:].strip()
+
+                        # Accept response if it contains markdown headers and is non-empty (>= 150 chars)
+                        if c and len(c) >= 150 and "##" in c:
+                            latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+                            endpoint_status = "success" if m == self.model else "fallback"
+                            result = {
+                                "response": c,
+                                "provider": "gemini",
+                                "model": m,
+                                "model_used": m,
+                                "endpoint_status": endpoint_status,
+                                "status": "real",
+                                "latency_ms": latency_ms,
+                            }
+                            self._log_generation(prompt, result)
+                            return result
+                        elif c:
+                            logger.warning("Gemini output with model '%s' too short (%d chars). Trying next...", m, len(c))
+                    except Exception as g_err:
+                        logger.warning("Gemini generation attempt with '%s' failed: %s", m, g_err)
+                        continue
+            except Exception as exc:
+                logger.warning("Gemini API error, attempting fallback to Groq: %s", exc)
+
+        # ── 2. SECONDARY: GROQ LLM FALLBACK ─────────────────────────────
+        if self._groq_client:
             try:
                 messages = []
                 if system_prompt:
                     messages.append({"role": "system", "content": system_prompt})
                 messages.append({"role": "user", "content": prompt})
 
-                model_to_try = self.model
-                response = None
-                used_model = self.model
-                try:
-                    resp = self._client.chat.completions.create(
-                        model=model_to_try,
-                        messages=messages,
-                        temperature=self.temperature,
-                        max_tokens=self.max_tokens,
-                    )
-                    raw_c = resp.choices[0].message.content or ""
-                    c = re.sub(r"<think>.*?</think>", "", raw_c, flags=re.DOTALL).strip()
-                    if c or raw_c.strip():
-                        response = resp
-                        used_model = model_to_try
-                except Exception:
-                    response = None
-
-                if response is None:
-                    fallback_models = [self.fallback_model, "allam-2-7b", "groq/compound", "groq/compound-mini", "openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.6-27b"]
-                    for fb in fallback_models:
-                        if fb == model_to_try or not fb:
-                            continue
-                        try:
-                            resp = self._client.chat.completions.create(
-                                model=fb,
-                                messages=messages,
-                                temperature=self.temperature,
-                                max_tokens=self.max_tokens,
-                            )
-                            raw_c = resp.choices[0].message.content or ""
-                            c = re.sub(r"<think>.*?</think>", "", raw_c, flags=re.DOTALL).strip()
-                            if not c and raw_c:
-                                c = raw_c.strip()
-                            if c:
-                                response = resp
-                                used_model = fb
-                                break
-                        except Exception as fb_err:
-                            if "429" in str(fb_err) or "rate_limit" in str(fb_err):
-                                time.sleep(2.0)
-                            continue
-                if response is None:
-                    raise RuntimeError("All configured LLM models failed or rate limited")
-
-                raw_content = response.choices[0].message.content or ""
-                # Strip internal reasoning/thinking blocks from reasoning models (e.g. Qwen/DeepSeek/GPT-OSS)
-                content = re.sub(r"<think>.*?</think>", "", raw_content, flags=re.DOTALL).strip()
-                if not content and raw_content:
-                    content = raw_content.strip()
-
-                # Fix #2: Strip chain-of-thought / scratchpad
-                cot_markers = [
-                    "Here's a thinking process",
-                    "Here is a thinking process",
-                    "Let me analyze",
-                    "Step-by-step reasoning",
-                    "Thinking Process:",
-                    "Thinking process:",
-                    "Let's think step by step",
+                candidate_groq = [
+                    self.fallback_model,
+                    "allam-2-7b",
+                    "groq/compound",
+                    "groq/compound-mini",
+                    "openai/gpt-oss-120b",
+                    "openai/gpt-oss-20b",
+                    "qwen/qwen3.6-27b",
                 ]
-                has_cot = any(marker in content for marker in cot_markers)
-                if has_cot or not content.startswith("##"):
-                    if "##" in content:
-                        idx = content.find("##")
-                        content = content[idx:].strip()
+                for fb in candidate_groq:
+                    if not fb:
+                        continue
+                    try:
+                        resp = self._groq_client.chat.completions.create(
+                            model=fb,
+                            messages=messages,
+                            temperature=self.temperature,
+                            max_tokens=self.max_tokens,
+                        )
+                        raw_c = resp.choices[0].message.content or ""
+                        c = re.sub(r"<think>.*?</think>", "", raw_c, flags=re.DOTALL).strip()
+                        if not c and raw_c:
+                            c = raw_c.strip()
 
-                if not content and raw_content:
-                    content = raw_content.strip()
+                        cot_markers = [
+                            "Here's a thinking process",
+                            "Here is a thinking process",
+                            "Let me analyze",
+                            "Step-by-step reasoning",
+                            "Thinking Process:",
+                            "Thinking process:",
+                            "Let's think step by step",
+                        ]
+                        has_cot = any(marker in c for marker in cot_markers)
+                        if (has_cot or not c.startswith("##")) and "##" in c:
+                            idx = c.find("##")
+                            c = c[idx:].strip()
 
-                latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-                endpoint_status = "success" if used_model == model_to_try else "fallback"
-
-                result = {
-                    "response": content,
-                    "provider": "groq",
-                    "model": used_model,
-                    "model_used": used_model,
-                    "endpoint_status": endpoint_status,
-                    "status": "real",
-                    "latency_ms": latency_ms,
-                }
-                self._log_generation(prompt, result)
-                return result
-
+                        if c and len(c) >= 200:
+                            latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+                            result = {
+                                "response": c,
+                                "provider": "groq",
+                                "model": fb,
+                                "model_used": fb,
+                                "endpoint_status": "fallback",
+                                "status": "real",
+                                "latency_ms": latency_ms,
+                            }
+                            self._log_generation(prompt, result)
+                            return result
+                    except Exception as fb_err:
+                        if "429" in str(fb_err) or "rate_limit" in str(fb_err):
+                            time.sleep(1.0)
+                        continue
             except Exception as exc:
-                logger.warning("Groq API error, falling back to MOCK: %s", exc)
-                latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-                mock_content = _build_mock_response(context_chunks, prompt=prompt)
-                result = {
-                    "response": mock_content,
-                    "provider": "mock",
-                    "model": "mock-fallback",
-                    "model_used": "mock-fallback",
-                    "endpoint_status": "unreachable",
-                    "status": "error",
-                    "error": str(exc),
-                    "latency_ms": latency_ms,
-                }
-                self._log_generation(prompt, result)
-                return result
-        else:
-            # MOCK mode
-            mock_content = _build_mock_response(context_chunks, prompt=prompt)
-            latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-            result = {
-                "response": mock_content,
-                "provider": "mock",
-                "model": "mock-fallback",
-                "model_used": "mock-fallback",
-                "endpoint_status": "unreachable",
-                "status": "mock",
-                "latency_ms": latency_ms,
-            }
-            self._log_generation(prompt, result)
-            return result
+                logger.warning("Groq fallback failed: %s", exc)
+
+        # ── 3. TERTIARY: MOCK DEGRADED FALLBACK ──────────────────────────
+        latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+        mock_content = _build_mock_response(context_chunks, prompt=prompt)
+        result = {
+            "response": mock_content,
+            "provider": "mock",
+            "model": "mock-fallback",
+            "model_used": "mock-fallback",
+            "endpoint_status": "unreachable",
+            "status": "error",
+            "latency_ms": latency_ms,
+        }
+        self._log_generation(prompt, result)
+        return result
 
     def _log_generation(self, prompt: str, result: dict[str, Any]) -> None:
         """Append a structured JSON line entry to logs/generation.log."""

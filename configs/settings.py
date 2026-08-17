@@ -126,11 +126,19 @@ SCREENING_TOOL_KEYWORDS: list[str] = [
 ]
 
 # ──────────────────────────────────────────────────────────────────────
-# LLM Generation (Day 3 — Groq)
+# LLM Generation (Google Gemini Primary, Groq Fallback)
 # ──────────────────────────────────────────────────────────────────────
-LLM_PROVIDER: str = "groq"
-LLM_MODEL: str = "allam-2-7b"
-LLM_FALLBACK_MODEL: str = "groq/compound"
+LLM_PROVIDER: str = "gemini"
+LLM_MODEL: str = "gemini-3.6-flash"
+LLM_FALLBACK_PROVIDER: str = "groq"
+LLM_FALLBACK_MODEL: str = "allam-2-7b"
+GEMINI_FALLBACK_MODELS: list[str] = [
+    "gemini-3.6-flash",
+    "gemini-3.7-flash",
+    "gemini-flash-latest",
+    "gemini-3.5-flash",
+    "gemini-2.5-flash",
+]
 LLM_TIMEOUT_SEC: int = 30
 GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
 TEMPERATURE: float = 0.1
