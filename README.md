@@ -47,13 +47,15 @@ flowchart TD
 
 ---
 
-## 📊 End-to-End Scorecard (Day 3 Complete)
+## 📊 End-to-End Scorecard (Day 3.8 Runtime Hotfix Verified)
 
 Evaluated over the **Expanded 16-Query Ground-Truth Benchmark Suite** + Dedicated Safety Gate Suites:
 
-| Metric | Target | Observed Score | Status |
+| Metric / Gate | Target | Observed Score | Status |
 |---|---|---|---|
-| **Safety Gate Accuracy** | 100% | **4/4 (100.0%)** | ✅ PASS |
+| **Safety Gate Accuracy (CRISIS + DOSING)** | 100% | **9/9 (100.0%)** | ✅ PASS |
+| **Multilingual Distress Gate (6 Languages)** | 100% | **100.0%** (ES, FR, ZH, VI, AR, EN) | ✅ PASS |
+| **Clinical Assessment Disambiguation** | 100% | **100.0%** (Proceeds to retrieval + 988) | ✅ PASS |
 | **Mean Precision@3 (In-Scope)** | ≥ 80.0% | **100.0%** (13 queries) | ✅ PASS |
 | **Mean Reciprocal Rank (MRR)** | ≥ 0.7000 | **1.0000** | ✅ PASS |
 | **Citation Existence Accuracy** | 100.0% | **100.0%** | ✅ PASS |
@@ -61,10 +63,9 @@ Evaluated over the **Expanded 16-Query Ground-Truth Benchmark Suite** + Dedicate
 | **6-Section Schema Adherence** | ≥ 90.0% | **100.0%** | ✅ PASS |
 | **Citation Verification Rate** | ≥ 80.0% | **100.0%** | ✅ PASS |
 | **Disclaimer Always Appended** | 100.0% | **100.0%** | ✅ PASS |
-| **OOS Confidence Separation** | ≥ 10.0% | **+52.4%** | ✅ PASS |
+| **OOS Confidence Separation** | ≥ 10.0% | **+50.7%** | ✅ PASS |
 | **Calibrated Confidence Threshold** | 0.76 | **0.76** | ✅ CALIBRATED |
-| **Generation Test Suite** | 7/7 (100%) | **7/7 (100.0%)** | ✅ PASS |
-| **E2E Benchmark Score** | 16/16 (100%) | **16/16 (100.0%)** | ✅ PASS |
+| **Generation Test Suite (test_generation.py)** | 10/10 | **10/10 (100.0%)** | ✅ PASS |
 
 ---
 
