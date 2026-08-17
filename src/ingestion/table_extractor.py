@@ -126,6 +126,37 @@ def _flatten_table_text(headers: list[str], rows: list[list[str]]) -> str:
     return " ".join(parts)
 
 
+def is_metadata_or_empty_table(headers: list[str], rows: list[list[str]], text: str = "") -> bool:
+    """
+    Returns True if a table is metadata-only, header-only, TOC, bibliography, or has <50 alphanumeric characters.
+    """
+    if not text:
+        parts = list(headers)
+        for row in rows:
+            parts.extend(row)
+        text = " ".join(parts)
+
+    # (d) < 50 alphanumeric characters after stripping table syntax
+    alpha_chars = re.sub(r"[^a-zA-Z0-9]", "", text)
+    if len(alpha_chars) < 50:
+        return True
+
+    # (a) Header-only / mostly pipes & dashes (no data rows or all empty)
+    if not rows or not any(any(str(c).strip() for c in r) for r in rows):
+        return True
+
+    # (b) TOC pattern e.g. "Table 1. ..." or dot leaders
+    if re.search(r"^\s*Table\s+\d+\.", text, re.IGNORECASE | re.MULTILINE):
+        if re.search(r"\.{3,}\s*\d+", text) or "list of tables" in text.lower():
+            return True
+
+    # (c) Bibliography table (contains PMID: or et al.)
+    if "PMID:" in text or "pmid:" in text.lower() or "et al." in text or "et al," in text:
+        return True
+
+    return False
+
+
 # ──────────────────────────────────────────────────────────────────────
 # Public API
 # ──────────────────────────────────────────────────────────────────────
@@ -185,6 +216,10 @@ def extract_tables(pdf_path: str | Path) -> list[ExtractedTable]:
 
                 # Screening tool detection
                 full_text = _flatten_table_text(headers, rows)
+                if is_metadata_or_empty_table(headers, rows, full_text):
+                    logger.debug("  Skipping metadata/empty table on page %d, idx %d", page_number, tbl_idx)
+                    continue
+
                 matched_tools = _detect_screening_tools(full_text)
                 is_screening = len(matched_tools) > 0
 

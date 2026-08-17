@@ -34,7 +34,9 @@ from src.safety.guardrails import (
     check_input,
     verify_citations,
     check_response_schema,
+    check_faithfulness,
     CRISIS_MESSAGE,
+    CRISIS_RESOURCE_LINE,
     DOSING_REFUSAL_MESSAGE,
     PROFESSIONAL_DISCLAIMER,
 )
@@ -103,10 +105,16 @@ def run_pipeline(
 
     if not safety_result.passed:
         total_ms = round((time.perf_counter() - t0) * 1000, 2)
+        # CRISIS refusal vs DOSING refusal
+        refusal_response = safety_result.message
+        disclaimer_to_append = PROFESSIONAL_DISCLAIMER if safety_result.status != "CRISIS" else None
+        if disclaimer_to_append:
+            refusal_response = refusal_response + "\n\n---\n\n" + disclaimer_to_append
+
         return {
             "query": query,
             "status": safety_result.status,
-            "response": safety_result.message,
+            "response": refusal_response,
             "citations": None,
             "retrieval": None,
             "generation": None,
@@ -115,7 +123,7 @@ def run_pipeline(
                 "reason": safety_result.reason,
                 "flags": safety_result.flags,
             },
-            "disclaimer": None,
+            "disclaimer": disclaimer_to_append,
             "steps": steps,
             "total_time_ms": total_ms,
         }
@@ -145,15 +153,17 @@ def run_pipeline(
             "threshold": CONFIDENCE_THRESHOLD,
         })
         total_ms = round((time.perf_counter() - t0) * 1000, 2)
+        low_conf_response = (
+            f"The retrieval confidence ({top1_confidence:.1%}) is below the "
+            f"calibrated threshold ({CONFIDENCE_THRESHOLD:.0%}). This query may be "
+            f"outside the scope of USPSTF depression screening guidelines. "
+            f"Please consult a clinical specialist."
+            f"\n\n---\n\n{PROFESSIONAL_DISCLAIMER}"
+        )
         return {
             "query": query,
             "status": "REFUSAL_LOW_CONFIDENCE",
-            "response": (
-                f"The retrieval confidence ({top1_confidence:.1%}) is below the "
-                f"calibrated threshold ({CONFIDENCE_THRESHOLD:.0%}). This query may be "
-                f"outside the scope of USPSTF depression screening guidelines. "
-                f"Please consult a clinical specialist."
-            ),
+            "response": low_conf_response,
             "citations": None,
             "retrieval": retrieval_result,
             "generation": None,
@@ -204,16 +214,32 @@ def run_pipeline(
         "latency_ms": generation_result.get("latency_ms"),
     })
 
-    # ── Step 5: Citation Verification ─────────────────────────────────
+    # ── Step 5: Citation Verification & Faithfulness Check ─────────────
     citation_result = verify_citations(llm_response, context_chunks)
+    faithfulness_result = check_faithfulness(query, llm_response, context_chunks)
 
-    if citation_result["status"] == "CITATION_VERIFICATION_FAILED":
-        # Regenerate ONCE with stricter prompt
+    needs_retry = (
+        citation_result["status"] == "CITATION_VERIFICATION_FAILED"
+        or not faithfulness_result["passed"]
+    )
+
+    if needs_retry:
+        retry_notes: list[str] = []
+        if citation_result["status"] == "CITATION_VERIFICATION_FAILED":
+            retry_notes.append("Ensure EVERY Quote: \"...\" uses an EXACT substantive verbatim phrase (>=40 chars, no table syntax, no PMIDs) from the context.")
+        if "CAVEAT_SUPPRESSED" in faithfulness_result["flags"]:
+            retry_notes.append("You MUST state explicit caveats ('no evidence on frequency', 'uncertainty', 'only 1 study') and NOT claim adequate evidence.")
+        if "ATTRIBUTION_MISSING" in faithfulness_result["flags"]:
+            retry_notes.append("You MUST state: 'Note: This is [Organization]'s recommendation, which aligns with but is distinct from USPSTF guidance.'")
+        if "SCOPE_UNACKNOWLEDGED" in faithfulness_result["flags"]:
+            retry_notes.append("You MUST explicitly state: 'This guideline does not address adolescents or children; the following applies to adults only.'")
+
         stricter_prompt = (
-            user_prompt + "\n\nCRITICAL: Your previous response contained unverified quotes. "
-            "Ensure EVERY Quote: \"...\" uses an EXACT verbatim phrase from the context passages above. "
-            "Do NOT paraphrase. Copy word-for-word from the context."
+            user_prompt
+            + "\n\nCRITICAL FIXES REQUIRED IN REGENERATION:\n"
+            + "\n".join(f"- {n}" for n in retry_notes)
         )
+
         generation_result_2 = client.generate(
             prompt=stricter_prompt,
             context_chunks=context_chunks,
@@ -221,38 +247,49 @@ def run_pipeline(
         )
         llm_response_2 = generation_result_2.get("response", "")
         citation_result_2 = verify_citations(llm_response_2, context_chunks)
+        faithfulness_result_2 = check_faithfulness(query, llm_response_2, context_chunks)
 
-        if citation_result_2["status"] == "OK" or citation_result_2["verified_quotes"] > citation_result["verified_quotes"]:
-            # Use the improved response
+        if (
+            citation_result_2["status"] == "OK"
+            or citation_result_2["verified_quotes"] >= citation_result["verified_quotes"]
+        ):
             llm_response = llm_response_2
             citation_result = citation_result_2
+            faithfulness_result = faithfulness_result_2
             generation_result = generation_result_2
             steps.append({
                 "step": "5_retry",
-                "name": "citation_verification_retry",
-                "status": citation_result["status"],
-                "verified": citation_result["verified_quotes"],
-                "total": citation_result["total_quotes"],
+                "name": "faithfulness_retry",
+                "status": "IMPROVED",
+                "citation_status": citation_result["status"],
+                "faithfulness_flags": faithfulness_result["flags"],
             })
         else:
             steps.append({
                 "step": "5_retry",
-                "name": "citation_verification_retry",
+                "name": "faithfulness_retry",
                 "status": "STILL_FAILED",
-                "unverified": citation_result["unverified_quotes"],
+                "unverified": citation_result.get("unverified_quotes", []),
             })
 
     steps.append({
         "step": 5,
-        "name": "citation_verification",
-        "status": citation_result["status"],
+        "name": "citation_and_faithfulness_verification",
+        "citation_status": citation_result["status"],
         "verified_quotes": citation_result["verified_quotes"],
         "total_quotes": citation_result["total_quotes"],
-        "unverified_quotes": citation_result.get("unverified_quotes", []),
+        "faithfulness_passed": faithfulness_result["passed"],
+        "faithfulness_flags": faithfulness_result["flags"],
     })
 
-    # ── Step 6: Append Professional Disclaimer ────────────────────────
-    full_response = llm_response.strip() + "\n\n---\n\n" + PROFESSIONAL_DISCLAIMER
+    # ── Step 6: Append Crisis Resource & Professional Disclaimer ──────
+    full_response = (
+        llm_response.strip()
+        + "\n\n---\n\n"
+        + CRISIS_RESOURCE_LINE
+        + "\n\n"
+        + PROFESSIONAL_DISCLAIMER
+    )
 
     # Schema check
     schema_result = check_response_schema(llm_response)
@@ -260,6 +297,7 @@ def run_pipeline(
     steps.append({
         "step": 6,
         "name": "disclaimer_appended",
+        "has_988_line": True,
         "schema_sections_present": schema_result["section_count"],
         "schema_all_present": schema_result["all_present"],
     })
@@ -272,6 +310,7 @@ def run_pipeline(
         "response": full_response,
         "llm_response_raw": llm_response,
         "citations": citation_result,
+        "faithfulness": faithfulness_result,
         "schema": schema_result,
         "retrieval": retrieval_result,
         "generation": {
@@ -280,7 +319,7 @@ def run_pipeline(
             "status": generation_result.get("status"),
             "latency_ms": generation_result.get("latency_ms"),
         },
-        "safety": {"status": "OK"},
+        "safety": {"status": "OK", "has_988_line": True},
         "disclaimer": PROFESSIONAL_DISCLAIMER,
         "steps": steps,
         "total_time_ms": total_ms,

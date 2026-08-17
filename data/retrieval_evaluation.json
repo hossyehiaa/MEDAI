@@ -5,7 +5,7 @@
     "oos_queries_count": 3,
     "mean_precision_at_3": 1.0,
     "mrr": 1.0,
-    "mean_confidence": 0.9014,
+    "mean_confidence": 0.9009,
     "citation_existence_accuracy": 1.0,
     "page_precision": 1.0,
     "min_in_scope_top1_confidence": 0.8208,
@@ -38,32 +38,11 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
-      "avg_confidence": 1.0,
-      "retrieval_time_ms": 486.65,
+      "avg_confidence": 0.9939,
+      "retrieval_time_ms": 477.1,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "44c0ad0bad55830a",
-          "document_name": "Bookshelf_NBK592805",
-          "section_name": "Table",
-          "pages": "p.181-181",
-          "page_span": 1,
-          "confidence": 1.0,
-          "section_prior": 1.0,
-          "boosted_score": 1.0,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "pregnant",
-            "postpartum",
-            "perinatal",
-            "depression",
-            "screen"
-          ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | | Depression | American Academy of Family …"
-        },
-        {
-          "final_rank": 2,
           "chunk_id": "13bc0771e701aa02",
           "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
           "section_name": "How to implement this recommendation (Part 4)",
@@ -82,15 +61,15 @@
           "text_snippet": "• The USPSTF found no evidence on the optimal frequency of screening for depression. In the absence of evidence, a pragmatic approach might include sc …"
         },
         {
-          "final_rank": 3,
-          "chunk_id": "dd874bc2a64267f6",
+          "final_rank": 2,
+          "chunk_id": "44c0ad0bad55830a",
           "document_name": "Bookshelf_NBK592805",
           "section_name": "Table",
-          "pages": "p.184-184",
+          "pages": "p.181-181",
           "page_span": 1,
           "confidence": 1.0,
-          "section_prior": 1.0,
-          "boosted_score": 1.0,
+          "section_prior": 0.85,
+          "boosted_score": 0.85,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -100,7 +79,26 @@
             "depression",
             "screen"
           ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | |  | Association of Women’s Health, Obste …"
+          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | | Depression | American Academy of Family …"
+        },
+        {
+          "final_rank": 3,
+          "chunk_id": "6c8925baca7b4a55",
+          "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
+          "section_name": "How to implement this recommendation (Part 3)",
+          "pages": "p.1-1",
+          "page_span": 1,
+          "confidence": 0.98175,
+          "section_prior": 1.0,
+          "boosted_score": 0.9818,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "pregnant",
+            "perinatal",
+            "depression"
+          ],
+          "text_snippet": "• Clinicians are encouraged to consider the unique balance of benefits and harms in the perinatal period when deciding the best treatment for depressi …"
         }
       ]
     },
@@ -121,31 +119,10 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 1.0,
-      "retrieval_time_ms": 496.44,
+      "retrieval_time_ms": 376.86,
       "hits": [
         {
           "final_rank": 1,
-          "chunk_id": "37c93edda8a9cf62",
-          "document_name": "Bookshelf_NBK592805",
-          "section_name": "Table",
-          "pages": "p.183-183",
-          "page_span": 1,
-          "confidence": 1.0,
-          "section_prior": 1.0,
-          "boosted_score": 1.0,
-          "is_relevant": true,
-          "citation_exists": true,
-          "matched_keywords": [
-            "postpartum",
-            "pregnant",
-            "epds",
-            "depression",
-            "screen"
-          ],
-          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | |  | Improvement (ICSI), 2016 |  |  |  |  …"
-        },
-        {
-          "final_rank": 2,
           "chunk_id": "13bc0771e701aa02",
           "document_name": "depression-suicide-risk-adults-clinician-summ (2)",
           "section_name": "How to implement this recommendation (Part 4)",
@@ -164,6 +141,27 @@
           "text_snippet": "• The USPSTF found no evidence on the optimal frequency of screening for depression. In the absence of evidence, a pragmatic approach might include sc …"
         },
         {
+          "final_rank": 2,
+          "chunk_id": "37c93edda8a9cf62",
+          "document_name": "Bookshelf_NBK592805",
+          "section_name": "Table",
+          "pages": "p.183-183",
+          "page_span": 1,
+          "confidence": 1.0,
+          "section_prior": 0.85,
+          "boosted_score": 0.85,
+          "is_relevant": true,
+          "citation_exists": true,
+          "matched_keywords": [
+            "postpartum",
+            "pregnant",
+            "epds",
+            "depression",
+            "screen"
+          ],
+          "text_snippet": "| Condition |  | Organization, |  | Recommendation(s) | | --- | --- | --- | --- | --- | |  |  | year |  |  | |  | Improvement (ICSI), 2016 |  |  |  |  …"
+        },
+        {
           "final_rank": 3,
           "chunk_id": "dd874bc2a64267f6",
           "document_name": "Bookshelf_NBK592805",
@@ -171,8 +169,8 @@
           "pages": "p.184-184",
           "page_span": 1,
           "confidence": 1.0,
-          "section_prior": 1.0,
-          "boosted_score": 1.0,
+          "section_prior": 0.85,
+          "boosted_score": 0.85,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -203,7 +201,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9963,
-      "retrieval_time_ms": 397.08,
+      "retrieval_time_ms": 393.98,
       "hits": [
         {
           "final_rank": 1,
@@ -282,7 +280,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.999,
       "avg_confidence": 0.994,
-      "retrieval_time_ms": 379.68,
+      "retrieval_time_ms": 345.84,
       "hits": [
         {
           "final_rank": 1,
@@ -359,7 +357,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.993,
       "avg_confidence": 0.8904,
-      "retrieval_time_ms": 394.1,
+      "retrieval_time_ms": 351.83,
       "hits": [
         {
           "final_rank": 1,
@@ -438,7 +436,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9947,
       "avg_confidence": 0.9951,
-      "retrieval_time_ms": 373.46,
+      "retrieval_time_ms": 330.45,
       "hits": [
         {
           "final_rank": 1,
@@ -519,7 +517,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9961,
       "avg_confidence": 0.9147,
-      "retrieval_time_ms": 466.82,
+      "retrieval_time_ms": 318.66,
       "hits": [
         {
           "final_rank": 1,
@@ -597,7 +595,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9933,
       "avg_confidence": 0.989,
-      "retrieval_time_ms": 358.53,
+      "retrieval_time_ms": 371.18,
       "hits": [
         {
           "final_rank": 1,
@@ -680,7 +678,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9763,
       "avg_confidence": 0.7918,
-      "retrieval_time_ms": 370.47,
+      "retrieval_time_ms": 327.54,
       "hits": [
         {
           "final_rank": 1,
@@ -758,7 +756,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 1.0,
       "avg_confidence": 0.9845,
-      "retrieval_time_ms": 420.77,
+      "retrieval_time_ms": 327.33,
       "hits": [
         {
           "final_rank": 1,
@@ -806,8 +804,8 @@
           "pages": "p.181-181",
           "page_span": 1,
           "confidence": 0.9536250000000001,
-          "section_prior": 1.0,
-          "boosted_score": 0.9536,
+          "section_prior": 0.85,
+          "boosted_score": 0.8106,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -840,7 +838,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.8208,
       "avg_confidence": 0.7986,
-      "retrieval_time_ms": 437.87,
+      "retrieval_time_ms": 324.65,
       "hits": [
         {
           "final_rank": 1,
@@ -885,8 +883,8 @@
           "pages": "p.183-183",
           "page_span": 1,
           "confidence": 0.801,
-          "section_prior": 1.0,
-          "boosted_score": 0.801,
+          "section_prior": 0.85,
+          "boosted_score": 0.6809,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -915,7 +913,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.9613,
       "avg_confidence": 0.7568,
-      "retrieval_time_ms": 399.38,
+      "retrieval_time_ms": 328.56,
       "hits": [
         {
           "final_rank": 1,
@@ -997,7 +995,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.988,
       "avg_confidence": 0.6069,
-      "retrieval_time_ms": 412.62,
+      "retrieval_time_ms": 384.95,
       "hits": [
         {
           "final_rank": 1,
@@ -1007,8 +1005,8 @@
           "pages": "p.181-181",
           "page_span": 1,
           "confidence": 0.988,
-          "section_prior": 1.0,
-          "boosted_score": 0.988,
+          "section_prior": 0.85,
+          "boosted_score": 0.8398,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -1078,8 +1076,8 @@
       "reciprocal_rank": 1.0,
       "first_relevant_rank": 1,
       "top1_confidence": 0.0914,
-      "avg_confidence": 0.0651,
-      "retrieval_time_ms": 456.62,
+      "avg_confidence": 0.0574,
+      "retrieval_time_ms": 311.7,
       "hits": [
         {
           "final_rank": 1,
@@ -1089,8 +1087,8 @@
           "pages": "p.486-486",
           "page_span": 1,
           "confidence": 0.0914,
-          "section_prior": 0.5,
-          "boosted_score": 0.0457,
+          "section_prior": 0.4,
+          "boosted_score": 0.0366,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -1106,8 +1104,8 @@
           "pages": "p.478-478",
           "page_span": 1,
           "confidence": 0.0625,
-          "section_prior": 0.5,
-          "boosted_score": 0.0312,
+          "section_prior": 0.4,
+          "boosted_score": 0.025,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -1117,21 +1115,22 @@
         },
         {
           "final_rank": 3,
-          "chunk_id": "db86e63ca6c2ad1e",
+          "chunk_id": "e6c703c390b0c48c",
           "document_name": "Bookshelf_NBK592805",
-          "section_name": "References",
-          "pages": "p.356-356",
+          "section_name": "Table",
+          "pages": "p.643-643",
           "page_span": 1,
-          "confidence": 0.0413,
-          "section_prior": 0.5,
-          "boosted_score": 0.0207,
+          "confidence": 0.0184,
+          "section_prior": 0.85,
+          "boosted_score": 0.0156,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
             "dose",
+            "mg",
             "titration"
           ],
-          "text_snippet": "antidepressants for major depression: systematic review. Acta Psychiatr Scand. 141(5): 401-409. 2020. KQ4E10a, KQ5E10a 261. Furukawa, TA, Salanti, G,  …"
+          "text_snippet": "|  | Author, Year |  |  | IG |  |  | Intervention detail |  |  | Adherence |  |  | Acceptability |  | | --- | --- | --- | --- | --- | --- | --- | ---  …"
         }
       ]
     },
@@ -1152,7 +1151,7 @@
       "first_relevant_rank": 3,
       "top1_confidence": 0.6935,
       "avg_confidence": 0.25,
-      "retrieval_time_ms": 370.35,
+      "retrieval_time_ms": 373.58,
       "hits": [
         {
           "final_rank": 1,
@@ -1220,7 +1219,7 @@
       "first_relevant_rank": 1,
       "top1_confidence": 0.6699,
       "avg_confidence": 0.2287,
-      "retrieval_time_ms": 508.13,
+      "retrieval_time_ms": 346.58,
       "hits": [
         {
           "final_rank": 1,
@@ -1230,8 +1229,8 @@
           "pages": "p.278-279",
           "page_span": 2,
           "confidence": 0.6699,
-          "section_prior": 0.5,
-          "boosted_score": 0.335,
+          "section_prior": 0.4,
+          "boosted_score": 0.268,
           "is_relevant": true,
           "citation_exists": true,
           "matched_keywords": [
@@ -1256,14 +1255,14 @@
         },
         {
           "final_rank": 3,
-          "chunk_id": "9a5fc7213c6c17f2",
+          "chunk_id": "3e0b317b42269901",
           "document_name": "Bookshelf_NBK592805",
-          "section_name": "References",
+          "section_name": "Bibliography",
           "pages": "p.124-124",
           "page_span": 1,
           "confidence": 0.0007,
-          "section_prior": 0.5,
-          "boosted_score": 0.0003,
+          "section_prior": 0.3,
+          "boosted_score": 0.0002,
           "is_relevant": false,
           "citation_exists": true,
           "matched_keywords": [],
@@ -1272,5 +1271,5 @@
       ]
     }
   ],
-  "elapsed_seconds": 14.14
+  "elapsed_seconds": 15.08
 }

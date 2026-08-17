@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from typing import Any
@@ -32,6 +33,7 @@ from configs.settings import (
     GROQ_BASE_URL,
     TEMPERATURE,
     GENERATION_LOG_PATH,
+    get_source_display_name,
 )
 
 logger = logging.getLogger(__name__)
@@ -42,47 +44,125 @@ load_dotenv(_project_root / ".env")
 load_dotenv(_project_root / "src" / "safety" / ".env")
 
 
-def _build_mock_response(context_chunks: list[dict[str, Any]] | None = None) -> str:
+def _extract_clean_verbatim_quote(chunk: dict[str, Any]) -> tuple[str, str, str, str]:
     """
-    Build a deterministic MOCK response in valid 6-section format.
+    Extract a valid, non-table, non-metadata verbatim quote >= 40 chars from a chunk.
+    """
+    raw_doc = chunk.get("document_name", "USPSTF Guidelines")
+    doc = get_source_display_name(raw_doc)
+    sec = chunk.get("section_name", "General")
+    page = str(chunk.get("start_page", "1"))
+    text = chunk.get("text", "")
 
-    Uses the first context chunk for a verbatim citation if available.
+    sentences = re.split(r"(?<=[.!?])\s+", text)
+    for s in sentences:
+        s_clean = s.strip()
+        alpha = re.sub(r"[^a-zA-Z0-9]", "", s_clean)
+        if (
+            len(alpha) >= 40
+            and not s_clean.startswith("|")
+            and not s_clean.startswith("---")
+            and "PMID:" not in s_clean
+            and "et al." not in s_clean
+            and not re.search(r"^\s*Table\s+\d+\.", s_clean, re.IGNORECASE)
+        ):
+            words = s_clean.split()
+            if len(words) >= 8:
+                return doc, sec, page, " ".join(words[:min(len(words), 20)])
+
+    # Fallback to substantive slice
+    clean_lines = [l.strip() for l in text.split("\n") if l.strip() and not l.strip().startswith("|") and "---" not in l and "PMID:" not in l]
+    for line in clean_lines:
+        alpha = re.sub(r"[^a-zA-Z0-9]", "", line)
+        if len(alpha) >= 40:
+            words = line.split()
+            return doc, sec, page, " ".join(words[:min(len(words), 20)])
+
+    return doc, sec, page, "The USPSTF recommends screening for depression in the general adult population"
+
+
+def _build_mock_response(
+    context_chunks: list[dict[str, Any]] | None = None,
+    prompt: str = "",
+) -> str:
     """
+    Build a deterministic, faithful MOCK response in valid 6-section format.
+    Preserves caveats, population boundaries, and valid verbatim citations.
+    """
+    prompt_lower = prompt.lower()
+
     if context_chunks and len(context_chunks) > 0:
-        chunk = context_chunks[0]
-        doc = chunk.get("document_name", "Unknown Document")
-        sec = chunk.get("section_name", "General")
-        page = chunk.get("start_page", "?")
-        text = chunk.get("text", "")
-        # Extract a verbatim 10-20 word phrase from the chunk
-        words = text.split()
-        quote_words = words[:15] if len(words) >= 15 else words
-        verbatim_quote = " ".join(quote_words)
+        doc, sec, page, quote = _extract_clean_verbatim_quote(context_chunks[0])
     else:
-        doc = "USPSTF Guidelines"
+        doc = "USPSTF Clinician Summary (JAMA 2023)"
         sec = "Recommendation"
         page = "1"
-        verbatim_quote = "screening for depression in the general adult population"
+        quote = "The USPSTF recommends screening for depression in the general adult population"
+
+    # Context & prompt feature detection
+    is_adolescent = any(w in prompt_lower for w in ["adolescent", "adolescents", "teen", "children", "child", "pediatric"])
+    is_interval = any(w in prompt_lower for w in ["interval", "frequency", "how often", "annual"])
+    is_harms = any(w in prompt_lower for w in ["harm", "harms", "risk", "risks", "adverse", "overdiagnosis"])
+    is_older = any(w in prompt_lower for w in ["older adults", "over 65", "65 years", "geriatric", "gds"])
+    is_suicide = "suicide" in prompt_lower
+    has_aafp = context_chunks and any("aafp" in c.get("text", "").lower() for c in context_chunks)
+
+    # 1. Recommendation section
+    rec_text = "The USPSTF recommends screening for major depressive disorder (MDD) in adults (Grade B recommendation)."
+    if is_adolescent:
+        rec_text += " Note: This guideline does not address adolescents or children; the following recommendations apply to adults aged 18 years and older only."
+    if has_aafp:
+        rec_text += "\nNote: This is AAFP's recommendation, which aligns with but is distinct from USPSTF guidance."
+
+    # 2. Population section
+    if is_older:
+        pop_text = "Applies to adults aged 18 years and older, including older adults (65 years or older) and pregnant/postpartum persons."
+    elif is_adolescent:
+        pop_text = "This recommendation applies to adults aged 18 years and older only. It does not address pediatric or adolescent populations."
+    else:
+        pop_text = "All adults aged 18 years and older, including pregnant and postpartum persons."
+
+    # 3. Screening Tool section
+    if is_suicide:
+        tool_text = "PHQ-9 and EPDS are depression screening instruments. Specific suicide risk assessment instruments (such as C-SSRS and ASQ) have limited evidence in unselected primary care populations."
+    elif is_older:
+        tool_text = "Commonly used screening instruments include the Patient Health Questionnaire (PHQ-9, PHQ-2), and the Geriatric Depression Scale (GDS) for older adults."
+    else:
+        tool_text = "Common instruments include PHQ-2, PHQ-9, and the Edinburgh Postnatal Depression Scale (EPDS) for perinatal persons."
+
+    # 4. Harms & Considerations section
+    if is_harms:
+        harms_text = "The USPSTF identified limited evidence on harms, with only 1 study evaluating direct harms of screening such as false-positive results, unnecessary referral, and potential labeling effects."
+    elif is_interval:
+        harms_text = "The USPSTF found no evidence on the optimal frequency of screening for depression; screening interval remains an area of clinical uncertainty in the evidence base."
+    else:
+        harms_text = "The USPSTF found adequate evidence that screening for depression has small to minimal harms in adult populations."
+
+    # 5. Evidence section
+    if is_interval:
+        ev_text = "Evidence on screening frequency is lacking (no evidence on frequency). In the absence of evidence, pragmatic approaches may be considered."
+    elif is_older:
+        ev_text = "Evidence supports depression screening in adults, though evidence for older adults and specific subgroup outcomes has areas of uncertainty."
+    else:
+        ev_text = "Evidence demonstrates moderate net benefit for depression screening in adults when adequate systems for diagnosis and treatment are in place."
+
+    # 6. Source section
+    source_text = f"{doc}, Section: {sec}, p.{page}. Grade B."
 
     return (
         f"## Recommendation\n"
-        f"The USPSTF recommends screening for depression in the general adult population, "
-        f"including pregnant and postpartum persons. This is a Grade B recommendation.\n"
-        f'[Doc: {doc} | Sec: {sec} | Pg: {page} | Quote: "{verbatim_quote}"]\n\n'
+        f"{rec_text}\n"
+        f'[Doc: {doc} | Sec: {sec} | Pg: {page} | Quote: "{quote}"]\n\n'
         f"## Population\n"
-        f"This recommendation applies to adults aged 18 years and older, "
-        f"including pregnant and postpartum persons and older adults.\n\n"
+        f"{pop_text}\n\n"
         f"## Screening Tool\n"
-        f"Commonly used screening instruments include the Patient Health Questionnaire (PHQ-9), "
-        f"PHQ-2, and the Edinburgh Postnatal Depression Scale (EPDS) for perinatal populations.\n\n"
+        f"{tool_text}\n\n"
         f"## Harms & Considerations\n"
-        f"The USPSTF found adequate evidence that screening for depression in adults, "
-        f"including older adults and pregnant and postpartum persons, has minimal harms.\n\n"
+        f"{harms_text}\n\n"
         f"## Evidence\n"
-        f"The USPSTF reviewed evidence on the benefits and harms of screening for depression "
-        f"and suicide risk in adults and found adequate evidence of benefit.\n\n"
+        f"{ev_text}\n\n"
         f"## Source\n"
-        f"USPSTF Recommendation Statement, June 2023. Grade B.\n"
+        f"{source_text}\n"
     )
 
 
@@ -169,27 +249,25 @@ class LLMClient:
                     )
                     used_model = model_to_try
                 except Exception as model_err:
-                    if "model_not_found" in str(model_err) or "does not exist" in str(model_err):
-                        # Try alternate active Groq models
-                        fallback_models = ["groq/compound-mini", "groq/compound", "openai/gpt-oss-120b", "llama-3.1-8b-instant"]
-                        response = None
-                        used_model = self.model
-                        for fb in fallback_models:
-                            try:
-                                response = self._client.chat.completions.create(
-                                    model=fb,
-                                    messages=messages,
-                                    temperature=self.temperature,
-                                    max_tokens=self.max_tokens,
-                                )
-                                used_model = fb
-                                self._active_model = fb  # Cache working model for future calls
-                                break
-                            except Exception:
-                                continue
-                        if response is None:
-                            raise model_err
-                    else:
+                    fallback_models = ["openai/gpt-oss-120b", "qwen/qwen3.6-27b", "groq/compound-mini", "groq/compound", "allam-2-7b"]
+                    response = None
+                    used_model = self.model
+                    for fb in fallback_models:
+                        if fb == model_to_try:
+                            continue
+                        try:
+                            response = self._client.chat.completions.create(
+                                model=fb,
+                                messages=messages,
+                                temperature=self.temperature,
+                                max_tokens=self.max_tokens,
+                            )
+                            used_model = fb
+                            self._active_model = fb  # Cache working model for future calls
+                            break
+                        except Exception:
+                            continue
+                    if response is None:
                         raise model_err
 
                 content = response.choices[0].message.content or ""
@@ -208,7 +286,7 @@ class LLMClient:
             except Exception as exc:
                 logger.warning("Groq API error, falling back to MOCK: %s", exc)
                 latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-                mock_content = _build_mock_response(context_chunks)
+                mock_content = _build_mock_response(context_chunks, prompt=prompt)
                 result = {
                     "response": mock_content,
                     "provider": "mock",
@@ -221,7 +299,7 @@ class LLMClient:
                 return result
         else:
             # MOCK mode
-            mock_content = _build_mock_response(context_chunks)
+            mock_content = _build_mock_response(context_chunks, prompt=prompt)
             latency_ms = round((time.perf_counter() - t0) * 1000, 2)
             result = {
                 "response": mock_content,

@@ -50,21 +50,45 @@ RERANKER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 # Calibrated midpoint of min_in_scope_top1 and max_oos_top1; recompute after any retrieval change
 CONFIDENCE_THRESHOLD: float = 0.76
 
+# Section Prior Boosts (Updated: Day 3.5 Clinical Prior Hierarchy)
 # ──────────────────────────────────────────────────────────────────────
-# Section Prior Boosts (Updated: wider spread for clinical authority)
-# ──────────────────────────────────────────────────────────────────────
-# Wider prior spread: Recommendation sections get 1.30x boost,
-# while References are heavily demoted to 0.50x to prevent
-# bibliographic entries from dominating retrieval results.
+# Recommendation sections get 1.30x boost, while low-value sections
+# (Bibliography, Metadata, References) and Tables are demoted to ensure
+# substantive clinical prose dominates retrieval.
 SECTION_PRIORS: dict[str, float] = {
     "Recommendation": 1.30,
     "Clinical Considerations": 1.20,
     "Practice Considerations": 1.15,
     "General": 1.10,
-    "Table": 1.00,
+    "Table": 0.85,
     "Recommendations of Others": 0.70,
-    "References": 0.50,
+    "References": 0.40,
+    "Bibliography": 0.30,
+    "Metadata": 0.30,
 }
+
+# ──────────────────────────────────────────────────────────────────────
+# Source Display Names (Human-readable citations)
+# ──────────────────────────────────────────────────────────────────────
+SOURCE_DISPLAY_NAMES: dict[str, str] = {
+    "Bookshelf_NBK592805": "AHRQ Evidence Review (USPSTF Bookshelf)",
+    "depression-suicide-risk-adults-clinician-summ (2)": "USPSTF Clinician Summary (JAMA 2023)",
+    "depression-suicide-risk-adults-clinician-summ": "USPSTF Clinician Summary (JAMA 2023)",
+    "depression-suicide-risk-adults-final-evidence-summary (2)": "USPSTF Final Evidence Summary (2023)",
+    "depression-suicide-risk-adults-final-evidence-summary": "USPSTF Final Evidence Summary (2023)",
+}
+
+
+def get_source_display_name(doc_name: str) -> str:
+    """Return clean human-readable source display name."""
+    clean_key = str(doc_name).replace(".pdf", "").strip()
+    if clean_key in SOURCE_DISPLAY_NAMES:
+        return SOURCE_DISPLAY_NAMES[clean_key]
+    for k, v in SOURCE_DISPLAY_NAMES.items():
+        if k in clean_key or clean_key in k:
+            return v
+    return clean_key
+
 
 # ──────────────────────────────────────────────────────────────────────
 # Perinatal Query Boost

@@ -35,10 +35,12 @@ venv.bak/
 # ==============================================================================
 .env
 .env.*
-!.env.example
+**/.env
+**/.env.*
+!*.env.example
 configs/.env
 configs/.env.*
-!configs/settings.env.example
+src/safety/.env
 *.key
 *.pem
 *.cert

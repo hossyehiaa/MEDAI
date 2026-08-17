@@ -203,6 +203,61 @@ def _group_sections(sections: list[dict[str, Any]]) -> list[_MergedSection]:
 
 
 # ──────────────────────────────────────────────────────────────────────
+# Section Classifier Refinement & Low-Value Content Detection
+# ──────────────────────────────────────────────────────────────────────
+
+def _classify_section_name(original_section_name: str, text: str) -> str:
+    """
+    Refine section name based on text patterns for low-value content.
+    Identifies Bibliography and Metadata sections to demote their retrieval prior.
+    """
+    sec_lower = original_section_name.lower()
+
+    # Check for List of Tables / Figures / TOC / Metadata
+    if any(k in sec_lower for k in ("list of tables", "list of figures", "table of contents", "contents")):
+        return "Metadata"
+    if re.search(r"^\s*(?:List of Tables|List of Figures|Table of Contents|Contents)\b", text, re.IGNORECASE | re.MULTILINE):
+        return "Metadata"
+    if len(re.findall(r"\.{4,}\s*\d+", text)) >= 3:
+        return "Metadata"
+
+    # Check for Numbered bibliography entries: e.g. "1. Smith JD, Johnson AB..." or "12. American College of..."
+    bib_matches = re.findall(r"^\s*\d+\.\s+[A-Z][a-zA-Z\s\.,]+", text, re.MULTILINE)
+    if len(bib_matches) >= 2 or re.search(r"^\s*1\.\s+[A-Z][a-z]+ [A-Z]", text, re.MULTILINE):
+        return "Bibliography"
+    if "reference" in sec_lower or "bibliography" in sec_lower:
+        return "References"
+
+    return original_section_name
+
+
+def _is_metadata_table(text: str, tbl: dict[str, Any]) -> bool:
+    """
+    Filter metadata-only, header-only, TOC, or bibliography tables before chunking.
+    """
+    # Check alphanumeric content
+    clean_alpha = re.sub(r"[^a-zA-Z0-9]", "", text)
+    if len(clean_alpha) < 50:
+        return True
+
+    # Check header-only (no data rows or all rows empty)
+    rows = tbl.get("rows", [])
+    if not rows or not any(any(str(c).strip() for c in r) for r in rows):
+        return True
+
+    # Check TOC pattern
+    if re.search(r"^\s*Table\s+\d+\.", text, re.IGNORECASE | re.MULTILINE):
+        if re.search(r"\.{3,}\s*\d+", text) or "list of tables" in text.lower():
+            return True
+
+    # Check bibliography in tables
+    if "PMID:" in text or "pmid:" in text.lower() or "et al." in text or "et al," in text:
+        return True
+
+    return False
+
+
+# ──────────────────────────────────────────────────────────────────────
 # Table → Text Conversion
 # ──────────────────────────────────────────────────────────────────────
 
@@ -281,18 +336,19 @@ def chunk_sections(merged_sections: list[_MergedSection]) -> list[Chunk]:
 
             tools = _detect_screening_tools(clean_fragment)
             has_tools = len(tools) > 0
+            effective_section = _classify_section_name(group.section_name, clean_fragment)
 
             chunk = Chunk(
-                chunk_id=_make_chunk_id(group.document_name, group.section_name, idx, clean_fragment),
+                chunk_id=_make_chunk_id(group.document_name, effective_section, idx, clean_fragment),
                 document_name=group.document_name,
-                section_name=group.section_name,
+                section_name=effective_section,
                 start_page=chunk_start_page,
                 end_page=chunk_end_page,
                 text=clean_fragment,
                 token_count=_token_count(clean_fragment),
                 char_count=len(clean_fragment),
                 grades=list(group.grades),
-                topic=_detect_topic(clean_fragment, group.section_name),
+                topic=_detect_topic(clean_fragment, effective_section),
                 has_screening_tools=has_tools,
                 screening_tools=tools,
                 is_table=False,
@@ -312,6 +368,7 @@ def chunk_sections(merged_sections: list[_MergedSection]) -> list[Chunk]:
 def chunk_tables(tables: list[dict[str, Any]]) -> list[Chunk]:
     """
     Convert parsed tables into individual chunks with robust screening tool tags.
+    Filters out metadata-only, header-only, and bibliography tables.
     """
     table_chunks: list[Chunk] = []
     skipped = 0
@@ -322,7 +379,7 @@ def chunk_tables(tables: list[dict[str, Any]]) -> list[Chunk]:
             continue
 
         text = _table_to_text(tbl)
-        if len(text.strip()) < MIN_CHUNK_CHARS:
+        if len(text.strip()) < MIN_CHUNK_CHARS or _is_metadata_table(text, tbl):
             skipped += 1
             continue
 
@@ -357,7 +414,7 @@ def chunk_tables(tables: list[dict[str, Any]]) -> list[Chunk]:
         table_chunks.append(chunk)
 
     logger.info(
-        "Produced %d table chunk(s) | %d skipped (empty or < %d chars).",
+        "Produced %d table chunk(s) | %d skipped (empty, metadata-only, or < %d chars).",
         len(table_chunks),
         skipped,
         MIN_CHUNK_CHARS,
