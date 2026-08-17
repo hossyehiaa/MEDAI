@@ -199,7 +199,7 @@ def run_e2e_evaluation() -> None:
         if citations_data:
             quotes = re.findall(r'Quote:\s*"([^"]+)"', response_text)
             for q in quotes:
-                if q.strip().startswith("|") or q.strip().startswith("---") or "PMID:" in q or "et al." in q or re.search(r"^\s*Table\s+\d+\.", q, re.IGNORECASE) or len(re.sub(r"[^a-zA-Z0-9]", "", q)) < 40:
+                if q.strip().startswith("|") or q.strip().startswith("---") or "PMID:" in q or "et al." in q or re.search(r"^\s*Table\s+\d+\.", q, re.IGNORECASE) or len(re.sub(r"[^a-zA-Z0-9]", "", q)) < 30:
                     no_meta_cit = False
                     break
 

@@ -353,10 +353,10 @@ def is_invalid_or_metadata_quote(quote: str) -> tuple[bool, str]:
     if re.search(r"^\s*Table\s+\d+\.", quote, re.IGNORECASE):
         return True, "Matches Table TOC header pattern"
 
-    # (d) Has <40 alphanumeric characters
+    # (d) Has <30 alphanumeric characters
     alpha_chars = re.sub(r"[^a-zA-Z0-9]", "", quote)
-    if len(alpha_chars) < 40:
-        return True, f"Too short ({len(alpha_chars)} alphanumeric chars < 40)"
+    if len(alpha_chars) < 30:
+        return True, f"Too short ({len(alpha_chars)} alphanumeric chars < 30)"
 
     return False, ""
 

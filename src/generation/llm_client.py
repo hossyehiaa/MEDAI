@@ -270,7 +270,12 @@ class LLMClient:
                     if response is None:
                         raise model_err
 
-                content = response.choices[0].message.content or ""
+                raw_content = response.choices[0].message.content or ""
+                # Strip internal reasoning/thinking blocks from reasoning models (e.g. Qwen/DeepSeek/GPT-OSS)
+                content = re.sub(r"<think>.*?</think>", "", raw_content, flags=re.DOTALL).strip()
+                if not content and raw_content:
+                    content = raw_content.strip()
+
                 latency_ms = round((time.perf_counter() - t0) * 1000, 2)
 
                 result = {

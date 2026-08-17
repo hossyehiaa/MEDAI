@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import time
 from pathlib import Path
 from typing import Any
@@ -204,6 +205,7 @@ def run_pipeline(
         system_prompt=system_prompt,
     )
     llm_response = generation_result.get("response", "")
+    llm_response = re.sub(r"<think>.*?</think>", "", llm_response, flags=re.DOTALL).strip()
 
     steps.append({
         "step": 4,
@@ -246,6 +248,7 @@ def run_pipeline(
             system_prompt=system_prompt,
         )
         llm_response_2 = generation_result_2.get("response", "")
+        llm_response_2 = re.sub(r"<think>.*?</think>", "", llm_response_2, flags=re.DOTALL).strip()
         citation_result_2 = verify_citations(llm_response_2, context_chunks)
         faithfulness_result_2 = check_faithfulness(query, llm_response_2, context_chunks)
 
