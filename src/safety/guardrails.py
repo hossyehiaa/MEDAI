@@ -140,8 +140,11 @@ def check_input(query: str) -> GuardrailResult:
     query_lower = query.lower()
 
     # ── Gate 1: CRISIS detection (highest priority) ───────────────
+    is_clinical_query = any(term in query_lower for term in ["screen", "tool", "instrument", "guideline", "uspstf", "recommend", "how to assess"])
     for keyword in CRISIS_KEYWORDS:
         if keyword in query_lower:
+            if keyword == "suicide" and is_clinical_query and not any(k in query_lower for k in ["myself", "i want", "feel like", "going to", "kill", "commit", "die"]):
+                continue
             logger.warning("CRISIS gate triggered for keyword '%s'", keyword)
             return GuardrailResult(
                 passed=False,
@@ -191,12 +194,19 @@ def check_output(response: str) -> GuardrailResult:
     """
     Validate LLM output before returning to the user.
 
-    Ensures the response contains a medical disclaimer.
+    Checks:
+      1. Medical disclaimer presence
+      2. 6-section schema presence
     """
     flags: list[str] = []
 
     if REQUIRED_DISCLAIMER_FRAGMENT not in response.lower():
         flags.append("missing_disclaimer")
+
+    schema_result = check_response_schema(response)
+    if not schema_result["all_present"]:
+        for missing in schema_result["missing_sections"]:
+            flags.append(f"missing_section:{missing}")
 
     if flags:
         logger.warning("Output guardrail triggered: %s", flags)
@@ -209,3 +219,114 @@ def check_output(response: str) -> GuardrailResult:
         )
 
     return GuardrailResult(passed=True, status="OK")
+
+
+# ------------------------------------------------------------------
+# 6-Section Schema Validation
+# ------------------------------------------------------------------
+REQUIRED_SECTIONS: list[str] = [
+    "## Recommendation",
+    "## Population",
+    "## Screening Tool",
+    "## Harms & Considerations",
+    "## Evidence",
+    "## Source",
+]
+
+
+def check_response_schema(response: str) -> dict:
+    """
+    Verify the LLM response contains all 6 required sections.
+
+    Returns
+    -------
+    dict
+        Keys: 'all_present' (bool), 'present_sections' (list),
+        'missing_sections' (list), 'section_count' (int).
+    """
+    response_lower = response.lower()
+    present: list[str] = []
+    missing: list[str] = []
+
+    for section in REQUIRED_SECTIONS:
+        if section.lower() in response_lower:
+            present.append(section)
+        else:
+            missing.append(section)
+
+    return {
+        "all_present": len(missing) == 0,
+        "present_sections": present,
+        "missing_sections": missing,
+        "section_count": len(present),
+    }
+
+
+# ------------------------------------------------------------------
+# Citation Verification — Verbatim quote checking
+# ------------------------------------------------------------------
+def verify_citations(
+    llm_response: str,
+    context_chunks: list[dict],
+) -> dict:
+    """
+    Extract and verify every verbatim citation quote in the LLM response.
+
+    Regex-extracts every ``Quote: "..."`` from the response and checks
+    that each quoted phrase appears (normalized) in at least one of the
+    retrieved context chunks.
+
+    Parameters
+    ----------
+    llm_response : str
+        The LLM-generated response text.
+    context_chunks : list[dict]
+        Retrieved context chunks with 'text' field.
+
+    Returns
+    -------
+    dict
+        Keys: 'status' ('OK'|'CITATION_VERIFICATION_FAILED'),
+        'verified_quotes' (int), 'total_quotes' (int),
+        'unverified_quotes' (list[str]).
+    """
+    # Extract all Quote: "..." patterns
+    quote_pattern = re.compile(r'Quote:\s*"([^"]+)"', re.IGNORECASE)
+    quotes = quote_pattern.findall(llm_response)
+
+    if not quotes:
+        return {
+            "status": "OK",
+            "verified_quotes": 0,
+            "total_quotes": 0,
+            "unverified_quotes": [],
+            "detail": "No citations found in response.",
+        }
+
+    # Normalize text for comparison
+    def _normalize(text: str) -> str:
+        return re.sub(r"\s+", " ", text.lower().strip())
+
+    # Build normalized corpus from context chunks
+    corpus_texts = [_normalize(c.get("text", "")) for c in context_chunks]
+
+    verified: list[str] = []
+    unverified: list[str] = []
+
+    for quote in quotes:
+        norm_quote = _normalize(quote)
+        found = any(norm_quote in corpus for corpus in corpus_texts)
+        if found:
+            verified.append(quote)
+        else:
+            unverified.append(quote)
+
+    status = "OK" if len(unverified) == 0 else "CITATION_VERIFICATION_FAILED"
+
+    return {
+        "status": status,
+        "verified_quotes": len(verified),
+        "total_quotes": len(quotes),
+        "unverified_quotes": unverified,
+    }
+

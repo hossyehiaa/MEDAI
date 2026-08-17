@@ -100,3 +100,14 @@ SCREENING_TOOL_KEYWORDS: list[str] = [
     "Columbia", "C-SSRS", "ASQ", "GAD-2", "GAD-7",
     "SRQ",
 ]
+
+# ──────────────────────────────────────────────────────────────────────
+# LLM Generation (Day 3 — Groq)
+# ──────────────────────────────────────────────────────────────────────
+LLM_PROVIDER: str = "groq"
+LLM_MODEL: str = "groq/compound-mini"
+GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
+TEMPERATURE: float = 0.0
+MAX_CONTEXT_CHUNKS: int = 3
+GENERATION_LOG_PATH: str = str(LOGS_DIR / "generation.log")
+
