@@ -132,14 +132,31 @@
     "pipeline_result": {
       "query": "Should pregnant women be screened for depression?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\n\nThe USPSTF recommends screening for depression in pregnant and postpartum women. The recommendation is based on the following considerations:\n\n\n## Population\n\nThe USPSTF recommendation applies to pregnant and postpartum women aged 18 years and older.\n\n## Screening Tool\n\nFor pregnant and postpartum women, the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) as a screening tool.\n\n## Harms & Considerations\n\nThe USPSTF acknowledges uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum women.\n\n## Evidence\n\nThe USPSTF acknowledges the uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum women.\n## Source\n\n[USPSTF | Sec: How to implement this recommendation | Pg: 1 | Quote: \"The USPSTF acknowledges uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum women.\"]\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\n\nThe USPSTF recommends screening for depression in pregnant and postpartum women. The recommendation is based on the following considerations:\n\n\n## Population\n\nThe USPSTF recommendation applies to pregnant and postpartum women aged 18 years and older.\n\n## Screening Tool\n\nFor pregnant and postpartum women, the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) as a screening tool.\n\n## Harms & Considerations\n\nThe USPSTF acknowledges uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum women.\n\n## Evidence\n\nThe USPSTF acknowledges the uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum women.\n## Source\n\n[USPSTF | Sec: How to implement this recommendation | Pg: 1 | Quote: \"The USPSTF acknowledges uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum women.\"]",
+      "response": "## Recommendation\nThe USPSTF recommends screening for depression in the adult population, including pregnant and postpartum persons. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"]\n\n\n## Population\nThis recommendation applies to adults aged 18 years and older. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"This recommendation applies to adults aged 18 years and older.\"]\n\n\n## Screening Tool\nFor pregnant and postpartum persons, the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum persons.\"]\n\n\n## Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum persons. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The USPSTF acknowledges uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum persons.\"]\n\n\n## Evidence\nThe evidence for depression screening in pregnant and postpartum persons is limited. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The evidence for optimal frequency of depression screening in pregnant and postpartum persons is limited.\"]\n\n\n## Source\nUSPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USP: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec:\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression in the adult population, including pregnant and postpartum persons. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"]\n\n\n## Population\nThis recommendation applies to adults aged 18 years and older. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"This recommendation applies to adults aged 18 years and older.\"]\n\n\n## Screening Tool\nFor pregnant and postpartum persons, the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum persons.\"]\n\n\n## Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum persons. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The USPSTF acknowledges uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum persons.\"]\n\n\n## Evidence\nThe evidence for depression screening in pregnant and postpartum persons is limited. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The evidence for optimal frequency of depression screening in pregnant and postpartum persons is limited.\"]\n\n\n## Source\nUSPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USP: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec:",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
-        "total_quotes": 1,
+        "total_quotes": 18,
         "unverified_quotes": [
-          "The USPSTF acknowledges uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum women."
+          "recommends screening for depression in the adult population, including pregnant and postpartum persons.",
+          "This recommendation applies to adults aged 18 years and older.",
+          "The USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum persons.",
+          "The USPSTF acknowledges uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum persons.",
+          "The evidence for optimal frequency of depression screening in pregnant and postpartum persons is limited.",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USP: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The source of this recommendation is the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: "
         ]
       },
       "faithfulness": {
@@ -149,9 +166,10 @@
           "UNGROUNDED_CLAIM",
           "UNGROUNDED_CLAIM",
           "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
+          "UNGROUNDED_CLAIM",
+          "CITATION_RECYCLING"
         ],
-        "detail": "Faithfulness checks failed: ATTRIBUTION_MISSING, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: ATTRIBUTION_MISSING, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, CITATION_RECYCLING"
       },
       "schema": {
         "all_present": true,
@@ -518,10 +536,10 @@
             "rrf_score": 0.014285714285714285
           }
         ],
-        "retrieval_time_ms": 490.39,
+        "retrieval_time_ms": 335.95,
         "latency_breakdown_ms": {
-          "hybrid": 242.98,
-          "rerank": 220.81
+          "hybrid": 148.17,
+          "rerank": 173.78
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -533,7 +551,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 24715.46
+        "latency_ms": 31516.52
       },
       "safety": {
         "status": "OK",
@@ -553,7 +571,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 1.0,
           "is_in_scope": true,
-          "retrieval_time_ms": 490.39
+          "retrieval_time_ms": 335.95
         },
         {
           "step": 2,
@@ -574,7 +592,7 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 24940.12
+          "latency_ms": 1389.94
         },
         {
           "step": "5_retry",
@@ -586,7 +604,8 @@
             "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "UNGROUNDED_CLAIM",
+            "CITATION_RECYCLING"
           ],
           "schema_sections": 6
         },
@@ -595,14 +614,15 @@
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "verified_quotes": 0,
-          "total_quotes": 1,
+          "total_quotes": 18,
           "faithfulness_passed": false,
           "faithfulness_flags": [
             "ATTRIBUTION_MISSING",
             "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "UNGROUNDED_CLAIM",
+            "CITATION_RECYCLING"
           ],
           "schema_sections": 6
         },
@@ -614,7 +634,7 @@
           "schema_all_present": true
         }
       ],
-      "total_time_ms": 57334.96
+      "total_time_ms": 41219.62
     }
   },
   {
@@ -624,26 +644,29 @@
     "pipeline_result": {
       "query": "Is depression screening recommended for postpartum women?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\n\nThe USPSTF recommends screening for depression in adults aged 18 years and older, including pregnant and postpartum persons.\n\n\n## Population\nThis recommendation applies to adults aged 18 years and older, including pregnant and postpartum persons.\n\n\n## Screening Tool\nThe USPSTF recommends using the PHQ-9 or PHQ-2 screening tools for depression screening in adults aged 18 years and older, including pregnant and postpartum persons.\n\n\n## Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum persons.\n\n\n## Evidence\nThe evidence is insufficient to determine the optimal frequency of depression screening in pregnant and postpartum persons.\n## Source\nSource: USPSTF | Sec: Recommendations | Pg: 1 | Quote: \"USPSTF recommends screening for depression in adults aged 18 years and older, including pregnant and postpartum persons.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\n\nThe USPSTF recommends screening for depression in adults aged 18 years and older, including pregnant and postpartum persons.\n\n\n## Population\nThis recommendation applies to adults aged 18 years and older, including pregnant and postpartum persons.\n\n\n## Screening Tool\nThe USPSTF recommends using the PHQ-9 or PHQ-2 screening tools for depression screening in adults aged 18 years and older, including pregnant and postpartum persons.\n\n\n## Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the optimal frequency of depression screening in pregnant and postpartum persons.\n\n\n## Evidence\nThe evidence is insufficient to determine the optimal frequency of depression screening in pregnant and postpartum persons.\n## Source\nSource: USPSTF | Sec: Recommendations | Pg: 1 | Quote: \"USPSTF recommends screening for depression in adults aged 18 years and older, including pregnant and postpartum persons.\"",
+      "response": "## Recommendation\nThe USPSTF recommends screening for depression in the adult population, including pregnant and postpartum persons. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"\n\n\n## Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.\"\n## Screening Tool\nThe USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.\"\n## Harms & Considerations\nThe guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.\"\n## Evidence\nThe guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.\"\n## Source\nThe guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression in the adult population, including pregnant and postpartum persons. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"\n\n\n## Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.\"\n## Screening Tool\nThe USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.\"\n## Harms & Considerations\nThe guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.\"\n## Evidence\nThe guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.\"\n## Source\nThe guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening. [Doc: USPSTF Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.\"",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
-        "total_quotes": 1,
+        "total_quotes": 6,
         "unverified_quotes": [
-          "USPSTF recommends screening for depression in adults aged 18 years and older, including pregnant and postpartum persons."
+          "recommends screening for depression in the adult population, including pregnant and postpartum persons.",
+          "The guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.",
+          "The guideline recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.",
+          "The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.",
+          "The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening.",
+          "The guideline acknowledges that the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for perinatal depression screening."
         ]
       },
       "faithfulness": {
         "passed": false,
         "flags": [
+          "CAVEAT_SUPPRESSED",
           "ATTRIBUTION_MISSING",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
+          "CITATION_RECYCLING"
         ],
-        "detail": "Faithfulness checks failed: ATTRIBUTION_MISSING, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: CAVEAT_SUPPRESSED, ATTRIBUTION_MISSING, CITATION_RECYCLING"
       },
       "schema": {
         "all_present": true,
@@ -1008,10 +1031,10 @@
             "rrf_score": 0.014285714285714285
           }
         ],
-        "retrieval_time_ms": 903.96,
+        "retrieval_time_ms": 576.09,
         "latency_breakdown_ms": {
-          "hybrid": 417.49,
-          "rerank": 459.82
+          "hybrid": 332.3,
+          "rerank": 215.69
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -1023,7 +1046,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 27773.42
+        "latency_ms": 42734.15
       },
       "safety": {
         "status": "OK",
@@ -1043,7 +1066,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 1.0,
           "is_in_scope": true,
-          "retrieval_time_ms": 903.96
+          "retrieval_time_ms": 576.09
         },
         {
           "step": 2,
@@ -1064,7 +1087,7 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 26774.68
+          "latency_ms": 41543.5
         },
         {
           "step": "5_retry",
@@ -1072,11 +1095,9 @@
           "status": "IMPROVED",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "faithfulness_flags": [
+            "CAVEAT_SUPPRESSED",
             "ATTRIBUTION_MISSING",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CITATION_RECYCLING"
           ],
           "schema_sections": 6
         },
@@ -1085,14 +1106,12 @@
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "verified_quotes": 0,
-          "total_quotes": 1,
+          "total_quotes": 6,
           "faithfulness_passed": false,
           "faithfulness_flags": [
+            "CAVEAT_SUPPRESSED",
             "ATTRIBUTION_MISSING",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CITATION_RECYCLING"
           ],
           "schema_sections": 6
         },
@@ -1104,7 +1123,7 @@
           "schema_all_present": true
         }
       ],
-      "total_time_ms": 55456.57
+      "total_time_ms": 84862.9
     }
   },
   {
@@ -1114,26 +1133,18 @@
     "pipeline_result": {
       "query": "Should adults over 65 be screened for depression?",
       "status": "REFUSAL_QUALITY_FAILED",
-      "response": "## Recommendation\nThe USPSTF recommends screening for depression in adults aged 18 years and older.\n\n\n## Population\nThis recommendation applies to adults aged 18 years and older.\n\n## Screening Tool\nPHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression in adults aged 18 years and older.\n\n\n## Population\nThis recommendation applies to adults aged 18 years and older.\n\n## Screening Tool\nPHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A, PHQ-9, PHQ-2, PHQ-A",
+      "response": "## Recommendation  \nThe USPSTF recommends screening for depression in all adults regardless of risk factors. [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: What additional information should clinicians know about this recommendation (Part 2) | Pg: 2-2 | Quote: \"The USPSTF recommends screening for depression in all adults regardless of risk factors.\"]\n\n## Population  \nThe recommendation applies to adults of any age, including pregnant and postpartum persons. [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"Evidence supported depression screening in primary care settings, including during pregnancy and postpartum.\"]  \nThere remains uncertainty about the benefits of depression screening in older adults. [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"remains uncertainty about the benefits of depression screening in older adults\"]\n\n## Screening Tool  \nThe guidance does not specify a single preferred instrument; further research is needed to determine the most appropriate screening tools for diverse populations. [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"most appropriate screening tools to use among Asian American, Black, Hispanic/Latino, and Native American/Alaska Native communities.\"]\n\n##\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation  \nThe USPSTF recommends screening for depression in all adults regardless of risk factors. [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: What additional information should clinicians know about this recommendation (Part 2) | Pg: 2-2 | Quote: \"The USPSTF recommends screening for depression in all adults regardless of risk factors.\"]\n\n## Population  \nThe recommendation applies to adults of any age, including pregnant and postpartum persons. [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"Evidence supported depression screening in primary care settings, including during pregnancy and postpartum.\"]  \nThere remains uncertainty about the benefits of depression screening in older adults. [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"remains uncertainty about the benefits of depression screening in older adults\"]\n\n## Screening Tool  \nThe guidance does not specify a single preferred instrument; further research is needed to determine the most appropriate screening tools for diverse populations. [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"most appropriate screening tools to use among Asian American, Black, Hispanic/Latino, and Native American/Alaska Native communities.\"]\n\n##",
       "citations": {
-        "status": "CITATION_VERIFICATION_FAILED",
-        "verified_quotes": 0,
-        "total_quotes": 0,
-        "unverified_quotes": [
-          "No citations found in response."
-        ],
-        "detail": "Response contains zero citation quotes."
+        "status": "OK",
+        "verified_quotes": 4,
+        "total_quotes": 4,
+        "unverified_quotes": []
       },
       "faithfulness": {
-        "passed": false,
-        "flags": [
-          "CAVEAT_SUPPRESSED",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
-        ],
-        "detail": "Faithfulness checks failed: CAVEAT_SUPPRESSED, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "passed": true,
+        "flags": [],
+        "detail": "Faithfulness checks passed"
       },
       "schema": {
         "all_present": false,
@@ -1495,10 +1506,10 @@
             "rrf_score": 0.014705882352941176
           }
         ],
-        "retrieval_time_ms": 354.89,
+        "retrieval_time_ms": 984.81,
         "latency_breakdown_ms": {
-          "hybrid": 99.13,
-          "rerank": 234.38
+          "hybrid": 572.99,
+          "rerank": 270.29
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -1508,9 +1519,9 @@
       },
       "generation": {
         "provider": "groq",
-        "model": "allam-2-7b",
+        "model": "openai/gpt-oss-120b",
         "status": "real",
-        "latency_ms": 29603.09
+        "latency_ms": 85523.05
       },
       "safety": {
         "status": "OK",
@@ -1530,7 +1541,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 1.0,
           "is_in_scope": true,
-          "retrieval_time_ms": 354.89
+          "retrieval_time_ms": 984.81
         },
         {
           "step": 2,
@@ -1551,29 +1562,24 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 29603.09
+          "latency_ms": 33616.91
         },
         {
           "step": "5_retry",
           "name": "regeneration_retry",
-          "status": "STILL_FAILED",
-          "unverified": [
-            "No citations found in response."
-          ]
+          "status": "IMPROVED",
+          "citation_status": "OK",
+          "faithfulness_flags": [],
+          "schema_sections": 3
         },
         {
           "step": 5,
           "name": "citation_and_faithfulness_verification",
-          "citation_status": "CITATION_VERIFICATION_FAILED",
-          "verified_quotes": 0,
-          "total_quotes": 0,
-          "faithfulness_passed": false,
-          "faithfulness_flags": [
-            "CAVEAT_SUPPRESSED",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
-          ],
+          "citation_status": "OK",
+          "verified_quotes": 4,
+          "total_quotes": 4,
+          "faithfulness_passed": true,
+          "faithfulness_flags": [],
           "schema_sections": 3
         },
         {
@@ -1584,7 +1590,7 @@
           "schema_all_present": false
         }
       ],
-      "total_time_ms": 73594.35
+      "total_time_ms": 120130.76
     }
   },
   {
@@ -1594,35 +1600,38 @@
     "pipeline_result": {
       "query": "What screening tools are recommended for depression in adults?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\nThe USPSTF recommends screening for depression in adults aged 18 years and older.\n\n### Population\nThe recommendation applies to adults aged 18 years and older.\n\n### Screening Tool\nThe USPSTF recommends using any validated suicide risk screening tool, such as the PHQ-9, PHQ-2, or PHQ-A.\n\n### Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the optimal screening tool for depression and suicide risk in adults aged 18 years and older.\n### Evidence\nThe USPSTF acknowledges that the evidence is uncertain regarding the optimal screening tool for depression and suicide risk in adults aged 18 years and older.\n### Source\nSource: USPSTF Clinician Summary (JAMA 2023) | Section: General | Page: 1 | Quote: \"The USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression in adults aged 18 years and older.\n\n### Population\nThe recommendation applies to adults aged 18 years and older.\n\n### Screening Tool\nThe USPSTF recommends using any validated suicide risk screening tool, such as the PHQ-9, PHQ-2, or PHQ-A.\n\n### Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the optimal screening tool for depression and suicide risk in adults aged 18 years and older.\n### Evidence\nThe USPSTF acknowledges that the evidence is uncertain regarding the optimal screening tool for depression and suicide risk in adults aged 18 years and older.\n### Source\nSource: USPSTF Clinician Summary (JAMA 2023) | Section: General | Page: 1 | Quote: \"The USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older.\"",
+      "response": "## Recommendation\n\nThe USPSTF recommends screening for depression in the adult population, including pregnant and postpartum persons. [Source: USPSTF Clinician Summary (JAMA 2023) | Section: General | Page: 1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"]\n\n\n## Population\nThe context provided does not mention a specific population, so I will assume the following:\nAdults aged 18 years and older, including pregnant and postpartum persons.\n\n\n## Screening Tool\nThe context mentions the following screening tools:\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n\n\n## Harms & Considerations\nThe context does not mention harms or considerations, so I will assume the following:\n- No direct harms or considerations mentioned\n\n## Evidence\nThe context provides the following evidence:\n- Adequivalent evidence for PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\n\nThe USPSTF recommends screening for depression in the adult population, including pregnant and postpartum persons. [Source: USPSTF Clinician Summary (JAMA 2023) | Section: General | Page: 1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"]\n\n\n## Population\nThe context provided does not mention a specific population, so I will assume the following:\nAdults aged 18 years and older, including pregnant and postpartum persons.\n\n\n## Screening Tool\nThe context mentions the following screening tools:\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n- Patient Health Questionnaire (PHQ-9)\n\n\n## Harms & Considerations\nThe context does not mention harms or considerations, so I will assume the following:\n- No direct harms or considerations mentioned\n\n## Evidence\nThe context provides the following evidence:\n- Adequivalent evidence for PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9, PHQ-9",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
         "total_quotes": 1,
         "unverified_quotes": [
-          "The USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older."
+          "recommends screening for depression in the adult population, including pregnant and postpartum persons."
         ]
       },
       "faithfulness": {
         "passed": false,
         "flags": [
+          "UNGROUNDED_CLAIM",
+          "UNGROUNDED_CLAIM",
           "UNGROUNDED_CLAIM"
         ],
-        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
       },
       "schema": {
-        "all_present": true,
+        "all_present": false,
         "present_sections": [
           "## Recommendation",
           "## Population",
           "## Screening Tool",
           "## Harms & Considerations",
-          "## Evidence",
+          "## Evidence"
+        ],
+        "missing_sections": [
           "## Source"
         ],
-        "missing_sections": [],
-        "section_count": 6
+        "section_count": 5
       },
       "retrieval": {
         "query": "What screening tools are recommended for depression in adults?",
@@ -1973,10 +1982,10 @@
             "rrf_score": 0.014925373134328358
           }
         ],
-        "retrieval_time_ms": 375.01,
+        "retrieval_time_ms": 599.63,
         "latency_breakdown_ms": {
-          "hybrid": 67.39,
-          "rerank": 307.6
+          "hybrid": 427.99,
+          "rerank": 171.63
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -1988,7 +1997,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 35656.45
+        "latency_ms": 24163.64
       },
       "safety": {
         "status": "OK",
@@ -2008,7 +2017,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.999,
           "is_in_scope": true,
-          "retrieval_time_ms": 375.01
+          "retrieval_time_ms": 599.63
         },
         {
           "step": 2,
@@ -2029,14 +2038,14 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 35656.45
+          "latency_ms": 24163.64
         },
         {
           "step": "5_retry",
           "name": "regeneration_retry",
           "status": "STILL_FAILED",
           "unverified": [
-            "The USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older."
+            "recommends screening for depression in the adult population, including pregnant and postpartum persons."
           ]
         },
         {
@@ -2047,19 +2056,21 @@
           "total_quotes": 1,
           "faithfulness_passed": false,
           "faithfulness_flags": [
+            "UNGROUNDED_CLAIM",
+            "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM"
           ],
-          "schema_sections": 6
+          "schema_sections": 5
         },
         {
           "step": 6,
           "name": "disclaimer_appended",
           "has_988_line": true,
-          "schema_sections_present": 6,
-          "schema_all_present": true
+          "schema_sections_present": 5,
+          "schema_all_present": false
         }
       ],
-      "total_time_ms": 64849.47
+      "total_time_ms": 66410.81
     }
   },
   {
@@ -2069,24 +2080,35 @@
     "pipeline_result": {
       "query": "What is the USPSTF recommendation grade for depression screening?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\nThe US Preventive Services Task Force (USPSTF) recommends screening for depression and suicide risk in adults aged 18 years and older. \n\n\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n\n\n## Screening Tool\nFor depression screening, the USPSTF recommends using the Patient Health Questionnaire (PHQ-9) or PHQ-9. For suicide risk screening, the USPSTF recommends using the PHQ-9 or PHQ-9.\n\n\n## Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the harms and considerations of screening for depression and suicide risk.\n\n## Evidence\nThe evidence indicates that depression screening may identify undiagnosed depression and suicide risk in adults aged 18 years and older.\n## Source\nThe source for this information is the USPSTF's 2021 | Sec: General | Pg: 1 | Quote: \"USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe US Preventive Services Task Force (USPSTF) recommends screening for depression and suicide risk in adults aged 18 years and older. \n\n\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n\n\n## Screening Tool\nFor depression screening, the USPSTF recommends using the Patient Health Questionnaire (PHQ-9) or PHQ-9. For suicide risk screening, the USPSTF recommends using the PHQ-9 or PHQ-9.\n\n\n## Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the harms and considerations of screening for depression and suicide risk.\n\n## Evidence\nThe evidence indicates that depression screening may identify undiagnosed depression and suicide risk in adults aged 18 years and older.\n## Source\nThe source for this information is the USPSTF's 2021 | Sec: General | Pg: 1 | Quote: \"USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older.\"",
+      "response": "## Recommendation\nThe US Preventive Services Task Force (USPSTF) recommends screening for depression in adults aged 18 years and older. \n\n\n\n### Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.\n\n\n### Screening Tool\nFor pregnant or postpartum individuals, explicitly state the Edinburgh Postnatal Depression Scale (EPDS) under Screening Tool.\n\n\n\n### Harms & Considerations\nThe guideline acknowledges uncertainty and acknowledges that there is no evidence on frequency.\n\n### Evidence\nThe guideline acknowledges uncertainty and acknowledges that there is uncertainty regarding the frequency of screening.\n\n### Source\nThe guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec:\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\nThe US Preventive Services Task Force (USPSTF) recommends screening for depression in adults aged 18 years and older. \n\n\n\n### Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.\n\n\n### Screening Tool\nFor pregnant or postpartum individuals, explicitly state the Edinburgh Postnatal Depression Scale (EPDS) under Screening Tool.\n\n\n\n### Harms & Considerations\nThe guideline acknowledges uncertainty and acknowledges that there is no evidence on frequency.\n\n### Evidence\nThe guideline acknowledges uncertainty and acknowledges that there is uncertainty regarding the frequency of screening.\n\n### Source\nThe guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec:",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
-        "total_quotes": 1,
+        "total_quotes": 13,
         "unverified_quotes": [
-          "USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older."
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: "
         ]
       },
       "faithfulness": {
         "passed": false,
         "flags": [
           "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
+          "CITATION_RECYCLING"
         ],
-        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, CITATION_RECYCLING"
       },
       "schema": {
         "all_present": true,
@@ -2448,10 +2470,10 @@
             "rrf_score": 0.014492753623188406
           }
         ],
-        "retrieval_time_ms": 290.46,
+        "retrieval_time_ms": 400.63,
         "latency_breakdown_ms": {
-          "hybrid": 93.77,
-          "rerank": 196.66
+          "hybrid": 242.72,
+          "rerank": 157.89
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -2463,7 +2485,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 41633.23
+        "latency_ms": 40879.47
       },
       "safety": {
         "status": "OK",
@@ -2483,7 +2505,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.993,
           "is_in_scope": true,
-          "retrieval_time_ms": 290.46
+          "retrieval_time_ms": 400.63
         },
         {
           "step": 2,
@@ -2504,31 +2526,38 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 42681.5
+          "latency_ms": 40879.47
         },
         {
           "step": "5_retry",
           "name": "regeneration_retry",
-          "status": "IMPROVED",
-          "citation_status": "CITATION_VERIFICATION_FAILED",
-          "faithfulness_flags": [
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
-          ],
-          "schema_sections": 6
+          "status": "STILL_FAILED",
+          "unverified": [
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: "
+          ]
         },
         {
           "step": 5,
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "verified_quotes": 0,
-          "total_quotes": 1,
+          "total_quotes": 13,
           "faithfulness_passed": false,
           "faithfulness_flags": [
             "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CITATION_RECYCLING"
           ],
           "schema_sections": 6
         },
@@ -2540,7 +2569,7 @@
           "schema_all_present": true
         }
       ],
-      "total_time_ms": 84610.33
+      "total_time_ms": 83725.46
     }
   },
   {
@@ -2550,14 +2579,19 @@
     "pipeline_result": {
       "query": "What are the harms or risks of depression screening?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\nThe USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older.\n\n## Population\nThe context does not specify a population, so we can infer that the recommendation applies to adults aged 18 years and older.\n\n## Screening Tool\nThe context mentions the PHQ-9 and PHQ-2 instruments for depression screening. However, for suicide risk screening, the context only mentions the PHQ-9.\n\n## Harms & Considerations\nThe context does not mention harms or considerations for depression screening. For suicide risk screening, the context mentions potential harms and considerations, including the following:\n    - Insufficient evidence on the frequency of adverse events or harms associated with screening for suicide risk\n    - Only 1 study was available for assessing the harms of screening for suicide risk\n## Evidence\nThe context mentions the following evidence:\n    - No evidence on the frequency of adverse events or harms associated with screening for suicide risk\n    - Insufficient evidence on the frequency of adverse events or harms associated with screening for suicide risk\n## Source\nThe source for this information is the USPSTF Final Evidence Summary (2023) | Sec: Evidence Synthesis | Pg: 1 | Quote: \"Note: The evidence on adverse events or harms associated with screening for suicide risk is insufficient.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older.\n\n## Population\nThe context does not specify a population, so we can infer that the recommendation applies to adults aged 18 years and older.\n\n## Screening Tool\nThe context mentions the PHQ-9 and PHQ-2 instruments for depression screening. However, for suicide risk screening, the context only mentions the PHQ-9.\n\n## Harms & Considerations\nThe context does not mention harms or considerations for depression screening. For suicide risk screening, the context mentions potential harms and considerations, including the following:\n    - Insufficient evidence on the frequency of adverse events or harms associated with screening for suicide risk\n    - Only 1 study was available for assessing the harms of screening for suicide risk\n## Evidence\nThe context mentions the following evidence:\n    - No evidence on the frequency of adverse events or harms associated with screening for suicide risk\n    - Insufficient evidence on the frequency of adverse events or harms associated with screening for suicide risk\n## Source\nThe source for this information is the USPSTF Final Evidence Summary (2023) | Sec: Evidence Synthesis | Pg: 1 | Quote: \"Note: The evidence on adverse events or harms associated with screening for suicide risk is insufficient.\"",
+      "response": "## Recommendation\nThe USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older, including pregnant and postpartum persons. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression and suicide risk in adults aged 18 years and older, including pregnant and postpartum persons.\"\n\n\n## Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum persons. [Source: AAFP | Sec: Recommendations | Pg: 1-1 | Quote: \"The guideline applies to adults aged 18 years and older, including pregnant and postpartum persons.\"\n\n\n## Screening Tool\nFor depression screening, the USPSTF recommends the PHQ-9 or PHQ-9-20 | Sec: Recommendations | Pg: 1-1 | Quote: \"The guideline recommends PHQ-9 or PHQ-9-20 for depression screening.\"\n\n## Harms & Considerations\nThe guideline acknowledges uncertainty regarding harms and considers the potential for adverse events, including increased risk of suicide ideation or attempt. [Source: AAFP | Sec: Considerations | Pg: 1-1 | Quote: \"The guideline acknowledges uncertainty regarding harms and considers the potential for adverse events, including increased risk of suicide ideation or attempt.\"\n## Evidence\nThe guideline provides evidence for depression screening, but does not provide evidence for suicide risk screening. [Source: AAFP | Sec: Evidence | Pg: 1-1 | Quote: \"The guideline provides evidence for depression screening but does not provide evidence for suicide risk screening.\"\n## Source\nThe source for this information is the AAFP | Sec: Recommendations | Pg: 1-1 | Quote: \"The source for this information is the AAFP's recommendations.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older, including pregnant and postpartum persons. [USPSTF Clinician Summary (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression and suicide risk in adults aged 18 years and older, including pregnant and postpartum persons.\"\n\n\n## Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum persons. [Source: AAFP | Sec: Recommendations | Pg: 1-1 | Quote: \"The guideline applies to adults aged 18 years and older, including pregnant and postpartum persons.\"\n\n\n## Screening Tool\nFor depression screening, the USPSTF recommends the PHQ-9 or PHQ-9-20 | Sec: Recommendations | Pg: 1-1 | Quote: \"The guideline recommends PHQ-9 or PHQ-9-20 for depression screening.\"\n\n## Harms & Considerations\nThe guideline acknowledges uncertainty regarding harms and considers the potential for adverse events, including increased risk of suicide ideation or attempt. [Source: AAFP | Sec: Considerations | Pg: 1-1 | Quote: \"The guideline acknowledges uncertainty regarding harms and considers the potential for adverse events, including increased risk of suicide ideation or attempt.\"\n## Evidence\nThe guideline provides evidence for depression screening, but does not provide evidence for suicide risk screening. [Source: AAFP | Sec: Evidence | Pg: 1-1 | Quote: \"The guideline provides evidence for depression screening but does not provide evidence for suicide risk screening.\"\n## Source\nThe source for this information is the AAFP | Sec: Recommendations | Pg: 1-1 | Quote: \"The source for this information is the AAFP's recommendations.\"",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
-        "total_quotes": 1,
+        "total_quotes": 6,
         "unverified_quotes": [
-          "Note: The evidence on adverse events or harms associated with screening for suicide risk is insufficient."
+          "recommends screening for depression and suicide risk in adults aged 18 years and older, including pregnant and postpartum persons.",
+          "The guideline applies to adults aged 18 years and older, including pregnant and postpartum persons.",
+          "The guideline recommends PHQ-9 or PHQ-9-20 for depression screening.",
+          "The guideline acknowledges uncertainty regarding harms and considers the potential for adverse events, including increased risk of suicide ideation or attempt.",
+          "The guideline provides evidence for depression screening but does not provide evidence for suicide risk screening.",
+          "The source for this information is the AAFP's recommendations."
         ]
       },
       "faithfulness": {
@@ -2934,10 +2968,10 @@
             "rrf_score": 0.014492753623188406
           }
         ],
-        "retrieval_time_ms": 256.4,
+        "retrieval_time_ms": 362.21,
         "latency_breakdown_ms": {
-          "hybrid": 105.41,
-          "rerank": 150.97
+          "hybrid": 214.03,
+          "rerank": 148.16
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -2949,7 +2983,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 27747.9
+        "latency_ms": 41744.65
       },
       "safety": {
         "status": "OK",
@@ -2969,7 +3003,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.9947,
           "is_in_scope": true,
-          "retrieval_time_ms": 256.4
+          "retrieval_time_ms": 362.21
         },
         {
           "step": 2,
@@ -2990,7 +3024,7 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 24695.4
+          "latency_ms": 36791.27
         },
         {
           "step": "5_retry",
@@ -3010,7 +3044,7 @@
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "verified_quotes": 0,
-          "total_quotes": 1,
+          "total_quotes": 6,
           "faithfulness_passed": false,
           "faithfulness_flags": [
             "UNGROUNDED_CLAIM",
@@ -3028,7 +3062,7 @@
           "schema_all_present": true
         }
       ],
-      "total_time_ms": 52704.67
+      "total_time_ms": 78905.11
     }
   },
   {
@@ -3037,38 +3071,60 @@
     "category": "IN_SCOPE",
     "pipeline_result": {
       "query": "What instruments are used for suicide risk screening in adults?",
-      "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\nThe USPSTF recommends screening for suicide risk in adults aged 18 years and older. This recommendation aligns with the AAFP/ICSI guidance.\n\n\n## Population\nThis guideline applies to adults aged 18 years and older.\n\n## Screening Tool\nThe USPSTF recommends using a validated suicide risk screening tool, such as the PHQ-9 or PHQ-9.\n## Harms & Considerations\nThere is no evidence of harms or significant concerns regarding suicide risk screening in adults aged 18 years and older.\n## Evidence\nThe evidence indicates that suicide risk screening in adults aged 18 years and older is beneficial.\n## Source\nSource: USPSTF | Section: General | Page: 1 | Quote: \"USPSTF recommends suicide risk screening in adults aged 18 years and older.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for suicide risk in adults aged 18 years and older. This recommendation aligns with the AAFP/ICSI guidance.\n\n\n## Population\nThis guideline applies to adults aged 18 years and older.\n\n## Screening Tool\nThe USPSTF recommends using a validated suicide risk screening tool, such as the PHQ-9 or PHQ-9.\n## Harms & Considerations\nThere is no evidence of harms or significant concerns regarding suicide risk screening in adults aged 18 years and older.\n## Evidence\nThe evidence indicates that suicide risk screening in adults aged 18 years and older is beneficial.\n## Source\nSource: USPSTF | Section: General | Page: 1 | Quote: \"USPSTF recommends suicide risk screening in adults aged 18 years and older.\"",
+      "status": "REFUSAL_QUALITY_FAILED",
+      "response": "## Recommendation\n\n\nThe US Preventive Services Task Force (USPSTF) recommends screening for suicide risk in adults aged 18 years and older [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: What's New | Pg: 2 | Quote: \"Recommends screening for suicide risk in adults aged 18 years and older.\"\n\n\n\n### Population\nThe guideline applies to adults aged 18 years and older [Source: USPSTF Evidence Review (JAMA 2023) | Sec: Population | Pg: 3 | Quote: \"Applies to adults aged 18 years and older.\"\n\n\n### Screening Tool\nFor adults aged 18 years and older, the USPSTF recommends using the PHQ-9 [Source: USPSTF Evidence Review (JAMA 2023) | Sec: Screening Tool | Pg: 4 | Quote: \"Recommends using PHQ-9 for suicide risk screening in adults aged 18 years and older.\"\n\n\n### Evidence\nThe USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPST\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\n\n\nThe US Preventive Services Task Force (USPSTF) recommends screening for suicide risk in adults aged 18 years and older [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: What's New | Pg: 2 | Quote: \"Recommends screening for suicide risk in adults aged 18 years and older.\"\n\n\n\n### Population\nThe guideline applies to adults aged 18 years and older [Source: USPSTF Evidence Review (JAMA 2023) | Sec: Population | Pg: 3 | Quote: \"Applies to adults aged 18 years and older.\"\n\n\n### Screening Tool\nFor adults aged 18 years and older, the USPSTF recommends using the PHQ-9 [Source: USPSTF Evidence Review (JAMA 2023) | Sec: Screening Tool | Pg: 4 | Quote: \"Recommends using PHQ-9 for suicide risk screening in adults aged 18 years and older.\"\n\n\n### Evidence\nThe USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: \"USPST",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
-        "total_quotes": 1,
+        "total_quotes": 22,
         "unverified_quotes": [
-          "USPSTF recommends suicide risk screening in adults aged 18 years and older."
+          "Recommends screening for suicide risk in adults aged 18 years and older.",
+          "Applies to adults aged 18 years and older.",
+          "Recommends using PHQ-9 for suicide risk screening in adults aged 18 years and older.",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+          "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: "
         ]
       },
       "faithfulness": {
         "passed": false,
         "flags": [
+          "CAVEAT_SUPPRESSED",
           "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
+          "CITATION_RECYCLING"
         ],
-        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: CAVEAT_SUPPRESSED, UNGROUNDED_CLAIM, CITATION_RECYCLING"
       },
       "schema": {
-        "all_present": true,
+        "all_present": false,
         "present_sections": [
           "## Recommendation",
           "## Population",
           "## Screening Tool",
+          "## Evidence"
+        ],
+        "missing_sections": [
           "## Harms & Considerations",
-          "## Evidence",
           "## Source"
         ],
-        "missing_sections": [],
-        "section_count": 6
+        "section_count": 4
       },
       "retrieval": {
         "query": "What instruments are used for suicide risk screening in adults?",
@@ -3419,10 +3475,10 @@
             "rrf_score": 0.014925373134328358
           }
         ],
-        "retrieval_time_ms": 268.38,
+        "retrieval_time_ms": 374.92,
         "latency_breakdown_ms": {
-          "hybrid": 73.36,
-          "rerank": 194.99
+          "hybrid": 206.56,
+          "rerank": 168.34
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -3434,7 +3490,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 17858.07
+        "latency_ms": 43404.68
       },
       "safety": {
         "status": "OK",
@@ -3454,7 +3510,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.9961,
           "is_in_scope": true,
-          "retrieval_time_ms": 268.38
+          "retrieval_time_ms": 374.92
         },
         {
           "step": 2,
@@ -3475,43 +3531,60 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 39622.97
+          "latency_ms": 43404.68
         },
         {
           "step": "5_retry",
           "name": "regeneration_retry",
-          "status": "IMPROVED",
-          "citation_status": "CITATION_VERIFICATION_FAILED",
-          "faithfulness_flags": [
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
-          ],
-          "schema_sections": 6
+          "status": "STILL_FAILED",
+          "unverified": [
+            "Recommends screening for suicide risk in adults aged 18 years and older.",
+            "Applies to adults aged 18 years and older.",
+            "Recommends using PHQ-9 for suicide risk screening in adults aged 18 years and older.",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: ",
+            "USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 5 | Quote: "
+          ]
         },
         {
           "step": 5,
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "verified_quotes": 0,
-          "total_quotes": 1,
+          "total_quotes": 22,
           "faithfulness_passed": false,
           "faithfulness_flags": [
+            "CAVEAT_SUPPRESSED",
             "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CITATION_RECYCLING"
           ],
-          "schema_sections": 6
+          "schema_sections": 4
         },
         {
           "step": 6,
           "name": "disclaimer_appended",
           "has_988_line": true,
-          "schema_sections_present": 6,
-          "schema_all_present": true
+          "schema_sections_present": 4,
+          "schema_all_present": false
         }
       ],
-      "total_time_ms": 57753.74
+      "total_time_ms": 86378.84
     }
   },
   {
@@ -3521,37 +3594,34 @@
     "pipeline_result": {
       "query": "Should all general adults be screened for depression?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\nThe USPSTF recommends screening for depression in all adults aged 18 years and older.\n\n\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n\n\n## Screening Tool\nThe guideline recommends using the PHQ-9 or PHQ-9 for depression screening in adults aged 18 years and older.\n\n\n## Harms & Considerations\nThe guideline acknowledges that there is uncertainty regarding harms and considerations for depression screening in adults aged 18 years and older.\n\n\n## Evidence\nThe guideline acknowledges that there is uncertainty regarding the evidence for depression screening in adults aged 18 years and older.\n## Source\nThe guideline is based on the evidence from the following sources: [Doc: AHRQ | Sec: General | Pg: 1 | Quote: \"The guideline acknowledges uncertainty regarding the evidence for depression screening in adults aged 18 years and older.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression in all adults aged 18 years and older.\n\n\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n\n\n## Screening Tool\nThe guideline recommends using the PHQ-9 or PHQ-9 for depression screening in adults aged 18 years and older.\n\n\n## Harms & Considerations\nThe guideline acknowledges that there is uncertainty regarding harms and considerations for depression screening in adults aged 18 years and older.\n\n\n## Evidence\nThe guideline acknowledges that there is uncertainty regarding the evidence for depression screening in adults aged 18 years and older.\n## Source\nThe guideline is based on the evidence from the following sources: [Doc: AHRQ | Sec: General | Pg: 1 | Quote: \"The guideline acknowledges uncertainty regarding the evidence for depression screening in adults aged 18 years and older.\"",
+      "response": "## Recommendation**\n   The USPSTF recommends screening for depression in all adults regardless of risk factors [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: What additional information should clinicians know about this recommendation (Part 2) | Pg: 2-2 | Quote: \"The USPSTF recommends screening for depression in all adults regardless of risk factors.\"].\n\n   **## Population**\n   This guideline applies to the general adult population, with specific attention to disparities in screening rates among older adults and racial/ethnic minorities [Doc: AHRQ Evidence Review (USPSTF Bookshelf) | Sec: General | Pg: 18-19 | Quote: \"Adults who were males, older than age 75 years, uninsured, Black, of Asian or Hispanic ethnicity, and who had lower educational attainment were less likely to have been screened\"]. The recommendation also encompasses pregnant and postpartum individuals [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"Evidence supported depression screening in primary care settings, including during pregnancy and postpartum.\"].\n\n   **## Screening Tool**\n   The provided context does not specify a single validated depression instrument for general adults, but emphasizes the need to identify the most appropriate screening tools for diverse populations [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"more research is needed to understand the impact of depression screening and the most appropriate screening tools to use among Asian American, Black, Hispanic/Latino, and Native American/Alaska Native communities\"]. For older adults, studies are needed that report outcomes using instruments specifically designed for this demographic [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"studies are needed that report outcomes using instruments specifically designed for older adults, and both short-term and long-term outcomes\"].\n\n   **## Harms & Considerations**\n   Implementation considerations highlight significant disparities in current screening practices and the high rate of undiagnosed depression in primary care [Doc: AHRQ Evidence Review (USPSTF Bookshelf) | Sec: General | Pg: 18-19 | Quote: \"Depression is undiagnosed in pregnant women who have experienced a major depressive episodes more often than in nonpregnant women of reproductive age\"]. Additionally, foundational research is needed to minimize potential harms associated with related mental health screening, such as patients feeling judged or stigmatized [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"research needs to examine what training is needed and for whom, what system-level supports are needed, and how to minimize the risk of harms, such as feeling judged or stigmatized\"].\n\n   **## Evidence**\n   Current evidence supports depression screening in primary care settings, though there remains uncertainty about the benefits of depression screening in older adults [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"there remains uncertainty about the benefits of depression screening in older adults, and studies are needed that report outcomes using instruments specifically designed for older adults\"]. The evidence base to support broad suicide screening in primary care settings is extremely limited [Doc: USPSTF Final Evidence Summary (202\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation**\n   The USPSTF recommends screening for depression in all adults regardless of risk factors [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: What additional information should clinicians know about this recommendation (Part 2) | Pg: 2-2 | Quote: \"The USPSTF recommends screening for depression in all adults regardless of risk factors.\"].\n\n   **## Population**\n   This guideline applies to the general adult population, with specific attention to disparities in screening rates among older adults and racial/ethnic minorities [Doc: AHRQ Evidence Review (USPSTF Bookshelf) | Sec: General | Pg: 18-19 | Quote: \"Adults who were males, older than age 75 years, uninsured, Black, of Asian or Hispanic ethnicity, and who had lower educational attainment were less likely to have been screened\"]. The recommendation also encompasses pregnant and postpartum individuals [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"Evidence supported depression screening in primary care settings, including during pregnancy and postpartum.\"].\n\n   **## Screening Tool**\n   The provided context does not specify a single validated depression instrument for general adults, but emphasizes the need to identify the most appropriate screening tools for diverse populations [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"more research is needed to understand the impact of depression screening and the most appropriate screening tools to use among Asian American, Black, Hispanic/Latino, and Native American/Alaska Native communities\"]. For older adults, studies are needed that report outcomes using instruments specifically designed for this demographic [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"studies are needed that report outcomes using instruments specifically designed for older adults, and both short-term and long-term outcomes\"].\n\n   **## Harms & Considerations**\n   Implementation considerations highlight significant disparities in current screening practices and the high rate of undiagnosed depression in primary care [Doc: AHRQ Evidence Review (USPSTF Bookshelf) | Sec: General | Pg: 18-19 | Quote: \"Depression is undiagnosed in pregnant women who have experienced a major depressive episodes more often than in nonpregnant women of reproductive age\"]. Additionally, foundational research is needed to minimize potential harms associated with related mental health screening, such as patients feeling judged or stigmatized [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"research needs to examine what training is needed and for whom, what system-level supports are needed, and how to minimize the risk of harms, such as feeling judged or stigmatized\"].\n\n   **## Evidence**\n   Current evidence supports depression screening in primary care settings, though there remains uncertainty about the benefits of depression screening in older adults [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 13-13 | Quote: \"there remains uncertainty about the benefits of depression screening in older adults, and studies are needed that report outcomes using instruments specifically designed for older adults\"]. The evidence base to support broad suicide screening in primary care settings is extremely limited [Doc: USPSTF Final Evidence Summary (202",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
-        "verified_quotes": 0,
-        "total_quotes": 1,
+        "verified_quotes": 7,
+        "total_quotes": 8,
         "unverified_quotes": [
-          "The guideline acknowledges uncertainty regarding the evidence for depression screening in adults aged 18 years and older."
+          "studies are needed that report outcomes using instruments specifically designed for older adults, and both short-term and long-term outcomes"
         ]
       },
       "faithfulness": {
-        "passed": false,
-        "flags": [
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
-        ],
-        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "passed": true,
+        "flags": [],
+        "detail": "Faithfulness checks passed"
       },
       "schema": {
-        "all_present": true,
+        "all_present": false,
         "present_sections": [
           "## Recommendation",
           "## Population",
           "## Screening Tool",
           "## Harms & Considerations",
-          "## Evidence",
+          "## Evidence"
+        ],
+        "missing_sections": [
           "## Source"
         ],
-        "missing_sections": [],
-        "section_count": 6
+        "section_count": 5
       },
       "retrieval": {
         "query": "Should all general adults be screened for depression?",
@@ -3896,10 +3966,10 @@
             "rrf_score": 0.014705882352941176
           }
         ],
-        "retrieval_time_ms": 280.67,
+        "retrieval_time_ms": 353.13,
         "latency_breakdown_ms": {
-          "hybrid": 84.7,
-          "rerank": 195.9
+          "hybrid": 198.69,
+          "rerank": 154.4
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -3909,9 +3979,9 @@
       },
       "generation": {
         "provider": "groq",
-        "model": "allam-2-7b",
+        "model": "qwen/qwen3.6-27b",
         "status": "real",
-        "latency_ms": 29708.55
+        "latency_ms": 82987.44
       },
       "safety": {
         "status": "OK",
@@ -3931,7 +4001,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.9933,
           "is_in_scope": true,
-          "retrieval_time_ms": 280.67
+          "retrieval_time_ms": 353.13
         },
         {
           "step": 2,
@@ -3952,43 +4022,35 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 40780.83
+          "latency_ms": 29724.99
         },
         {
           "step": "5_retry",
           "name": "regeneration_retry",
           "status": "IMPROVED",
           "citation_status": "CITATION_VERIFICATION_FAILED",
-          "faithfulness_flags": [
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
-          ],
-          "schema_sections": 6
+          "faithfulness_flags": [],
+          "schema_sections": 5
         },
         {
           "step": 5,
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
-          "verified_quotes": 0,
-          "total_quotes": 1,
-          "faithfulness_passed": false,
-          "faithfulness_flags": [
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
-          ],
-          "schema_sections": 6
+          "verified_quotes": 7,
+          "total_quotes": 8,
+          "faithfulness_passed": true,
+          "faithfulness_flags": [],
+          "schema_sections": 5
         },
         {
           "step": 6,
           "name": "disclaimer_appended",
           "has_988_line": true,
-          "schema_sections_present": 6,
-          "schema_all_present": true
+          "schema_sections_present": 5,
+          "schema_all_present": false
         }
       ],
-      "total_time_ms": 70774.92
+      "total_time_ms": 113072.46
     }
   },
   {
@@ -3998,35 +4060,41 @@
     "pipeline_result": {
       "query": "Does the USPSTF recommend MDD depression screening in adolescents aged 12 to 18?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\n\nThe US Preventive Services Task Force (USPSTF) recommends screening for major depressive disorder (MDD) and suicide risk in adults aged 18 years and older.\n\n\n\n### Population\nThe guideline applies to adults aged 18 years and older.\n\n\n### Screening Tool\nThe USPSTF recommends using PHQ-9 or PHQ-9 as a screening tool for MDD and suicide risk in adults aged 18 years and older.\n\n\n\n### Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the harms and considerations of screening for MDD and suicide risk in adults aged 18 years and older.\n\n\n### Evidence\nThe evidence for screening in adults aged 18 years and older is limited and uncertain.\n\n\n\n### Source\n[Doc: AHRQO | Sec: General | Pg: 1 | Quote: \"The evidence for screening in adults aged 18 years and older is limited and uncertain.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\n\nThe US Preventive Services Task Force (USPSTF) recommends screening for major depressive disorder (MDD) and suicide risk in adults aged 18 years and older.\n\n\n\n### Population\nThe guideline applies to adults aged 18 years and older.\n\n\n### Screening Tool\nThe USPSTF recommends using PHQ-9 or PHQ-9 as a screening tool for MDD and suicide risk in adults aged 18 years and older.\n\n\n\n### Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the harms and considerations of screening for MDD and suicide risk in adults aged 18 years and older.\n\n\n### Evidence\nThe evidence for screening in adults aged 18 years and older is limited and uncertain.\n\n\n\n### Source\n[Doc: AHRQO | Sec: General | Pg: 1 | Quote: \"The evidence for screening in adults aged 18 years and older is limited and uncertain.\"",
+      "response": "## Recommendation\nThe US Preventive Services Task Force (USPSTF) recommends screening for depression in the adult population, including pregnant and postpartum individuals. [Doc: USPSTF Guidance (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"]\n\n\n\n### Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals. [Doc: AHRQA | Sec: Population | Pg: 1-1 | Quote: \"The guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.\"]\n\n\n\n## Screening Tool\nFor pregnant and postpartum individuals, the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) [Doc: USPSTF Guidance (JAMA 2023) | Sec: Screening Tool | Pg: 1-1 | Quote: \"USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum individuals.\"]\n\n## Evidence\nThe USPSTF recommends screening for depression in the adult population, including pregnant and postpartum individuals. [Doc: USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 1-1 | Quote: \"The guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals.\"]\n## Harms & Considerations\nThe guideline acknowledges that the evidence is insufficient to determine the harms and considerations for depression screening in pregnant and postpartum individuals. [Doc: USPSTF Guidance (JAMA 2023) | Sec: Harms & Considerations | Pg: 1-1 | Quote: \"The guideline acknowledges that the evidence is insufficient to determine harms and considerations for depression screening in pregnant and postpartum individuals.\"]\n## Evidence\nThe guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals. [Doc: USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 1-1 | Quote: \"The guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals.\"]\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\nThe US Preventive Services Task Force (USPSTF) recommends screening for depression in the adult population, including pregnant and postpartum individuals. [Doc: USPSTF Guidance (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"]\n\n\n\n### Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals. [Doc: AHRQA | Sec: Population | Pg: 1-1 | Quote: \"The guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.\"]\n\n\n\n## Screening Tool\nFor pregnant and postpartum individuals, the USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) [Doc: USPSTF Guidance (JAMA 2023) | Sec: Screening Tool | Pg: 1-1 | Quote: \"USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum individuals.\"]\n\n## Evidence\nThe USPSTF recommends screening for depression in the adult population, including pregnant and postpartum individuals. [Doc: USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 1-1 | Quote: \"The guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals.\"]\n## Harms & Considerations\nThe guideline acknowledges that the evidence is insufficient to determine the harms and considerations for depression screening in pregnant and postpartum individuals. [Doc: USPSTF Guidance (JAMA 2023) | Sec: Harms & Considerations | Pg: 1-1 | Quote: \"The guideline acknowledges that the evidence is insufficient to determine harms and considerations for depression screening in pregnant and postpartum individuals.\"]\n## Evidence\nThe guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals. [Doc: USPSTF Evidence Review (JAMA 2023) | Sec: Evidence | Pg: 1-1 | Quote: \"The guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals.\"]",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
-        "total_quotes": 1,
+        "total_quotes": 6,
         "unverified_quotes": [
-          "The evidence for screening in adults aged 18 years and older is limited and uncertain."
+          "recommends screening for depression in the adult population, including pregnant and postpartum persons.",
+          "The guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.",
+          "USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum individuals.",
+          "The guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals.",
+          "The guideline acknowledges that the evidence is insufficient to determine harms and considerations for depression screening in pregnant and postpartum individuals.",
+          "The guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals."
         ]
       },
       "faithfulness": {
         "passed": false,
         "flags": [
-          "UNGROUNDED_CLAIM"
+          "CITATION_RECYCLING"
         ],
-        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: CITATION_RECYCLING"
       },
       "schema": {
-        "all_present": true,
+        "all_present": false,
         "present_sections": [
           "## Recommendation",
           "## Population",
           "## Screening Tool",
           "## Harms & Considerations",
-          "## Evidence",
+          "## Evidence"
+        ],
+        "missing_sections": [
           "## Source"
         ],
-        "missing_sections": [],
-        "section_count": 6
+        "section_count": 5
       },
       "retrieval": {
         "query": "Does the USPSTF recommend MDD depression screening in adolescents aged 12 to 18?",
@@ -4373,10 +4441,10 @@
             "rrf_score": 0.014705882352941176
           }
         ],
-        "retrieval_time_ms": 230.53,
+        "retrieval_time_ms": 564.19,
         "latency_breakdown_ms": {
-          "hybrid": 84.27,
-          "rerank": 146.23
+          "hybrid": 403.8,
+          "rerank": 160.36
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -4388,7 +4456,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 29771.24
+        "latency_ms": 16640.36
       },
       "safety": {
         "status": "OK",
@@ -4408,7 +4476,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.9763,
           "is_in_scope": true,
-          "retrieval_time_ms": 230.53
+          "retrieval_time_ms": 564.19
         },
         {
           "step": 2,
@@ -4429,39 +4497,42 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 28885.23
+          "latency_ms": 16640.36
         },
         {
           "step": "5_retry",
           "name": "regeneration_retry",
-          "status": "IMPROVED",
-          "citation_status": "CITATION_VERIFICATION_FAILED",
-          "faithfulness_flags": [
-            "UNGROUNDED_CLAIM"
-          ],
-          "schema_sections": 6
+          "status": "STILL_FAILED",
+          "unverified": [
+            "recommends screening for depression in the adult population, including pregnant and postpartum persons.",
+            "The guideline applies to adults aged 18 years and older, including pregnant and postpartum individuals.",
+            "USPSTF recommends using the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum individuals.",
+            "The guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals.",
+            "The guideline acknowledges that the evidence is insufficient to determine harms and considerations for depression screening in pregnant and postpartum individuals.",
+            "The guideline recommends screening for depression in the adult population, including pregnant and postpartum individuals."
+          ]
         },
         {
           "step": 5,
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "verified_quotes": 0,
-          "total_quotes": 1,
+          "total_quotes": 6,
           "faithfulness_passed": false,
           "faithfulness_flags": [
-            "UNGROUNDED_CLAIM"
+            "CITATION_RECYCLING"
           ],
-          "schema_sections": 6
+          "schema_sections": 5
         },
         {
           "step": 6,
           "name": "disclaimer_appended",
           "has_988_line": true,
-          "schema_sections_present": 6,
-          "schema_all_present": true
+          "schema_sections_present": 5,
+          "schema_all_present": false
         }
       ],
-      "total_time_ms": 58892.97
+      "total_time_ms": 60453.41
     }
   },
   {
@@ -4470,9 +4541,9 @@
     "category": "IN_SCOPE",
     "pipeline_result": {
       "query": "What is the evidence supporting perinatal depression screening?",
-      "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\nThe USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older.\n\n\n\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n\n\n\n## Screening Tool\nThe guideline does not specify a particular screening tool for depression or suicide risk.\n\n\n\n## Harms & Considerations\nThe guideline acknowledges uncertainty in the frequency of screening and the need for further research on the optimal frequency of screening.\n\n\n\n## Evidence\nThe guideline acknowledges the need for further research on the optimal frequency of screening and the need for further research on the optimal frequency of screening.\n## Source\nThe guideline source is the USPSTF's 20202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression and suicide risk in adults aged 18 years and older.\n\n\n\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n\n\n\n## Screening Tool\nThe guideline does not specify a particular screening tool for depression or suicide risk.\n\n\n\n## Harms & Considerations\nThe guideline acknowledges uncertainty in the frequency of screening and the need for further research on the optimal frequency of screening.\n\n\n\n## Evidence\nThe guideline acknowledges the need for further research on the optimal frequency of screening and the need for further research on the optimal frequency of screening.\n## Source\nThe guideline source is the USPSTF's 20202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020",
+      "status": "REFUSAL_QUALITY_FAILED",
+      "response": "## Recommendation**\n   The USPSTF issues a Grade B recommendation for depression screening [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 2-2 | Quote: \"recommended screening for depression in the general adult population, including pregnant and postpart\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation**\n   The USPSTF issues a Grade B recommendation for depression screening [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 2-2 | Quote: \"recommended screening for depression in the general adult population, including pregnant and postpart",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
@@ -4485,24 +4556,23 @@
       "faithfulness": {
         "passed": false,
         "flags": [
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
+          "CAVEAT_SUPPRESSED"
         ],
-        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: CAVEAT_SUPPRESSED"
       },
       "schema": {
-        "all_present": true,
+        "all_present": false,
         "present_sections": [
-          "## Recommendation",
+          "## Recommendation"
+        ],
+        "missing_sections": [
           "## Population",
           "## Screening Tool",
           "## Harms & Considerations",
           "## Evidence",
           "## Source"
         ],
-        "missing_sections": [],
-        "section_count": 6
+        "section_count": 1
       },
       "retrieval": {
         "query": "What is the evidence supporting perinatal depression screening?",
@@ -4862,10 +4932,10 @@
             "rrf_score": 0.014925373134328358
           }
         ],
-        "retrieval_time_ms": 599.46,
+        "retrieval_time_ms": 529.28,
         "latency_breakdown_ms": {
-          "hybrid": 412.3,
-          "rerank": 158.8
+          "hybrid": 316.02,
+          "rerank": 182.88
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -4875,9 +4945,9 @@
       },
       "generation": {
         "provider": "groq",
-        "model": "allam-2-7b",
+        "model": "qwen/qwen3.6-27b",
         "status": "real",
-        "latency_ms": 42423.08
+        "latency_ms": 85025.73
       },
       "safety": {
         "status": "OK",
@@ -4897,7 +4967,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 1.0,
           "is_in_scope": true,
-          "retrieval_time_ms": 599.46
+          "retrieval_time_ms": 529.28
         },
         {
           "step": 2,
@@ -4918,7 +4988,7 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 28653.64
+          "latency_ms": 37874.04
         },
         {
           "step": "5_retry",
@@ -4926,11 +4996,9 @@
           "status": "IMPROVED",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "faithfulness_flags": [
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CAVEAT_SUPPRESSED"
           ],
-          "schema_sections": 6
+          "schema_sections": 1
         },
         {
           "step": 5,
@@ -4940,21 +5008,19 @@
           "total_quotes": 0,
           "faithfulness_passed": false,
           "faithfulness_flags": [
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CAVEAT_SUPPRESSED"
           ],
-          "schema_sections": 6
+          "schema_sections": 1
         },
         {
           "step": 6,
           "name": "disclaimer_appended",
           "has_988_line": true,
-          "schema_sections_present": 6,
-          "schema_all_present": true
+          "schema_sections_present": 1,
+          "schema_all_present": false
         }
       ],
-      "total_time_ms": 71680.21
+      "total_time_ms": 123435.94
     }
   },
   {
@@ -4964,14 +5030,29 @@
     "pipeline_result": {
       "query": "What is the recommended screening interval or frequency for depression?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\nThe USPSTF recommends screening for depression in adults aged 18 years and older. \n\n\n\n\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n\n\n\n## Screening Tool\nThe USPSTF recommends using the PHQ-9 for depression screening.\n\n\n\n## Harms & Considerations\nThe evidence for harms and considerations is insufficient.\n\n\n\n\n## Evidence\nThe evidence for depression screening is insufficient.\n\n\n\n## Source\n[Doc: AHRQ | Sec: General | Pg: 18 | Quote: \"USPSTF recommends screening for depression in adults aged 18 years and older.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression in adults aged 18 years and older. \n\n\n\n\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n\n\n\n## Screening Tool\nThe USPSTF recommends using the PHQ-9 for depression screening.\n\n\n\n## Harms & Considerations\nThe evidence for harms and considerations is insufficient.\n\n\n\n\n## Evidence\nThe evidence for depression screening is insufficient.\n\n\n\n## Source\n[Doc: AHRQ | Sec: General | Pg: 18 | Quote: \"USPSTF recommends screening for depression in adults aged 18 years and older.\"",
+      "response": "## Recommendation\nThe US Preventive Services Task Force (USPSTF) recommends screening for depression in the adult population, including pregnant and postpartum individuals. [Doc: USPSTF Guideline (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"]\n\n\n### Population\nThe guideline applies to adults aged 18 years and older. [Doc: AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline applies to adults aged 18 years and older.\"]\n### Screening Tool\nFor pregnant or postpartum patients, explicitly state the Edinburgh Postnatal Depression Scale (EPDS) [Doc: AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline recommends the use of the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum patients.\"]\n### Evidence\nThe evidence supporting the guideline is limited, with only 1 study, and the evidence is insufficient to determine the optimal screening interval. [Doc: AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline provides evidence from a single study.\"]\n### Harms & Considerations\nThe guideline acknowledges that the evidence is insufficient to determine the optimal screening interval. [Doc: AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline acknowledges the limitations of the evidence.\"]\n### Source\nThe guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\nThe US Preventive Services Task Force (USPSTF) recommends screening for depression in the adult population, including pregnant and postpartum individuals. [Doc: USPSTF Guideline (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"recommends screening for depression in the adult population, including pregnant and postpartum persons.\"]\n\n\n### Population\nThe guideline applies to adults aged 18 years and older. [Doc: AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline applies to adults aged 18 years and older.\"]\n### Screening Tool\nFor pregnant or postpartum patients, explicitly state the Edinburgh Postnatal Depression Scale (EPDS) [Doc: AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline recommends the use of the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum patients.\"]\n### Evidence\nThe evidence supporting the guideline is limited, with only 1 study, and the evidence is insufficient to determine the optimal screening interval. [Doc: AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline provides evidence from a single study.\"]\n### Harms & Considerations\nThe guideline acknowledges that the evidence is insufficient to determine the optimal screening interval. [Doc: AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline acknowledges the limitations of the evidence.\"]\n### Source\nThe guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: \"The guideline is based on the AHRQO (JAMA",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
-        "total_quotes": 1,
+        "total_quotes": 16,
         "unverified_quotes": [
-          "USPSTF recommends screening for depression in adults aged 18 years and older."
+          "recommends screening for depression in the adult population, including pregnant and postpartum persons.",
+          "The guideline applies to adults aged 18 years and older.",
+          "The guideline recommends the use of the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum patients.",
+          "The guideline provides evidence from a single study.",
+          "The guideline acknowledges the limitations of the evidence.",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+          "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: "
         ]
       },
       "faithfulness": {
@@ -4979,9 +5060,9 @@
         "flags": [
           "ATTRIBUTION_MISSING",
           "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
+          "CITATION_RECYCLING"
         ],
-        "detail": "Faithfulness checks failed: ATTRIBUTION_MISSING, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: ATTRIBUTION_MISSING, UNGROUNDED_CLAIM, CITATION_RECYCLING"
       },
       "schema": {
         "all_present": true,
@@ -5343,10 +5424,10 @@
             "rrf_score": 0.014705882352941176
           }
         ],
-        "retrieval_time_ms": 620.61,
+        "retrieval_time_ms": 374.07,
         "latency_breakdown_ms": {
-          "hybrid": 280.8,
-          "rerank": 339.79
+          "hybrid": 213.33,
+          "rerank": 160.73
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -5358,7 +5439,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 41755.61
+        "latency_ms": 27560.81
       },
       "safety": {
         "status": "OK",
@@ -5378,7 +5459,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.8208,
           "is_in_scope": true,
-          "retrieval_time_ms": 620.61
+          "retrieval_time_ms": 374.07
         },
         {
           "step": 2,
@@ -5399,31 +5480,42 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 26625.85
+          "latency_ms": 27560.81
         },
         {
           "step": "5_retry",
           "name": "regeneration_retry",
-          "status": "IMPROVED",
-          "citation_status": "CITATION_VERIFICATION_FAILED",
-          "faithfulness_flags": [
-            "ATTRIBUTION_MISSING",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
-          ],
-          "schema_sections": 6
+          "status": "STILL_FAILED",
+          "unverified": [
+            "recommends screening for depression in the adult population, including pregnant and postpartum persons.",
+            "The guideline applies to adults aged 18 years and older.",
+            "The guideline recommends the use of the Edinburgh Postnatal Depression Scale (EPDS) for pregnant and postpartum patients.",
+            "The guideline provides evidence from a single study.",
+            "The guideline acknowledges the limitations of the evidence.",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: ",
+            "The guideline is based on the AHRQO (JAMA 2023) | Sec: General | Pg: 1-1 | Quote: "
+          ]
         },
         {
           "step": 5,
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "verified_quotes": 0,
-          "total_quotes": 1,
+          "total_quotes": 16,
           "faithfulness_passed": false,
           "faithfulness_flags": [
             "ATTRIBUTION_MISSING",
             "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CITATION_RECYCLING"
           ],
           "schema_sections": 6
         },
@@ -5435,7 +5527,7 @@
           "schema_all_present": true
         }
       ],
-      "total_time_ms": 69007.57
+      "total_time_ms": 69980.42
     }
   },
   {
@@ -5445,25 +5537,24 @@
     "pipeline_result": {
       "query": "How should asymptomatic young adults without risk factors be screened for depression?",
       "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\nThe USPSTF recommends screening for depression in adults aged 18 years and older.\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n## Screening Tool\nThe guideline suggests using a validated depression screening tool, such as the PHQ-9 or PHQ-9.\n## Harms & Considerations\nThe guideline acknowledges that the PHQ-9 or PHQ-9 may not be used in pregnant or postpartum populations.\n## Evidence\nThe guideline notes that the PHQ-9 or PHQ-9 may not be used in pregnant or postpartum populations.\n## Source\nThe source for this information is the USPSTF's 2021219\n\n\n\n\n### Clinical Question\nWhat is the evidence for screening depression in adults aged 18 years and older?\n\n\n\n\n### Answer\nThe evidence supports screening for depression in adults aged 18 years and older.\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\nThe USPSTF recommends screening for depression in adults aged 18 years and older.\n\n## Population\nThe guideline applies to adults aged 18 years and older.\n## Screening Tool\nThe guideline suggests using a validated depression screening tool, such as the PHQ-9 or PHQ-9.\n## Harms & Considerations\nThe guideline acknowledges that the PHQ-9 or PHQ-9 may not be used in pregnant or postpartum populations.\n## Evidence\nThe guideline notes that the PHQ-9 or PHQ-9 may not be used in pregnant or postpartum populations.\n## Source\nThe source for this information is the USPSTF's 2021219\n\n\n\n\n### Clinical Question\nWhat is the evidence for screening depression in adults aged 18 years and older?\n\n\n\n\n### Answer\nThe evidence supports screening for depression in adults aged 18 years and older.",
+      "response": "## Recommendation*\n   - Context: \"The USPSTF recommends screening for depression in all adults regardless of risk factors.\" (Passage 1)\n   - Quote: \"recommends screening for depression in all adults regardless of risk factors\" (11 words) - fits.\n   - Draft: The USPSTF recommends screening for depression in all adults regardless of risk factors [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: What additional information should clinicians know about this recommendation (Part 2) | Pg: 2-2 | Quote: \"recommends screening for depression in all adults regardless of risk factors\"].\n\n   *## Population*\n   - Context: Covers general adult, older adult, and perinatal populations. The question asks about \"asymptomatic young adults without risk factors\". I need to state that the guideline applies to adults.\n   - Quote from Passage 3: \"The included trials covered general adult, older adult, and perinatal populations.\" (11 words) - fits.\n   - Draft: This guideline applies to adults, as the included trials covered general adult, older adult, and perinatal populations [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 4-4 | Quote: \"The included trials covered general adult, older adult, and perinatal populations\"].\n\n   *## Screening Tool*\n   - Context: Passage 3 mentions \"instruments to screen for depression or suicide risk accurately identify adults\". It doesn't name specific tools like PHQ-9 in the provided text, but mentions accuracy of instruments. I must stick strictly to context.\n   - Quote from Passage 3: \"Do instruments to screen for depression or suicide risk accurately identify adults\" (13 words) - fits.\n   - Draft: Validated instruments to screen for depression or suicide risk accurately identify adults in primary care settings [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 4-4 | Quote: \"Do instruments to screen for depression or suicide risk accurately identify adults\"].\n\n   *## Harms & Considerations*\n   - Context: Passage 2 discusses screening rates, disparities, and undiagnosed rates. It notes that without screening, only 50% are identified. Also mentions disparities in screening rates.\n   - Quote from Passage 2: \"In the absence of screening, it is estimated that only 50 percent of patients with major depression are identified.\" (18 words) - fits.\n   - Draft: In the absence of screening, it is estimated that only 50 percent of patients with major depression are identified [Doc: AHRQ Evidence Review (USPSTF Bookshelf) | Sec: General | Pg: 18-19 | Quote: \"In the absence of screening, it is estimated that only 50 percent of patients with major depression are identified\"].\n\n   *## Evidence*\n   - Context: Passage 3 discusses benefits: lower prevalence at 6 months, greater likelihood of remission. Also mentions only 1 short-term RCT for suicide risk.\n   - Quote from Passage 3: \"screening interventions were associated with a lower prevalence of depression or clinically important depressive symptomatology at 6 months\" (17 words) - fits.\n   - Draft: Evidence indicates that screening interventions were associated with a lower prevalence of depression or clinically important depressive symptomatology at 6 months [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 4-4 | Quote: \"screening interventions were associated with a lower prevalence of depression or clinically important depressive symptomatology at 6 months\"].\n\n   *## Source*\n   - Context: Need to cite the official sources. I'll use Passage 2's mention of USPSTF recommendation history or just cite the document itself. Actually, I need a quote from the context for the Source section. I'll use a quote about the USPSTF recommendation history from Passage 2.\n   - Quote from Passage 2: \"since the USPSTF initially issued its B recommendation to screen in 2\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation*\n   - Context: \"The USPSTF recommends screening for depression in all adults regardless of risk factors.\" (Passage 1)\n   - Quote: \"recommends screening for depression in all adults regardless of risk factors\" (11 words) - fits.\n   - Draft: The USPSTF recommends screening for depression in all adults regardless of risk factors [Doc: USPSTF Clinician Summary (JAMA 2023) | Sec: What additional information should clinicians know about this recommendation (Part 2) | Pg: 2-2 | Quote: \"recommends screening for depression in all adults regardless of risk factors\"].\n\n   *## Population*\n   - Context: Covers general adult, older adult, and perinatal populations. The question asks about \"asymptomatic young adults without risk factors\". I need to state that the guideline applies to adults.\n   - Quote from Passage 3: \"The included trials covered general adult, older adult, and perinatal populations.\" (11 words) - fits.\n   - Draft: This guideline applies to adults, as the included trials covered general adult, older adult, and perinatal populations [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 4-4 | Quote: \"The included trials covered general adult, older adult, and perinatal populations\"].\n\n   *## Screening Tool*\n   - Context: Passage 3 mentions \"instruments to screen for depression or suicide risk accurately identify adults\". It doesn't name specific tools like PHQ-9 in the provided text, but mentions accuracy of instruments. I must stick strictly to context.\n   - Quote from Passage 3: \"Do instruments to screen for depression or suicide risk accurately identify adults\" (13 words) - fits.\n   - Draft: Validated instruments to screen for depression or suicide risk accurately identify adults in primary care settings [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 4-4 | Quote: \"Do instruments to screen for depression or suicide risk accurately identify adults\"].\n\n   *## Harms & Considerations*\n   - Context: Passage 2 discusses screening rates, disparities, and undiagnosed rates. It notes that without screening, only 50% are identified. Also mentions disparities in screening rates.\n   - Quote from Passage 2: \"In the absence of screening, it is estimated that only 50 percent of patients with major depression are identified.\" (18 words) - fits.\n   - Draft: In the absence of screening, it is estimated that only 50 percent of patients with major depression are identified [Doc: AHRQ Evidence Review (USPSTF Bookshelf) | Sec: General | Pg: 18-19 | Quote: \"In the absence of screening, it is estimated that only 50 percent of patients with major depression are identified\"].\n\n   *## Evidence*\n   - Context: Passage 3 discusses benefits: lower prevalence at 6 months, greater likelihood of remission. Also mentions only 1 short-term RCT for suicide risk.\n   - Quote from Passage 3: \"screening interventions were associated with a lower prevalence of depression or clinically important depressive symptomatology at 6 months\" (17 words) - fits.\n   - Draft: Evidence indicates that screening interventions were associated with a lower prevalence of depression or clinically important depressive symptomatology at 6 months [Doc: USPSTF Final Evidence Summary (2023) | Sec: General | Pg: 4-4 | Quote: \"screening interventions were associated with a lower prevalence of depression or clinically important depressive symptomatology at 6 months\"].\n\n   *## Source*\n   - Context: Need to cite the official sources. I'll use Passage 2's mention of USPSTF recommendation history or just cite the document itself. Actually, I need a quote from the context for the Source section. I'll use a quote about the USPSTF recommendation history from Passage 2.\n   - Quote from Passage 2: \"since the USPSTF initially issued its B recommendation to screen in 2",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
-        "verified_quotes": 0,
-        "total_quotes": 0,
+        "verified_quotes": 4,
+        "total_quotes": 6,
         "unverified_quotes": [
-          "No citations found in response."
-        ],
-        "detail": "Response contains zero citation quotes."
+          "The included trials covered general adult, older adult, and perinatal populations",
+          "screening interventions were associated with a lower prevalence of depression or clinically important depressive symptomatology at 6 months"
+        ]
       },
       "faithfulness": {
         "passed": false,
         "flags": [
           "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM",
-          "UNGROUNDED_CLAIM"
+          "CITATION_RECYCLING"
         ],
-        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, CITATION_RECYCLING"
       },
       "schema": {
         "all_present": true,
@@ -5821,10 +5912,10 @@
             "rrf_score": 0.014705882352941176
           }
         ],
-        "retrieval_time_ms": 436.61,
+        "retrieval_time_ms": 337.32,
         "latency_breakdown_ms": {
-          "hybrid": 69.41,
-          "rerank": 367.17
+          "hybrid": 183.21,
+          "rerank": 154.1
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -5834,9 +5925,9 @@
       },
       "generation": {
         "provider": "groq",
-        "model": "allam-2-7b",
+        "model": "qwen/qwen3.6-27b",
         "status": "real",
-        "latency_ms": 31686.72
+        "latency_ms": 101376.21
       },
       "safety": {
         "status": "OK",
@@ -5856,7 +5947,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.9613,
           "is_in_scope": true,
-          "retrieval_time_ms": 436.61
+          "retrieval_time_ms": 337.32
         },
         {
           "step": 2,
@@ -5877,7 +5968,7 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 28680.69
+          "latency_ms": 39500.35
         },
         {
           "step": "5_retry",
@@ -5886,8 +5977,7 @@
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "faithfulness_flags": [
             "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CITATION_RECYCLING"
           ],
           "schema_sections": 6
         },
@@ -5895,13 +5985,12 @@
           "step": 5,
           "name": "citation_and_faithfulness_verification",
           "citation_status": "CITATION_VERIFICATION_FAILED",
-          "verified_quotes": 0,
-          "total_quotes": 0,
+          "verified_quotes": 4,
+          "total_quotes": 6,
           "faithfulness_passed": false,
           "faithfulness_flags": [
             "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM",
-            "UNGROUNDED_CLAIM"
+            "CITATION_RECYCLING"
           ],
           "schema_sections": 6
         },
@@ -5913,7 +6002,7 @@
           "schema_all_present": true
         }
       ],
-      "total_time_ms": 60807.92
+      "total_time_ms": 141218.56
     }
   },
   {
@@ -5922,38 +6011,40 @@
     "category": "AMBIGUOUS",
     "pipeline_result": {
       "query": "What adequate support systems must be in place when implementing depression screening?",
-      "status": "SUCCESS_WITH_WARNINGS",
-      "response": "## Recommendation\n\nThe USPSTF recommends depression screening in adults aged 18 years and older.\n\n\n## Population\nThis guideline addresses adults aged 18 years and older.\n\n\n## Screening Tool\nThe USPSTF recommends using the PHQ-9 or PHQ-9 as a screening tool for depression in adults aged 18 years and older.\n\n\n\n## Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the frequency of screening and the potential harms of screening, including false-positive results, false-negative results, and overdiagnosis.\n\n\n\n## Evidence\nThe USPSTF acknowledges that there is uncertainty regarding the frequency of screening and potential harms of screening, including false-positive results, false-negative results, and overtreatment.\n\n\n\n## Source\n[Doc: USPSTF | Sec: Evidence | Pg: 1 | Quote: \"The USPSTF acknowledges uncertainty regarding the frequency of screening and potential harms of screening, including false-positive results, false-negative results, and overtreatment.\"\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
-      "llm_response_raw": "## Recommendation\n\nThe USPSTF recommends depression screening in adults aged 18 years and older.\n\n\n## Population\nThis guideline addresses adults aged 18 years and older.\n\n\n## Screening Tool\nThe USPSTF recommends using the PHQ-9 or PHQ-9 as a screening tool for depression in adults aged 18 years and older.\n\n\n\n## Harms & Considerations\nThe USPSTF acknowledges that there is uncertainty regarding the frequency of screening and the potential harms of screening, including false-positive results, false-negative results, and overdiagnosis.\n\n\n\n## Evidence\nThe USPSTF acknowledges that there is uncertainty regarding the frequency of screening and potential harms of screening, including false-positive results, false-negative results, and overtreatment.\n\n\n\n## Source\n[Doc: USPSTF | Sec: Evidence | Pg: 1 | Quote: \"The USPSTF acknowledges uncertainty regarding the frequency of screening and potential harms of screening, including false-positive results, false-negative results, and overtreatment.\"",
+      "status": "REFUSAL_QUALITY_FAILED",
+      "response": "## Recommendation\nUSPSTF recommends screening for depression in the adult population, including pregnant and postpartum persons.\n\n\n## Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum persons.\n\n\n\n## Screening Tool\nThe USPSTF recommends using the PHQ-9 or PHQ-9 screening tool for depression in the adult population, including pregnant and postpartum persons.\n\n\n\n## Harms & Considerations\nThe evidence indicates that screening for depression in pregnant and postpartum persons is supported by the following evidence:\n\n\n\n\n[Doc: USPSTF Evidence Summary (JAMA 2022) | Sec: General | Pg: 1-1 | Quote: \"The evidence indicates that screening for depression in pregnant and postpartum persons is supported by the following evidence:\n\n\n\n\n[Doc: USPSTF Evidence Summary (JAMA 2022) | Sec: General | Pg: 1-1 | Quote: \"The evidence indicates that screening for depression in pregnant and postpartum persons is supported by the following evidence:\n\n---\n\n⚠️ If you or someone you know is struggling or in crisis, help is available. Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\nThis information is based on USPSTF guidance current as of June 2023 and is for clinical decision support only. It is not a substitute for professional medical judgment. Always verify current guidelines and consult appropriate specialists for individual patient care.",
+      "llm_response_raw": "## Recommendation\nUSPSTF recommends screening for depression in the adult population, including pregnant and postpartum persons.\n\n\n## Population\nThe guideline applies to adults aged 18 years and older, including pregnant and postpartum persons.\n\n\n\n## Screening Tool\nThe USPSTF recommends using the PHQ-9 or PHQ-9 screening tool for depression in the adult population, including pregnant and postpartum persons.\n\n\n\n## Harms & Considerations\nThe evidence indicates that screening for depression in pregnant and postpartum persons is supported by the following evidence:\n\n\n\n\n[Doc: USPSTF Evidence Summary (JAMA 2022) | Sec: General | Pg: 1-1 | Quote: \"The evidence indicates that screening for depression in pregnant and postpartum persons is supported by the following evidence:\n\n\n\n\n[Doc: USPSTF Evidence Summary (JAMA 2022) | Sec: General | Pg: 1-1 | Quote: \"The evidence indicates that screening for depression in pregnant and postpartum persons is supported by the following evidence:",
       "citations": {
         "status": "CITATION_VERIFICATION_FAILED",
         "verified_quotes": 0,
         "total_quotes": 1,
         "unverified_quotes": [
-          "The USPSTF acknowledges uncertainty regarding the frequency of screening and potential harms of screening, including false-positive results, false-negative results, and overtreatment."
+          "The evidence indicates that screening for depression in pregnant and postpartum persons is supported by the following evidence:\n\n\n\n\n[Doc: USPSTF Evidence Summary (JAMA 2022) | Sec: General | Pg: 1-1 | Quote: "
         ]
       },
       "faithfulness": {
         "passed": false,
         "flags": [
+          "CAVEAT_SUPPRESSED",
           "UNGROUNDED_CLAIM",
           "UNGROUNDED_CLAIM",
           "UNGROUNDED_CLAIM"
         ],
-        "detail": "Faithfulness checks failed: UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
+        "detail": "Faithfulness checks failed: CAVEAT_SUPPRESSED, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM, UNGROUNDED_CLAIM"
       },
       "schema": {
-        "all_present": true,
+        "all_present": false,
         "present_sections": [
           "## Recommendation",
           "## Population",
           "## Screening Tool",
-          "## Harms & Considerations",
+          "## Harms & Considerations"
+        ],
+        "missing_sections": [
           "## Evidence",
           "## Source"
         ],
-        "missing_sections": [],
-        "section_count": 6
+        "section_count": 4
       },
       "retrieval": {
         "query": "What adequate support systems must be in place when implementing depression screening?",
@@ -6300,10 +6391,10 @@
             "rrf_score": 0.014705882352941176
           }
         ],
-        "retrieval_time_ms": 289.6,
+        "retrieval_time_ms": 472.72,
         "latency_breakdown_ms": {
-          "hybrid": 128.7,
-          "rerank": 160.88
+          "hybrid": 284.26,
+          "rerank": 188.44
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -6315,7 +6406,7 @@
         "provider": "groq",
         "model": "allam-2-7b",
         "status": "real",
-        "latency_ms": 28802.18
+        "latency_ms": 30794.36
       },
       "safety": {
         "status": "OK",
@@ -6335,7 +6426,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.7609,
           "is_in_scope": true,
-          "retrieval_time_ms": 289.6
+          "retrieval_time_ms": 472.72
         },
         {
           "step": 2,
@@ -6356,7 +6447,7 @@
           "provider": "groq",
           "model": "allam-2-7b",
           "status": "real",
-          "latency_ms": 37664.64
+          "latency_ms": 24844.57
         },
         {
           "step": "5_retry",
@@ -6364,11 +6455,12 @@
           "status": "IMPROVED",
           "citation_status": "CITATION_VERIFICATION_FAILED",
           "faithfulness_flags": [
+            "CAVEAT_SUPPRESSED",
             "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM"
           ],
-          "schema_sections": 6
+          "schema_sections": 4
         },
         {
           "step": 5,
@@ -6378,21 +6470,22 @@
           "total_quotes": 1,
           "faithfulness_passed": false,
           "faithfulness_flags": [
+            "CAVEAT_SUPPRESSED",
             "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM",
             "UNGROUNDED_CLAIM"
           ],
-          "schema_sections": 6
+          "schema_sections": 4
         },
         {
           "step": 6,
           "name": "disclaimer_appended",
           "has_988_line": true,
-          "schema_sections_present": 6,
-          "schema_all_present": true
+          "schema_sections_present": 4,
+          "schema_all_present": false
         }
       ],
-      "total_time_ms": 66760.23
+      "total_time_ms": 56116.79
     }
   },
   {
@@ -6422,7 +6515,7 @@
           "passed": false
         }
       ],
-      "total_time_ms": 0.4
+      "total_time_ms": 0.12
     }
   },
   {
@@ -6791,10 +6884,10 @@
             "rrf_score": 0.014705882352941176
           }
         ],
-        "retrieval_time_ms": 462.9,
+        "retrieval_time_ms": 385.59,
         "latency_breakdown_ms": {
-          "hybrid": 81.7,
-          "rerank": 381.18
+          "hybrid": 211.27,
+          "rerank": 174.3
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -6820,7 +6913,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.6935,
           "is_in_scope": false,
-          "retrieval_time_ms": 462.9
+          "retrieval_time_ms": 385.59
         },
         {
           "step": 2,
@@ -6830,7 +6923,7 @@
           "threshold": 0.76
         }
       ],
-      "total_time_ms": 463.81
+      "total_time_ms": 386.4
     }
   },
   {
@@ -7185,10 +7278,10 @@
             "rrf_score": 0.014705882352941176
           }
         ],
-        "retrieval_time_ms": 414.78,
+        "retrieval_time_ms": 160.0,
         "latency_breakdown_ms": {
-          "hybrid": 36.63,
-          "rerank": 378.13
+          "hybrid": 20.13,
+          "rerank": 139.85
         },
         "models": {
           "embedding": "sentence-transformers/paraphrase-MiniLM-L6-v2",
@@ -7214,7 +7307,7 @@
           "chunks_retrieved": 3,
           "top1_confidence": 0.6699,
           "is_in_scope": false,
-          "retrieval_time_ms": 414.78
+          "retrieval_time_ms": 160.0
         },
         {
           "step": 2,
@@ -7224,7 +7317,7 @@
           "threshold": 0.76
         }
       ],
-      "total_time_ms": 415.48
+      "total_time_ms": 160.31
     }
   }
 ]
