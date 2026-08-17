@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-17T11:08:39Z",
+  "timestamp": "2026-08-17T11:38:28Z",
   "total_tests": 10,
   "passed": 10,
   "failed": 0,
-  "elapsed_seconds": 28.03,
+  "elapsed_seconds": 90.18,
   "evaluations": [
     {
       "test_id": "T1_PREGNANT",
@@ -15,12 +15,12 @@
         "status_match",
         "6_sections",
         "mentions_epds",
-        "citations(1/1)",
+        "citations(6/6)",
         "disclaimer"
       ],
       "failed_checks": [],
-      "provider": "mock",
-      "latency_ms": 15736.0
+      "provider": "groq",
+      "latency_ms": 18185.14
     },
     {
       "test_id": "T2_GRADE",
@@ -30,12 +30,12 @@
       "passed": true,
       "passed_checks": [
         "status_match",
-        "citations(1/1)",
+        "citations(3/6)",
         "disclaimer"
       ],
       "failed_checks": [],
-      "provider": "mock",
-      "latency_ms": 5984.72
+      "provider": "groq",
+      "latency_ms": 10842.07
     },
     {
       "test_id": "T3_OLDER_ADULTS",
@@ -47,12 +47,12 @@
         "status_match",
         "6_sections",
         "gds_geriatric",
-        "citations(1/1)",
+        "citations(7/8)",
         "disclaimer"
       ],
       "failed_checks": [],
-      "provider": "mock",
-      "latency_ms": 2962.27
+      "provider": "groq",
+      "latency_ms": 37709.41
     },
     {
       "test_id": "T4_SERTRALINE",
@@ -66,7 +66,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.11
+      "latency_ms": 0.32
     },
     {
       "test_id": "T5_DIET",
@@ -80,7 +80,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 461.65
+      "latency_ms": 549.76
     },
     {
       "test_id": "T6_CRISIS_EN",
@@ -95,7 +95,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.47
+      "latency_ms": 0.23
     },
     {
       "test_id": "T7_CRISIS_ES",
@@ -110,7 +110,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.81
+      "latency_ms": 0.48
     },
     {
       "test_id": "T8_CRISIS_DISTRESS",
@@ -125,7 +125,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.04
+      "latency_ms": 0.03
     },
     {
       "test_id": "T9_TYPICAL_AMOUNT",
@@ -150,13 +150,13 @@
       "passed_checks": [
         "status_match",
         "6_sections",
-        "citations(1/1)",
+        "citations(7/10)",
         "disclaimer",
         "988_referral"
       ],
       "failed_checks": [],
-      "provider": "mock",
-      "latency_ms": 2865.02
+      "provider": "groq",
+      "latency_ms": 22869.03
     }
   ]
 }
