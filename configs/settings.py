@@ -61,7 +61,7 @@ SECTION_PRIORS: dict[str, float] = {
     "Practice Considerations": 1.15,
     "General": 1.10,
     "Table": 0.85,
-    "Recommendations of Others": 0.70,
+    "Recommendations of Others": 0.45,
     "References": 0.40,
     "Bibliography": 0.30,
     "Metadata": 0.30,

@@ -5,13 +5,14 @@ Workflow:
   1. Clinical Query Input
   2. Hybrid Retrieval (ChromaDB Dense + BM25 Sparse fused via RRF k=60)
   3. Force-Inclusion of Population Tools (top-2 GDS for 65+, top-2 EPDS for perinatal)
-  4. Cross-Encoder Deep Re-ranking (ms-marco-MiniLM-L-6-v2)
-  5. Population Boosts:
+  4. Canonical Grade B Force-Inclusion (top-1 chunk with "recommends screening"+"depression" or explicit "Grade B")
+  5. Cross-Encoder Deep Re-ranking (ms-marco-MiniLM-L-6-v2)
+  6. Population Boosts:
      - Perinatal Boost (1.25x for EPDS/Edinburgh/postpartum chunks on perinatal queries)
      - Older Adults Boost (1.10x for GDS/Geriatric/65+ chunks containing screening terms on older adults queries)
-  6. Section Prior Boost (Recommendation=1.30, General=1.10, References=0.50)
-  7. Greedy Top-3 Diversity Rule (max 1 per DOCUMENT; fallback if <3 unique docs)
-  8. Comprehensive audit logging to ``logs/retrieval.log`` (raw + boosted scores + forced inclusions)
+  7. Section Prior Boost (Recommendation=1.30, General=1.10, Recommendations of Others=0.45, References=0.40)
+  8. Greedy Top-3 Diversity Rule (max 1 per DOCUMENT; fallback if <3 unique docs)
+  9. Comprehensive audit logging to ``logs/retrieval.log`` (raw + boosted scores + forced inclusions)
 
 Usage:
     from src.retrieval.retrieval_manager import RetrievalManager
@@ -80,6 +81,51 @@ def _chunk_matches_older_adults(chunk: dict[str, Any]) -> bool:
     has_pop = any(kw.lower() in text for kw in OLDER_ADULTS_CHUNK_KEYWORDS)
     has_screening = any(term in text for term in ["screen", "screening", "depression", "depressive", "mdd"])
     return has_pop and has_screening
+
+
+def _is_depression_screening_query(query: str) -> bool:
+    """
+    Check if the query is an in-scope depression-screening query
+    (not OOS like dosing or crisis). Matches queries about screening
+    recommendations, grade, tools, harms, or general/perinatal/geriatric screening.
+    """
+    q_lower = query.lower()
+    screening_terms = ["screen", "screening", "recommend", "grade", "tool", "instrument", "harm", "risk", "evidence"]
+    depression_terms = ["depression", "depressive", "mdd", "suicide"]
+    has_screening = any(term in q_lower for term in screening_terms)
+    has_depression = any(term in q_lower for term in depression_terms)
+    # Exclude OOS: dosing, medication, diet, bipolar, herbal
+    oos_terms = ["dose", "dosing", "mg", "medication", "drug", "sertraline", "fluoxetine",
+                 "diet", "herbal", "supplement", "bipolar", "mania", "lithium"]
+    is_oos = any(term in q_lower for term in oos_terms)
+    return has_screening and has_depression and not is_oos
+
+
+def _chunk_is_canonical_grade_b(chunk: dict[str, Any]) -> bool:
+    """
+    Check if a chunk contains the canonical Grade B recommendation language:
+    either ("recommends screening" AND "depression") OR explicit "Grade B" mention
+    (including PDF artifacts like "B\\nGrade") in a Recommendation/General section
+    (not Recommendations of Others).
+    """
+    text = chunk.get("text", "").lower()
+    section = chunk.get("section_name", "")
+    # Pattern 1: "recommends screening" + "depression" in a non-low-prior section
+    has_recommends_screening = "recommends screening" in text and "depression" in text
+    if has_recommends_screening and section not in ("References", "Bibliography", "Metadata", "Table"):
+        return True
+    # Pattern 2: Explicit "grade b" (or PDF artifact "b\ngrade") in key sections
+    is_key_section = section in ("Recommendation", "General", "Clinical Considerations", "Practice Considerations")
+    if is_key_section:
+        if "grade b" in text:
+            return True
+        # PDF artifact: "B\nGrade" becomes "b\ngrade" in lowercase
+        if "b\ngrade" in text or "b\rgrade" in text:
+            return True
+        # Also match "grade\nb" just in case
+        if "grade\nb" in text or "grade\r\nb" in text:
+            return True
+    return False
 
 
 class RetrievalManager:
@@ -187,12 +233,38 @@ class RetrievalManager:
                     existing_candidate_ids.add(cid)
                 forced_inclusions.append(cid)
 
+        # Canonical Grade B Force-Inclusion: for in-scope depression-screening queries,
+        # force-include top-1 chunk containing ("recommends screening" AND "depression")
+        # OR explicit "Grade B" in Recommendation/General section.
+        # Mirrors the existing perinatal/older-adults tool force-include pattern.
+        is_depression_screening = _is_depression_screening_query(query)
+        if is_depression_screening:
+            all_chunks = self.hybrid_searcher.bm25_index.chunks
+            canonical_candidates = [c for c in all_chunks if _chunk_is_canonical_grade_b(c)]
+            if canonical_candidates:
+                # Rank by token overlap with query, pick top-1
+                q_tokens = set(tokenize_text(query))
+                def _canonical_score(c: dict[str, Any]) -> int:
+                    c_tokens = set(tokenize_text(c.get("text", "")))
+                    return len(q_tokens.intersection(c_tokens))
+                canonical_candidates.sort(key=_canonical_score, reverse=True)
+                best_canonical = canonical_candidates[0]
+                cid = best_canonical.get("chunk_id", "")
+                if cid not in existing_candidate_ids:
+                    candidate_pool.append(dict(best_canonical))
+                    existing_candidate_ids.add(cid)
+                forced_inclusions.append(cid)
+
         # Fix 8: Context relevance filter for general adults queries
         q_lower = query.lower()
         is_general_adults = "general adult" in q_lower or "all adult" in q_lower or "general population" in q_lower
         if is_general_adults:
             filtered_pool = []
             for c in candidate_pool:
+                # Exempt canonical Grade B forced-included chunks from this filter
+                if c.get("chunk_id", "") in forced_inclusions and _chunk_is_canonical_grade_b(c):
+                    filtered_pool.append(c)
+                    continue
                 c_text_start = c.get("text", "")[:200].lower()
                 c_sec = c.get("section_name", "").lower()
                 has_perinatal_focus = any(p in c_text_start for p in ["perinatal", "pregnancy", "postpartum"])
@@ -211,13 +283,15 @@ class RetrievalManager:
             top_k=len(candidate_pool),
         )
 
-        # Step 4: Apply Population-Specific Boosts (Perinatal & Older Adults)
+        # Step 4: Apply Population-Specific Boosts (Perinatal & Older Adults) + Canonical Grade B Boost
         perinatal_boosted_ids: list[str] = []
         older_adults_boosted_ids: list[str] = []
+        canonical_grade_b_boosted_ids: list[str] = []
 
         for cand in reranked_candidates:
             cand["perinatal_boosted"] = False
             cand["older_adults_boosted"] = False
+            cand["canonical_grade_b_boosted"] = False
             raw_conf = cand.get("confidence", 0.0)
 
             # Perinatal boost (1.25x)
@@ -233,18 +307,29 @@ class RetrievalManager:
                 cand["older_adults_boosted"] = True
                 older_adults_boosted_ids.append(cand.get("chunk_id", ""))
 
+            # Canonical Grade B boost: force-included chunks matching canonical pattern
+            # get a 1.30x confidence boost to ensure they outrank demoted sections
+            if is_depression_screening and cand.get("chunk_id", "") in forced_inclusions and _chunk_is_canonical_grade_b(cand):
+                current_conf = cand.get("confidence", raw_conf)
+                cand["confidence"] = min(current_conf * 1.30, 1.0)
+                cand["canonical_grade_b_boosted"] = True
+                canonical_grade_b_boosted_ids.append(cand.get("chunk_id", ""))
+
         # Step 5: Apply Section Prior Boost (with AAFP recommendation table demotion to 0.40x)
         boosted_candidates: list[dict[str, Any]] = []
         for cand in reranked_candidates:
             c = dict(cand)
             text_lower = c.get("text", "").lower()
+            # Canonical Grade B chunks are exempt from section demotion
+            is_canonical_forced = (c.get("chunk_id", "") in forced_inclusions and _chunk_is_canonical_grade_b(c))
             # Defect 3: Demote AAFP recommendation table header pattern polluting Q02 and Q13
             if "| condition |" in text_lower and "| organization" in text_lower and "| recommendation" in text_lower:
                 prior = 0.40
             else:
                 section = c.get("section_name", "")
                 prior = SECTION_PRIORS.get(section, 1.0)
-                if section == "General" and any(k in text_lower for k in ["percent", "screening rate", "namcs", "2014", "statistics", "prevalence", "percent of adults"]):
+                # General section demotion — but exempt canonical Grade B forced chunks
+                if section == "General" and not is_canonical_forced and any(k in text_lower for k in ["percent", "screening rate", "namcs", "2014", "statistics", "prevalence", "percent of adults"]):
                     prior = 0.50
             conf = c.get("confidence", 0.0)
             boosted_score = conf * prior
