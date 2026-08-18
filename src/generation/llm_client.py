@@ -39,9 +39,16 @@ from configs.settings import (
 
 logger = logging.getLogger(__name__)
 
-# Load .env from project root
+# Load .env from project root (auto-create from .env.example if missing)
 _project_root = Path(__file__).resolve().parent.parent.parent
-load_dotenv(_project_root / ".env")
+_env_path = _project_root / ".env"
+if not _env_path.exists():
+    _example_path = _project_root / ".env.example"
+    if _example_path.exists():
+        import shutil
+        shutil.copy2(_example_path, _env_path)
+        logger.info("Created .env from .env.example — please add your OPENROUTER_API_KEY.")
+load_dotenv(_env_path)
 
 
 # ── OpenRouter Headers ───────────────────────────────────────────────

@@ -6,6 +6,41 @@
 
 ---
 
+## Quick Start (Fresh Clone)
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/hossyehiaa/MEDAI.git
+cd MEDAI
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Add your OpenRouter API key
+cp .env.example .env
+# Edit .env and replace the placeholder with your real key from https://openrouter.ai/keys
+
+# 4. Run the demo — automatically builds the search index on first run
+python final_demo.py
+```
+
+**That's it!** The pipeline is self-healing:
+- On first run, if `data/chunks.json` or `data/vector_db` are missing, the system automatically builds them.
+- It prefers existing `parsed_output.json` to skip PDF re-parsing (faster, less memory).
+- If `parsed_output.json` is absent, it parses PDFs one-by-one with `gc.collect()` between files to avoid OOM.
+
+**Alternative setup (one command):**
+```bash
+./setup.sh   # pip install → ingest → demo
+```
+
+**Safety-only check (no LLM calls, instant):**
+```bash
+python final_demo.py /emergency
+```
+
+---
+
 ## 🏛️ System Architecture
 
 ```mermaid

@@ -55,6 +55,10 @@ data/chunks_backup_v1.json
 data/chunks_backup*.json
 data/cleaned_output.json
 data/chunks/
+data/e2e_responses.json
+data/final_demo_transcript.json
+data/generation_evaluation.json
+data/baseline_v1_metrics.json
 
 # KEEP in git (source parsed baseline, audit reports, evaluations & directory placeholder):
 !data/parsed_output.json
