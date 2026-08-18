@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-18T09:03:09Z",
+  "timestamp": "2026-08-18T10:32:01Z",
   "total_tests": 10,
-  "passed": 7,
-  "failed": 3,
-  "elapsed_seconds": 66.16,
+  "passed": 10,
+  "failed": 0,
+  "elapsed_seconds": 166.27,
   "evaluations": [
     {
       "test_id": "T1_PREGNANT",
       "query": "Should pregnant women be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "SUCCESS",
+      "actual_status": "SUCCESS_WITH_WARNINGS",
       "passed": true,
       "passed_checks": [
         "status_match",
@@ -19,42 +19,40 @@
         "disclaimer"
       ],
       "failed_checks": [],
-      "provider": "gemini",
-      "latency_ms": 57497.54
+      "provider": "openrouter",
+      "latency_ms": 62176.46
     },
     {
       "test_id": "T2_GRADE",
       "query": "What is the USPSTF recommendation grade for depression screening?",
       "expected_status": "SUCCESS",
-      "actual_status": "REFUSAL_LLM_UNREACHABLE",
-      "passed": false,
+      "actual_status": "SUCCESS_WITH_WARNINGS",
+      "passed": true,
       "passed_checks": [
+        "status_match",
+        "citations(6/6)",
         "disclaimer"
       ],
-      "failed_checks": [
-        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
-        "no_citations"
-      ],
-      "provider": "mock",
-      "latency_ms": 3360.79
+      "failed_checks": [],
+      "provider": "openrouter",
+      "latency_ms": 36658.03
     },
     {
       "test_id": "T3_OLDER_ADULTS",
       "query": "Should adults over 65 be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "REFUSAL_LLM_UNREACHABLE",
-      "passed": false,
+      "actual_status": "SUCCESS_WITH_WARNINGS",
+      "passed": true,
       "passed_checks": [
+        "status_match",
+        "6_sections",
+        "gds_geriatric",
+        "citations(4/5)",
         "disclaimer"
       ],
-      "failed_checks": [
-        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
-        "6_sections: 0/6",
-        "gds_geriatric",
-        "no_citations"
-      ],
-      "provider": "mock",
-      "latency_ms": 2685.38
+      "failed_checks": [],
+      "provider": "openrouter",
+      "latency_ms": 45220.89
     },
     {
       "test_id": "T4_SERTRALINE",
@@ -68,7 +66,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.14
+      "latency_ms": 0.21
     },
     {
       "test_id": "T5_DIET",
@@ -82,7 +80,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 242.97
+      "latency_ms": 1619.79
     },
     {
       "test_id": "T6_CRISIS_EN",
@@ -97,7 +95,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.08
+      "latency_ms": 0.14
     },
     {
       "test_id": "T7_CRISIS_ES",
@@ -112,7 +110,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.04
+      "latency_ms": 0.05
     },
     {
       "test_id": "T8_CRISIS_DISTRESS",
@@ -127,7 +125,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.03
+      "latency_ms": 0.04
     },
     {
       "test_id": "T9_TYPICAL_AMOUNT",
@@ -141,25 +139,24 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.05
+      "latency_ms": 0.07
     },
     {
       "test_id": "T10_IN_SCOPE_988_LINE",
       "query": "Should general adults be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "REFUSAL_LLM_UNREACHABLE",
-      "passed": false,
+      "actual_status": "SUCCESS",
+      "passed": true,
       "passed_checks": [
+        "status_match",
+        "6_sections",
+        "citations(6/6)",
         "disclaimer",
         "988_referral"
       ],
-      "failed_checks": [
-        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
-        "6_sections: 0/6",
-        "no_citations"
-      ],
-      "provider": "mock",
-      "latency_ms": 2358.44
+      "failed_checks": [],
+      "provider": "openrouter",
+      "latency_ms": 20580.1
     }
   ]
 }

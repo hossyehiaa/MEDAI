@@ -2,7 +2,7 @@
 
 **Clinical Domain:** USPSTF Depression and Suicide Risk in Adults (Grade B, June 2023 Guidelines)  
 **System Architecture:** Multi-Stage Clinical Decision Support Engine with Grounded LLM Generation & Verbatim Verification  
-**Chunk Count:** 1,824 chunks | **Embedding:** `paraphrase-MiniLM-L6-v2` (384-dim) | **Reranker:** `ms-marco-MiniLM-L-6-v2` | **Primary LLM:** Google Gemini (`gemini-3.6-flash` / `gemini-3.7-flash`) | **Fallback LLM:** Groq (`allam-2-7b` / `groq/compound`)
+**Chunk Count:** 1,824 chunks | **Embedding:** `paraphrase-MiniLM-L6-v2` (384-dim) | **Reranker:** `ms-marco-MiniLM-L-6-v2` | **Primary LLM:** OpenRouter paid — DeepSeek V3 (`deepseek/deepseek-chat-v3-0324`) | **Fallback LLMs:** Llama-3.3-70B, Qwen3-235B
 
 ---
 
@@ -35,10 +35,10 @@ flowchart TD
         Threshold -- "NO" --> LowConf["Low Confidence Refusal"]
     end
 
-    subgraph Generation["Grounded LLM Generation Layer (Google Gemini Primary)"]
-        PromptBuild --> GeminiLLM["Google Gemini Client\n(gemini-3.6-flash, temp=0.0)"]
-        GeminiLLM -- "Rate Limit / 429" --> GroqFB["Groq Fallback Client\n(allam-2-7b / groq/compound)"]
-        GeminiLLM & GroqFB --> CitVerify{"Citation Verifier\n(Verbatim Quote Regex Check)"}
+    subgraph Generation["Grounded LLM Generation Layer (OpenRouter Paid)"]
+        PromptBuild --> ORLLM["OpenRouter Client\n(Claude Sonnet 4, temp=0.0)"]
+        ORLLM -- "Fallback" --> ORFB["Claude 3.5 Sonnet / Llama-3.3-70B\nCascade Fallback"]
+        ORLLM & ORFB --> CitVerify{"Citation Verifier\n(Verbatim Quote Regex Check)"}
         CitVerify -- "FAILED" --> RetryOnce["Stricter Prompt Retry (1x)"]
         RetryOnce --> CitVerify
         CitVerify -- "OK" --> AddDiscl["Append Medical Disclaimer"]
@@ -144,6 +144,6 @@ medAI/
 
 ## ⚠️ Known Limitations
 
-1. **Model Cascade & Endpoint Dependencies**: The system relies on a multi-stage LLM cascade (Google Gemini primary → Groq fallback → Mock fallback). Full 6-section grounded generation requires access to an active LLM endpoint. Rate limits (e.g., Gemini's free tier 20/day) frequently force cascading.
-2. **Mock Fallback Behavior**: When all configured LLM endpoints (Gemini and Groq) are completely unreachable or rate-limited, the system falls back to a Mock fallback which returns a generic simulated error or refusal without producing unverified clinical claims.
+1. **Model Cascade & Endpoint Dependencies**: The system relies on a multi-stage LLM cascade (OpenRouter Claude Sonnet 4 primary → Claude 3.5 Sonnet → Llama-3.3-70B fallback → Mock fallback). Full 6-section grounded generation requires access to an active LLM endpoint with valid OpenRouter API credits.
+2. **Mock Fallback Behavior**: When all configured LLM endpoints are completely unreachable or rate-limited, the system falls back to a Mock fallback which returns a generic simulated error or refusal without producing unverified clinical claims.
 3. **Universal 988 Touchpoint**: As an intentional clinical safety design decision, the 988 Suicide & Crisis Lifeline referral is appended to all in-scope responses alongside the USPSTF disclaimer.

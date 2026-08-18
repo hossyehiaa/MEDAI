@@ -121,6 +121,20 @@ class ParsedSection:
 # Internal helpers
 # ──────────────────────────────────────────────────────────────────────
 
+def _normalize_extracted_unicode(text: str) -> str:
+    """Normalize Unicode extracted from PDFs — replace ligatures, fix smart quotes, strip control chars."""
+    import unicodedata
+    # Normalize to NFC form
+    text = unicodedata.normalize("NFC", text)
+    # Replace common ligatures
+    text = text.replace("\ufb01", "fi").replace("\ufb02", "fl")
+    text = text.replace("\u201c", '"').replace("\u201d", '"')
+    text = text.replace("\u2018", "'").replace("\u2019", "'")
+    # Remove control characters except newlines/tabs
+    text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
+    return text
+
+
 def _is_toc_page(text: str) -> bool:
     """Return *True* if the page looks like a Table of Contents."""
     toc_hits = _TOC_LINE_PATTERN.findall(text)

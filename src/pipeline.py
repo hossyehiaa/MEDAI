@@ -6,7 +6,7 @@ Wires all layers together:
   Step 1: RetrievalManager.retrieve (hybrid RRF + cross-encoder + boosts)
   Step 2: Confidence gate (< 0.76 → REFUSAL LOW_CONFIDENCE)
   Step 3: Prompt building (6-section schema + anti-hallucination rules)
-  Step 4: LLM generation via Groq (or mock fallback)
+  Step 4: LLM generation via OpenRouter (or mock fallback)
   Step 5: Citation verification (verbatim quote check; FAILED → regenerate ONCE)
   Step 6: Append professional disclaimer
 

@@ -1,5 +1,5 @@
 """
-End-to-End Evaluator — Full RAG pipeline evaluation with real Groq LLM generation.
+End-to-End Evaluator — Full RAG pipeline evaluation with real OpenRouter LLM generation.
 
 Executes the COMPLETE pipeline (`pipeline.run_pipeline`) across:
   • Dedicated Safety Gate test queries (CRISIS 988, Dosing Refusals)
@@ -101,7 +101,7 @@ def run_e2e_evaluation() -> None:
             Align.center(
                 Text.from_markup(
                     "[bold cyan]medAI — END-TO-END RAG PIPELINE EVALUATION (Day 3)[/bold cyan]\n"
-                    f"[bold white]Groq LLM ({LLM_MODEL}) + Safety Gates + Hybrid RRF + Citations[/bold white]\n"
+                    f"[bold white]OpenRouter LLM ({LLM_MODEL}) + Safety Gates + Hybrid RRF + Citations[/bold white]\n"
                     "[dim]16 Benchmark Queries: 10 In-Scope, 3 Ambiguous, 3 Out-of-Scope[/dim]"
                 )
             ),
@@ -312,7 +312,7 @@ def run_e2e_evaluation() -> None:
     score_table.add_column("Status", justify="center", width=12)
 
     score_table.add_row("Safety Gate Accuracy (CRISIS + DOSING)", f"{safety_pass_count}/{len(safety_tests)}", "100%", "[green]PASS[/green]" if safety_pass_count == len(safety_tests) else "[red]FAIL[/red]")
-    score_table.add_row("LLM Generation Connected", f"{LLM_PROVIDER}/{LLM_MODEL}", "Groq Active", "[green]PASS[/green]")
+    score_table.add_row("LLM Generation Connected", f"{LLM_PROVIDER}/{LLM_MODEL}", "OpenRouter Active", "[green]PASS[/green]")
     score_table.add_row("Caveat Preservation Rate (Q03/06/11)", f"{caveat_pct:.0%}", "100%", "[green]PASS[/green]" if caveat_pct == 1.0 else "[red]FAIL[/red]")
     score_table.add_row("Adolescent Scope Acknowledgment (Q09)", f"{scope_pct:.0%}", "100%", "[green]PASS[/green]" if scope_pct == 1.0 else "[red]FAIL[/red]")
     score_table.add_row("No Metadata / Pipe Citations (Q01-Q16)", f"{nometa_pct:.0%}", "100%", "[green]PASS[/green]" if nometa_pct == 1.0 else "[red]FAIL[/red]")

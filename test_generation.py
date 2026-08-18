@@ -241,7 +241,7 @@ def run_generation_tests() -> None:
                 Text.from_markup(
                     "[bold cyan]medAI — DAY 3 GENERATION LAYER VALIDATION[/bold cyan]\n"
                     "[bold white]7 Test Cases: In-Scope + Safety Gates + Refusals[/bold white]\n"
-                    "[dim]Pipeline: Safety → Retrieval → Confidence Gate → Groq LLM → Citation Verify → Disclaimer[/dim]"
+                    "[dim]Pipeline: Safety → Retrieval → Confidence Gate → OpenRouter LLM → Citation Verify → Disclaimer[/dim]"
                 )
             ),
             box=box.DOUBLE_EDGE,

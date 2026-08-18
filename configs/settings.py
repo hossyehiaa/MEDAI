@@ -126,18 +126,18 @@ SCREENING_TOOL_KEYWORDS: list[str] = [
 ]
 
 # ──────────────────────────────────────────────────────────────────────
-# LLM Generation (OpenRouter Free Cascade)
+# LLM Generation (OpenRouter Paid — Best Available Models)
 # ──────────────────────────────────────────────────────────────────────
 LLM_PROVIDER: str = "openrouter"
 OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
-LLM_MODEL: str = "meta-llama/llama-3.3-70b-instruct:free"
+LLM_MODEL: str = "deepseek/deepseek-chat-v3-0324"
 LLM_FALLBACK_MODELS: list[str] = [
-    "deepseek/deepseek-chat-v3-0324:free",
-    "qwen/qwen3-235b-a22b:free",
-    "google/gemma-3-27b-it:free"
+    "meta-llama/llama-3.3-70b-instruct",
+    "qwen/qwen3-235b-a22b",
 ]
-MIN_REQUEST_INTERVAL_SEC: float = 3.5
-LLM_TIMEOUT_SEC: int = 30
+MIN_REQUEST_INTERVAL_SEC: float = 0.5
+MAX_OUTPUT_TOKENS: int = 3000
+LLM_TIMEOUT_SEC: int = 60
 TEMPERATURE: float = 0.0
 MAX_CONTEXT_CHUNKS: int = 3
 GENERATION_LOG_PATH: str = str(LOGS_DIR / "generation.log")

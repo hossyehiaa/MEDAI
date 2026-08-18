@@ -1,10 +1,7 @@
 """
-LLM Client — Google Gemini powered generation with Groq fallback and robust mock fallback.
+LLM Client — OpenRouter paid cascade: Claude Sonnet 4 → Claude 3.5 Sonnet → Llama-3.3-70B → Mock.
 
-Uses Google Gemini (gemini-3.6-flash / gemini-3.7-flash / gemini-flash-latest) via google.generativeai as primary LLM.
-Falls back to Groq (allam-2-7b / groq/compound) when Gemini is unavailable or rate-limited,
-and to a deterministic MOCK response when all endpoints are unreachable.
-
+Uses OpenAI SDK pointed at OpenRouter with proper headers.
 Every generation attempt is logged to logs/generation.log.
 
 Usage:
@@ -15,6 +12,7 @@ Usage:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -32,6 +30,7 @@ from configs.settings import (
     LLM_MODEL,
     LLM_FALLBACK_MODELS,
     LLM_TIMEOUT_SEC,
+    MAX_OUTPUT_TOKENS,
     OPENROUTER_BASE_URL,
     TEMPERATURE,
     GENERATION_LOG_PATH,
@@ -40,30 +39,16 @@ from configs.settings import (
 
 logger = logging.getLogger(__name__)
 
-# Load .env from project root or src/safety/.env
+# Load .env from project root
 _project_root = Path(__file__).resolve().parent.parent.parent
 load_dotenv(_project_root / ".env")
-load_dotenv(_project_root / "src" / "safety" / ".env")
 
 
-def _extract_gemini_text(resp: Any) -> str:
-    """Safely extract text from Gemini response even if finish_reason truncated or parts nested."""
-    try:
-        if hasattr(resp, "text") and resp.text:
-            return resp.text
-    except Exception:
-        pass
-
-    if hasattr(resp, "candidates") and resp.candidates:
-        cand = resp.candidates[0]
-        if hasattr(cand, "content") and hasattr(cand.content, "parts"):
-            parts_text = []
-            for part in cand.content.parts:
-                if hasattr(part, "text") and part.text:
-                    parts_text.append(part.text)
-            if parts_text:
-                return "".join(parts_text)
-    return ""
+# ── OpenRouter Headers ───────────────────────────────────────────────
+_OR_HEADERS = {
+    "HTTP-Referer": "https://medai.local",
+    "X-Title": "medAI Clinical RAG",
+}
 
 
 def _is_degenerate(text: str) -> tuple[bool, str]:
@@ -84,43 +69,6 @@ def _is_degenerate(text: str) -> tuple[bool, str]:
     return False, ""
 
 
-def _extract_clean_verbatim_quote(chunk: dict[str, Any]) -> tuple[str, str, str, str]:
-    """
-    Extract a valid, non-table, non-metadata verbatim quote >= 40 chars from a chunk.
-    """
-    raw_doc = chunk.get("document_name", "USPSTF Guidelines")
-    doc = get_source_display_name(raw_doc)
-    sec = chunk.get("section_name", "General")
-    page = str(chunk.get("start_page", "1"))
-    text = chunk.get("text", "")
-
-    sentences = re.split(r"(?<=[.!?])\s+", text)
-    for s in sentences:
-        s_clean = s.strip()
-        alpha = re.sub(r"[^a-zA-Z0-9]", "", s_clean)
-        if (
-            len(alpha) >= 40
-            and not s_clean.startswith("|")
-            and not s_clean.startswith("---")
-            and "PMID:" not in s_clean
-            and "et al." not in s_clean
-            and not re.search(r"^\s*Table\s+\d+\.", s_clean, re.IGNORECASE)
-        ):
-            words = s_clean.split()
-            if len(words) >= 8:
-                return doc, sec, page, " ".join(words[:min(len(words), 20)])
-
-    # Fallback to substantive slice
-    clean_lines = [l.strip() for l in text.split("\n") if l.strip() and not l.strip().startswith("|") and "---" not in l and "PMID:" not in l]
-    for line in clean_lines:
-        alpha = re.sub(r"[^a-zA-Z0-9]", "", line)
-        if len(alpha) >= 40:
-            words = line.split()
-            return doc, sec, page, " ".join(words[:min(len(words), 20)])
-
-    return doc, sec, page, "The USPSTF recommends screening for depression in the general adult population"
-
-
 def _build_mock_response(
     context_chunks: list[dict[str, Any]] | None = None,
     prompt: str = "",
@@ -132,7 +80,7 @@ def _build_mock_response(
     return (
         "MOCK FALLBACK MODE: LLM endpoint unreachable. This system is operating in degraded mode "
         "and cannot generate clinical claims. Please retry when connectivity is restored.\n\n"
-        "⚠️ If you or someone you know is struggling or in crisis, help is available. "
+        "If you or someone you know is struggling or in crisis, help is available. "
         "Call or text 988 (US) or contact your local emergency services for immediate, confidential 24/7 support.\n\n"
         "This information is based on USPSTF guidance current as of June 2023 and is for clinical "
         "decision support only. It is not a substitute for professional medical judgment. "
@@ -140,19 +88,40 @@ def _build_mock_response(
     )
 
 
+def _clean_response(raw: str) -> str:
+    """Strip think blocks, chain-of-thought preambles, and normalize."""
+    # Strip <think>...</think>
+    c = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL).strip()
+    if not c and raw:
+        c = raw.strip()
+
+    # Strip chain-of-thought preamble if any
+    cot_markers = [
+        "Here's a thinking process",
+        "Here is a thinking process",
+        "Let me analyze",
+        "Step-by-step reasoning",
+        "Thinking Process:",
+        "Thinking process:",
+        "Let's think step by step",
+    ]
+    has_cot = any(marker in c for marker in cot_markers)
+    if (has_cot or not c.startswith("##")) and "##" in c:
+        idx = c.find("##")
+        c = c[idx:].strip()
+
+    return c
+
+
+# Response cache (simple dict — sufficient for single-process)
+_response_cache: dict[str, dict[str, Any]] = {}
+
+
 class LLMClient:
     """
-    Multi-provider LLM client with Google Gemini as primary, Groq as fallback, and Mock.
+    OpenRouter paid LLM client with model cascade and mock fallback.
 
-    Parameters:
-        provider: "gemini", "groq", or "mock" (defaults to settings.LLM_PROVIDER).
-        model: Model name string (defaults to settings.LLM_MODEL).
-        fallback_model: Model name string for fallback.
-        base_url: OpenAI-compatible API base URL for Groq.
-        temperature: Sampling temperature.
-        max_tokens: Maximum tokens to generate.
-        timeout: Request timeout in seconds.
-        api_key: Optional explicit API key.
+    Cascade: claude-sonnet-4 → claude-3.5-sonnet → llama-3.3-70b-instruct → mock.
     """
 
     def __init__(
@@ -162,11 +131,11 @@ class LLMClient:
         fallback_models: list[str] = LLM_FALLBACK_MODELS,
         base_url: str = OPENROUTER_BASE_URL,
         temperature: float = TEMPERATURE,
-        max_tokens: int = 1500,
+        max_tokens: int = MAX_OUTPUT_TOKENS,
         timeout: int = LLM_TIMEOUT_SEC,
         api_key: str | None = None,
     ) -> None:
-        self.provider = provider.lower() if provider else "gemini"
+        self.provider = provider.lower() if provider else "openrouter"
         self.model = model
         self.fallback_models = fallback_models
         self.base_url = base_url
@@ -174,103 +143,52 @@ class LLMClient:
         self.max_tokens = max_tokens
         self.timeout = timeout
 
-        # Resolve API keys
-        self.gemini_api_key = api_key if self.provider == "gemini" else None
-        if not self.gemini_api_key:
-            self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-
-        self.openrouter_api_key = api_key if self.provider == "openrouter" else None
-        if not self.openrouter_api_key:
-            self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
-
-        if not self.gemini_api_key or not self.openrouter_api_key:
-            load_dotenv(_project_root / "src" / "safety" / ".env")
+        # Resolve API key
+        self.api_key = api_key or os.getenv("OPENROUTER_API_KEY")
+        if not self.api_key:
             load_dotenv(_project_root / ".env")
-            if not self.gemini_api_key:
-                self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-            if not self.openrouter_api_key:
-                self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+            self.api_key = os.getenv("OPENROUTER_API_KEY")
 
-        self._gemini_configured = False
-        self._groq_client: Any | None = None
-
-        # Setup Gemini
-        if self.gemini_api_key and self.gemini_api_key.strip() not in ("", "invalid", "your_gemini_api_key_here"):
-            try:
-                import google.generativeai as genai
-                genai.configure(api_key=self.gemini_api_key)
-                self._gemini_configured = True
-            except Exception as e:
-                logger.warning("Failed to configure Google Gemini SDK: %s", e)
-
-        # Setup OpenRouter/Groq client
-        if self.openrouter_api_key and self.openrouter_api_key.strip() not in ("", "invalid", "your_groq_api_key_here"):
+        # Setup OpenRouter client via OpenAI SDK
+        self._client: Any | None = None
+        if self.api_key and self.api_key.strip() not in ("", "invalid", "your_openrouter_api_key_here"):
             try:
                 from openai import OpenAI
-                self._groq_client = OpenAI(
-                    api_key=self.openrouter_api_key,
+                self._client = OpenAI(
+                    api_key=self.api_key,
                     base_url=self.base_url,
                     timeout=self.timeout,
+                    default_headers=_OR_HEADERS,
                 )
+                logger.info("OpenRouter client initialized (model=%s)", self.model)
             except Exception as e:
-                logger.warning("Failed to initialize OpenAI client for Groq: %s", e)
+                logger.warning("Failed to initialize OpenRouter client: %s", e)
 
         # Perform initial health check
-        self.health_check()
+        self._healthy = self.health_check()
 
     def health_check(self) -> bool:
-        """
-        Check endpoint reachability. If primary Gemini fails, tests fallback models or switches to Groq.
-        """
-        if self.provider == "gemini" and self._gemini_configured:
-            import google.generativeai as genai
-            candidate_models = [
-                self.model,
-                "gemini-3.6-flash",
-                "gemini-3.7-flash",
-                "gemini-flash-latest",
-                "gemini-3.5-flash",
-                "gemini-2.5-flash",
-            ]
-            for m in candidate_models:
-                if not m:
-                    continue
-                try:
-                    g_model = genai.GenerativeModel(m)
-                    resp = g_model.generate_content(
-                        "ping",
-                        generation_config=genai.types.GenerationConfig(
-                            temperature=0.0,
-                            max_output_tokens=50,
-                        ),
-                    )
-                    text = _extract_gemini_text(resp)
-                    if text:
-                        if self.model != m:
-                            logger.info("Primary Gemini model switched to '%s'", m)
-                            self.model = m
-                        return True
-                except Exception as exc:
-                    logger.warning("Gemini health check failed for model '%s': %s", m, exc)
+        """Check OpenRouter endpoint reachability."""
+        if not self._client:
+            logger.warning("No OpenRouter client available for health check.")
+            return False
 
-        # If Gemini is not configured or failed, check Groq fallback
-        if self._groq_client:
-            candidate_groq = self.fallback_models
-            for m in candidate_groq:
-                if not m:
-                    continue
-                try:
-                    resp = self._groq_client.chat.completions.create(
-                        model=m,
-                        messages=[{"role": "user", "content": "ping"}],
-                        max_tokens=20,
-                        timeout=min(self.timeout, 10),
-                    )
-                    if resp and resp.choices:
-                        logger.info("Groq fallback healthy on model '%s'", m)
-                        return True
-                except Exception as exc:
-                    logger.warning("Groq health check failed for model '%s': %s", m, exc)
+        candidate_models = [self.model] + self.fallback_models
+        for m in candidate_models:
+            if not m:
+                continue
+            try:
+                resp = self._client.chat.completions.create(
+                    model=m,
+                    messages=[{"role": "user", "content": "ping"}],
+                    max_tokens=20,
+                    timeout=min(self.timeout, 15),
+                )
+                if resp and resp.choices:
+                    logger.info("OpenRouter health check passed on model '%s'", m)
+                    return True
+            except Exception as exc:
+                logger.warning("OpenRouter health check failed for model '%s': %s", m, exc)
 
         return False
 
@@ -280,11 +198,10 @@ class LLMClient:
         context_chunks: list[dict[str, Any]] | None = None,
         system_prompt: str | None = None,
     ) -> dict[str, Any]:
-        """
-        Generate a response using Google Gemini as primary, cascading to Groq and Mock.
-        """
+        """Generate a response using OpenRouter cascade: primary → fallbacks → mock."""
         t0 = time.perf_counter()
-        
+
+        # ── Degenerate prompt check ────────────────────────────────────────
         is_deg_prompt, deg_reason_prompt = _is_degenerate(prompt)
         if is_deg_prompt:
             latency_ms = round((time.perf_counter() - t0) * 1000, 2)
@@ -301,210 +218,79 @@ class LLMClient:
             self._log_generation(prompt, result)
             return result
 
-        # ── 1. PRIMARY: GOOGLE GEMINI ───────────────────────────────────
-        if self.provider == "gemini" and self._gemini_configured:
-            try:
-                import google.generativeai as genai
-                candidate_gemini = [
-                    self.model,
-                    "gemini-3.6-flash",
-                    "gemini-3.7-flash",
-                    "gemini-flash-latest",
-                    "gemini-3.5-flash",
-                    "gemini-2.5-flash",
-                ]
-                for m in candidate_gemini:
-                    if not m:
-                        continue
-                    try:
-                        g_model = genai.GenerativeModel(
-                            m,
-                            system_instruction=system_prompt if system_prompt else None,
-                        )
-                        gen_config = genai.types.GenerationConfig(
-                            temperature=self.temperature,
-                            max_output_tokens=self.max_tokens,
-                        )
-                        resp = g_model.generate_content(prompt, generation_config=gen_config)
-                        raw_c = _extract_gemini_text(resp)
-                        c = re.sub(r"<think>.*?</think>", "", raw_c, flags=re.DOTALL).strip()
-                        if not c and raw_c:
-                            c = raw_c.strip()
+        # ── Response cache check ─────────────────────────────────────────
+        cache_key = hashlib.md5(prompt.encode()).hexdigest() if len(prompt) > 200 else prompt[:200]
+        if cache_key in _response_cache:
+            cached = _response_cache[cache_key]
+            logger.info("Response cache hit (key=%s...)", cache_key[:16])
+            return cached
 
-                        # Strip chain-of-thought preamble if any
-                        cot_markers = [
-                            "Here's a thinking process",
-                            "Here is a thinking process",
-                            "Let me analyze",
-                            "Step-by-step reasoning",
-                            "Thinking Process:",
-                            "Thinking process:",
-                            "Let's think step by step",
-                        ]
-                        has_cot = any(marker in c for marker in cot_markers)
-                        if (has_cot or not c.startswith("##")) and "##" in c:
-                            idx = c.find("##")
-                            c = c[idx:].strip()
+        # ── OpenRouter cascade ───────────────────────────────────────────
+        if self._client:
+            messages = []
+            if system_prompt:
+                messages.append({"role": "system", "content": system_prompt})
+            messages.append({"role": "user", "content": prompt})
 
-                        # Accept response if it contains markdown headers and is non-empty (>= 150 chars)
-                        if c and len(c) >= 150 and "##" in c:
-                            is_deg, deg_reason = _is_degenerate(c)
-                            if is_deg:
-                                latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-                                result = {
-                                    "response": c,
-                                    "provider": "gemini",
-                                    "model": m,
-                                    "model_used": m,
-                                    "endpoint_status": "success" if m == self.model else "fallback",
-                                    "status": "REFUSAL_QUALITY_FAILED",
-                                    "reason": "Degenerate repetition detected",
-                                    "latency_ms": latency_ms,
-                                }
-                                logger.warning("Degenerate repetition detected: %s. Response len: %d", deg_reason, len(c))
-                                self._log_generation(prompt, result)
-                                return result
-                                
+            candidate_models = [self.model] + self.fallback_models
+            for idx, m in enumerate(candidate_models):
+                if not m:
+                    continue
+                try:
+                    resp = self._client.chat.completions.create(
+                        model=m,
+                        messages=messages,
+                        temperature=self.temperature,
+                        max_tokens=self.max_tokens,
+                    )
+                    raw_c = resp.choices[0].message.content or ""
+                    c = _clean_response(raw_c)
+
+                    # Accept response if non-empty and substantive (>= 150 chars)
+                    if c and len(c) >= 150:
+                        is_deg, deg_reason = _is_degenerate(c)
+                        if is_deg:
                             latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-                            endpoint_status = "success" if m == self.model else "fallback"
                             result = {
                                 "response": c,
-                                "provider": "gemini",
+                                "provider": "openrouter",
                                 "model": m,
                                 "model_used": m,
-                                "endpoint_status": endpoint_status,
-                                "status": "real",
+                                "endpoint_status": "fallback" if idx > 0 else "success",
+                                "status": "REFUSAL_QUALITY_FAILED",
+                                "reason": "Degenerate repetition detected",
                                 "latency_ms": latency_ms,
                             }
+                            logger.warning("Degenerate repetition detected: %s. Response len: %d", deg_reason, len(c))
                             self._log_generation(prompt, result)
                             return result
-                        elif c:
-                            logger.warning("Gemini output with model '%s' too short (%d chars). Trying next...", m, len(c))
-                    except Exception as g_err:
-                        logger.warning("Gemini generation attempt with '%s' failed: %s", m, g_err)
-                        continue
-            except Exception as exc:
-                logger.warning("Gemini API error, attempting fallback to Groq: %s", exc)
 
-        # ── 2. SECONDARY: GROQ LLM FALLBACK ─────────────────────────────
-        if self._groq_client:
-            try:
-                messages = []
-                if system_prompt:
-                    messages.append({"role": "system", "content": system_prompt})
-                messages.append({"role": "user", "content": prompt})
+                        latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+                        endpoint_status = "success" if idx == 0 else "fallback"
+                        result = {
+                            "response": c,
+                            "provider": "openrouter",
+                            "model": m,
+                            "model_used": m,
+                            "endpoint_status": endpoint_status,
+                            "status": "real",
+                            "latency_ms": latency_ms,
+                        }
+                        self._log_generation(prompt, result)
+                        _response_cache[cache_key] = result
+                        return result
+                    elif c:
+                        logger.warning("OpenRouter output with model '%s' too short (%d chars). Trying next...", m, len(c))
+                except Exception as err:
+                    err_str = str(err)
+                    if "429" in err_str or "rate_limit" in err_str:
+                        logger.warning("Rate limited on model '%s', waiting 2s then cascading...", m)
+                        time.sleep(2.0)
+                    else:
+                        logger.warning("OpenRouter generation with '%s' failed: %s", m, err)
+                    continue
 
-                candidate_groq = [self.model] + self.fallback_models
-                for fb in candidate_groq:
-                    if not fb:
-                        continue
-                    try:
-                        resp = self._groq_client.chat.completions.create(
-                            model=fb,
-                            messages=messages,
-                            temperature=self.temperature,
-                            max_tokens=self.max_tokens,
-                        )
-                        raw_c = resp.choices[0].message.content or ""
-                        c = re.sub(r"<think>.*?</think>", "", raw_c, flags=re.DOTALL).strip()
-                        if not c and raw_c:
-                            c = raw_c.strip()
-
-                        cot_markers = [
-                            "Here's a thinking process",
-                            "Here is a thinking process",
-                            "Let me analyze",
-                            "Step-by-step reasoning",
-                            "Thinking Process:",
-                            "Thinking process:",
-                            "Let's think step by step",
-                        ]
-                        has_cot = any(marker in c for marker in cot_markers)
-                        if (has_cot or not c.startswith("##")) and "##" in c:
-                            idx = c.find("##")
-                            c = c[idx:].strip()
-
-                        if c and len(c) >= 200:
-                            is_deg, deg_reason = _is_degenerate(c)
-                            if is_deg:
-                                latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-                                result = {
-                                    "response": c,
-                                    "provider": "groq",
-                                    "model": fb,
-                                    "model_used": fb,
-                                    "endpoint_status": "fallback",
-                                    "status": "REFUSAL_QUALITY_FAILED",
-                                    "reason": "Degenerate repetition detected",
-                                    "latency_ms": latency_ms,
-                                }
-                                logger.warning("Degenerate repetition detected: %s. Response len: %d", deg_reason, len(c))
-                                self._log_generation(prompt, result)
-                                return result
-
-                            latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-                            result = {
-                                "response": c,
-                                "provider": "groq",
-                                "model": fb,
-                                "model_used": fb,
-                                "endpoint_status": "fallback",
-                                "status": "real",
-                                "latency_ms": latency_ms,
-                            }
-                            self._log_generation(prompt, result)
-                            return result
-                    except Exception as fb_err:
-                        err_str = str(fb_err)
-                        if "free-models-per-day" in err_str or "credits" in err_str:
-                            logger.error("OpenRouter free tier daily quota exhausted. Cascading immediately.")
-                            break
-                        if "429" in err_str or "rate_limit" in err_str:
-                            time.sleep(1.0)
-                        continue
-            except Exception as exc:
-                logger.warning("Groq fallback failed: %s", exc)
-
-        # ── 2.5 SECONDARY: GEMINI FREE FALLBACK ──────────────────────────
-        try:
-            gemini_key = os.getenv("GEMINI_API_KEY")
-            if gemini_key:
-                logger.info("Attempting Gemini Free Fallback...")
-                from openai import OpenAI
-                gemini_client = OpenAI(
-                    api_key=gemini_key,
-                    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-                    timeout=60,
-                )
-                resp = gemini_client.chat.completions.create(
-                    model="gemini-3.6-flash",
-                    messages=[{"role": "user", "content": prompt}] if not system_prompt else [{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}],
-                    temperature=self.temperature,
-                )
-                raw_content = resp.choices[0].message.content or ""
-                import re
-                cleaned_content = re.sub(r"<think>.*?</think>", "", raw_content, flags=re.DOTALL).strip()
-                logger.warning("Gemini Response length: %d", len(cleaned_content))
-                
-                if cleaned_content and len(cleaned_content) >= 150:
-                    latency_ms = round((time.perf_counter() - t0) * 1000, 2)
-                    result = {
-                        "response": cleaned_content,
-                        "provider": "gemini",
-                        "model": "gemini-2.0-flash",
-                        "model_used": "gemini-2.0-flash",
-                        "endpoint_status": "fallback",
-                        "status": "real",
-                        "latency_ms": latency_ms,
-                    }
-                    self._log_generation(prompt, result)
-                    return result
-                else:
-                    logger.warning("Gemini output too short: %d chars", len(cleaned_content))
-        except Exception as e:
-            logger.warning("Gemini Free Fallback failed: %s", e)
-
-        # ── 3. TERTIARY: MOCK DEGRADED FALLBACK ──────────────────────────
+        # ── MOCK DEGRADED FALLBACK ─────────────────────────────────────
         latency_ms = round((time.perf_counter() - t0) * 1000, 2)
         mock_content = _build_mock_response(context_chunks, prompt=prompt)
         result = {
@@ -519,7 +305,7 @@ class LLMClient:
         self._log_generation(prompt, result)
         return result
 
-    def _is_circuit_breaker_open(model: str, fails_in_window: int = 1, window_sec: int = 60) -> bool:
+    def _log_generation(self, prompt: str, result: dict[str, Any]) -> None:
         """Append a structured JSON line entry to logs/generation.log."""
         try:
             entry = {
