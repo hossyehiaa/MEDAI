@@ -30,11 +30,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from configs.settings import (
     LLM_PROVIDER,
     LLM_MODEL,
-    LLM_FALLBACK_MODEL,
-    LLM_FALLBACK_PROVIDER,
-    GEMINI_FALLBACK_MODELS,
+    LLM_FALLBACK_MODELS,
     LLM_TIMEOUT_SEC,
-    GROQ_BASE_URL,
+    OPENROUTER_BASE_URL,
     TEMPERATURE,
     GENERATION_LOG_PATH,
     get_source_display_name,
@@ -161,9 +159,8 @@ class LLMClient:
         self,
         provider: str = LLM_PROVIDER,
         model: str = LLM_MODEL,
-        fallback_model: str = LLM_FALLBACK_MODEL,
-        fallback_provider: str = LLM_FALLBACK_PROVIDER,
-        base_url: str = GROQ_BASE_URL,
+        fallback_models: list[str] = LLM_FALLBACK_MODELS,
+        base_url: str = OPENROUTER_BASE_URL,
         temperature: float = TEMPERATURE,
         max_tokens: int = 1500,
         timeout: int = LLM_TIMEOUT_SEC,
@@ -171,8 +168,7 @@ class LLMClient:
     ) -> None:
         self.provider = provider.lower() if provider else "gemini"
         self.model = model
-        self.fallback_model = fallback_model
-        self.fallback_provider = fallback_provider
+        self.fallback_models = fallback_models
         self.base_url = base_url
         self.temperature = temperature
         self.max_tokens = max_tokens
@@ -183,17 +179,17 @@ class LLMClient:
         if not self.gemini_api_key:
             self.gemini_api_key = os.getenv("GEMINI_API_KEY")
 
-        self.groq_api_key = api_key if self.provider == "groq" else None
-        if not self.groq_api_key:
-            self.groq_api_key = os.getenv("GROQ_API_KEY")
+        self.openrouter_api_key = api_key if self.provider == "openrouter" else None
+        if not self.openrouter_api_key:
+            self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 
-        if not self.gemini_api_key or not self.groq_api_key:
+        if not self.gemini_api_key or not self.openrouter_api_key:
             load_dotenv(_project_root / "src" / "safety" / ".env")
             load_dotenv(_project_root / ".env")
             if not self.gemini_api_key:
                 self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-            if not self.groq_api_key:
-                self.groq_api_key = os.getenv("GROQ_API_KEY")
+            if not self.openrouter_api_key:
+                self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 
         self._gemini_configured = False
         self._groq_client: Any | None = None
@@ -207,12 +203,12 @@ class LLMClient:
             except Exception as e:
                 logger.warning("Failed to configure Google Gemini SDK: %s", e)
 
-        # Setup Groq client
-        if self.groq_api_key and self.groq_api_key.strip() not in ("", "invalid", "your_groq_api_key_here"):
+        # Setup OpenRouter/Groq client
+        if self.openrouter_api_key and self.openrouter_api_key.strip() not in ("", "invalid", "your_groq_api_key_here"):
             try:
                 from openai import OpenAI
                 self._groq_client = OpenAI(
-                    api_key=self.groq_api_key,
+                    api_key=self.openrouter_api_key,
                     base_url=self.base_url,
                     timeout=self.timeout,
                 )
@@ -259,15 +255,7 @@ class LLMClient:
 
         # If Gemini is not configured or failed, check Groq fallback
         if self._groq_client:
-            candidate_groq = [
-                self.fallback_model,
-                "allam-2-7b",
-                "groq/compound",
-                "groq/compound-mini",
-                "openai/gpt-oss-120b",
-                "openai/gpt-oss-20b",
-                "qwen/qwen3.6-27b",
-            ]
+            candidate_groq = self.fallback_models
             for m in candidate_groq:
                 if not m:
                     continue
@@ -406,15 +394,7 @@ class LLMClient:
                     messages.append({"role": "system", "content": system_prompt})
                 messages.append({"role": "user", "content": prompt})
 
-                candidate_groq = [
-                    self.fallback_model,
-                    "allam-2-7b",
-                    "groq/compound",
-                    "groq/compound-mini",
-                    "openai/gpt-oss-120b",
-                    "openai/gpt-oss-20b",
-                    "qwen/qwen3.6-27b",
-                ]
+                candidate_groq = [self.model] + self.fallback_models
                 for fb in candidate_groq:
                     if not fb:
                         continue
@@ -475,11 +455,54 @@ class LLMClient:
                             self._log_generation(prompt, result)
                             return result
                     except Exception as fb_err:
-                        if "429" in str(fb_err) or "rate_limit" in str(fb_err):
+                        err_str = str(fb_err)
+                        if "free-models-per-day" in err_str or "credits" in err_str:
+                            logger.error("OpenRouter free tier daily quota exhausted. Cascading immediately.")
+                            break
+                        if "429" in err_str or "rate_limit" in err_str:
                             time.sleep(1.0)
                         continue
             except Exception as exc:
                 logger.warning("Groq fallback failed: %s", exc)
+
+        # ── 2.5 SECONDARY: GEMINI FREE FALLBACK ──────────────────────────
+        try:
+            gemini_key = os.getenv("GEMINI_API_KEY")
+            if gemini_key:
+                logger.info("Attempting Gemini Free Fallback...")
+                from openai import OpenAI
+                gemini_client = OpenAI(
+                    api_key=gemini_key,
+                    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+                    timeout=60,
+                )
+                resp = gemini_client.chat.completions.create(
+                    model="gemini-3.6-flash",
+                    messages=[{"role": "user", "content": prompt}] if not system_prompt else [{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}],
+                    temperature=self.temperature,
+                )
+                raw_content = resp.choices[0].message.content or ""
+                import re
+                cleaned_content = re.sub(r"<think>.*?</think>", "", raw_content, flags=re.DOTALL).strip()
+                logger.warning("Gemini Response length: %d", len(cleaned_content))
+                
+                if cleaned_content and len(cleaned_content) >= 150:
+                    latency_ms = round((time.perf_counter() - t0) * 1000, 2)
+                    result = {
+                        "response": cleaned_content,
+                        "provider": "gemini",
+                        "model": "gemini-2.0-flash",
+                        "model_used": "gemini-2.0-flash",
+                        "endpoint_status": "fallback",
+                        "status": "real",
+                        "latency_ms": latency_ms,
+                    }
+                    self._log_generation(prompt, result)
+                    return result
+                else:
+                    logger.warning("Gemini output too short: %d chars", len(cleaned_content))
+        except Exception as e:
+            logger.warning("Gemini Free Fallback failed: %s", e)
 
         # ── 3. TERTIARY: MOCK DEGRADED FALLBACK ──────────────────────────
         latency_ms = round((time.perf_counter() - t0) * 1000, 2)
@@ -496,7 +519,7 @@ class LLMClient:
         self._log_generation(prompt, result)
         return result
 
-    def _log_generation(self, prompt: str, result: dict[str, Any]) -> None:
+    def _is_circuit_breaker_open(model: str, fails_in_window: int = 1, window_sec: int = 60) -> bool:
         """Append a structured JSON line entry to logs/generation.log."""
         try:
             entry = {

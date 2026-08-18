@@ -126,22 +126,19 @@ SCREENING_TOOL_KEYWORDS: list[str] = [
 ]
 
 # ──────────────────────────────────────────────────────────────────────
-# LLM Generation (Google Gemini Primary, Groq Fallback)
+# LLM Generation (OpenRouter Free Cascade)
 # ──────────────────────────────────────────────────────────────────────
-LLM_PROVIDER: str = "gemini"
-LLM_MODEL: str = "gemini-3.6-flash"
-LLM_FALLBACK_PROVIDER: str = "groq"
-LLM_FALLBACK_MODEL: str = "allam-2-7b"
-GEMINI_FALLBACK_MODELS: list[str] = [
-    "gemini-3.6-flash",
-    "gemini-3.7-flash",
-    "gemini-flash-latest",
-    "gemini-3.5-flash",
-    "gemini-2.5-flash",
+LLM_PROVIDER: str = "openrouter"
+OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+LLM_MODEL: str = "meta-llama/llama-3.3-70b-instruct:free"
+LLM_FALLBACK_MODELS: list[str] = [
+    "deepseek/deepseek-chat-v3-0324:free",
+    "qwen/qwen3-235b-a22b:free",
+    "google/gemma-3-27b-it:free"
 ]
+MIN_REQUEST_INTERVAL_SEC: float = 3.5
 LLM_TIMEOUT_SEC: int = 30
-GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
-TEMPERATURE: float = 0.1
+TEMPERATURE: float = 0.0
 MAX_CONTEXT_CHUNKS: int = 3
 GENERATION_LOG_PATH: str = str(LOGS_DIR / "generation.log")
 
