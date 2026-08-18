@@ -1,6 +1,8 @@
 # medAI — Day 5 Live Demo Script
 
 > 5 sequential demos showcasing the complete RAG pipeline with safety gates, grounded generation, and citation verification.
+>
+> **Self-healing:** If this is a fresh clone, the pipeline automatically builds the search index on first run. No manual `python ingest.py` needed.
 
 ---
 

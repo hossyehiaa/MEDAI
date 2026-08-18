@@ -1,5 +1,5 @@
 """
-LLM Client — OpenRouter paid cascade: Claude Sonnet 4 → Claude 3.5 Sonnet → Llama-3.3-70B → Mock.
+LLM Client — OpenRouter paid cascade: DeepSeek V3 → Llama-3.3-70B → Qwen3-235B → Mock.
 
 Uses OpenAI SDK pointed at OpenRouter with proper headers.
 Every generation attempt is logged to logs/generation.log.
@@ -128,7 +128,7 @@ class LLMClient:
     """
     OpenRouter paid LLM client with model cascade and mock fallback.
 
-    Cascade: claude-sonnet-4 → claude-3.5-sonnet → llama-3.3-70b-instruct → mock.
+    Cascade: deepseek/deepseek-chat-v3-0324 → llama-3.3-70b-instruct → qwen3-235b-a22b → mock.
     """
 
     def __init__(

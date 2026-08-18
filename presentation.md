@@ -77,7 +77,7 @@ flowchart LR
 
 ---
 
-**Speaker Notes:** The system has four layers. Ingestion parses and chunks 3 USPSTF PDFs into 1,806 chunks with section-aware splitting. Retrieval uses hybrid dense+sparse search with Reciprocal Rank Fusion, then a cross-encoder reranker and section/population boosts. Generation builds a 6-section structured prompt and uses an OpenRouter LLM cascade with citation verification. Safety gates intercept crisis and dosing queries before any retrieval.
+**Speaker Notes:** The system has four layers. Ingestion parses and chunks 3 USPSTF PDFs into 1,806 chunks with section-aware splitting. The pipeline is self-healing — on a fresh clone, it automatically builds the search index if data is missing. Retrieval uses hybrid dense+sparse search with Reciprocal Rank Fusion, then a cross-encoder reranker and section/population boosts. Generation builds a 6-section structured prompt and uses an OpenRouter LLM cascade (DeepSeek V3 primary) with citation verification. Safety gates intercept crisis and dosing queries before any retrieval.
 
 ---
 
@@ -201,7 +201,7 @@ flowchart LR
 | **Day 2** | Retrieval | Hybrid RRF + cross-encoder reranker, P@3 = 100%, MRR = 1.0 |
 | **Day 3** | Generation | LLM client, 6-section prompt, citation verification |
 | **Day 4** | Safety & Remediation | Crisis/dosing gates (6 languages), faithfulness checks, schema enforcement |
-| **Day 5** | Final Delivery | OpenRouter paid lockdown, demo artifacts, scorecard, presentation |
+| **Day 5** | Final Delivery | OpenRouter paid lockdown, self-healing setup, demo artifacts, scorecard, presentation |
 
 **Cumulative Metrics:**
 - 1,806 chunks across 3 source documents

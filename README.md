@@ -2,7 +2,7 @@
 
 **Clinical Domain:** USPSTF Depression and Suicide Risk in Adults (Grade B, June 2023 Guidelines)  
 **System Architecture:** Multi-Stage Clinical Decision Support Engine with Grounded LLM Generation & Verbatim Verification  
-**Chunk Count:** 1,824 chunks | **Embedding:** `paraphrase-MiniLM-L6-v2` (384-dim) | **Reranker:** `ms-marco-MiniLM-L-6-v2` | **Primary LLM:** OpenRouter paid — DeepSeek V3 (`deepseek/deepseek-chat-v3-0324`) | **Fallback LLMs:** Llama-3.3-70B, Qwen3-235B
+**Chunk Count:** 1,806 chunks | **Embedding:** `paraphrase-MiniLM-L6-v2` (384-dim) | **Reranker:** `ms-marco-MiniLM-L-6-v2` | **Primary LLM:** OpenRouter paid — DeepSeek V3 (`deepseek/deepseek-chat-v3-0324`) | **Fallback LLMs:** Llama-3.3-70B, Qwen3-235B
 
 ---
 
@@ -71,8 +71,8 @@ flowchart TD
     end
 
     subgraph Generation["Grounded LLM Generation Layer (OpenRouter Paid)"]
-        PromptBuild --> ORLLM["OpenRouter Client\n(Claude Sonnet 4, temp=0.0)"]
-        ORLLM -- "Fallback" --> ORFB["Claude 3.5 Sonnet / Llama-3.3-70B\nCascade Fallback"]
+        PromptBuild --> ORLLM["OpenRouter Client\n(DeepSeek V3, temp=0.0)"]
+        ORLLM -- "Fallback" --> ORFB["Llama-3.3-70B / Qwen3-235B\nCascade Fallback"]
         ORLLM & ORFB --> CitVerify{"Citation Verifier\n(Verbatim Quote Regex Check)"}
         CitVerify -- "FAILED" --> RetryOnce["Stricter Prompt Retry (1x)"]
         RetryOnce --> CitVerify
@@ -83,7 +83,7 @@ flowchart TD
 
 ---
 
-## 📊 End-to-End Scorecard (Day 3.8 Runtime Hotfix Verified)
+## 📊 End-to-End Scorecard (Day 5 Final Verified)
 
 Evaluated over the **Expanded 16-Query Ground-Truth Benchmark Suite** + Dedicated Safety Gate Suites (results from `data/e2e_evaluation_report.json`):
 
@@ -115,7 +115,7 @@ python ingest.py
 ```
 
 ### 2. Clinical Search & Generation Console (`search_cli.py`)
-Interactive CLI and query executor with 6-step display: Safety Gate → Hybrid Retrieval Table → Confidence Gate → Groq LLM Generation → Citation Verification → Disclaimer.
+Interactive CLI and query executor with 6-step display: Safety Gate → Hybrid Retrieval Table → Confidence Gate → OpenRouter LLM Generation → Citation Verification → Disclaimer.
 ```bash
 # Interactive query console
 python search_cli.py
@@ -165,20 +165,22 @@ medAI/
 │   ├── safety/guardrails.py     # CRISIS + DOSING + Citation verification & Schema check
 │   ├── ingestion/               # Dual-backend PDF parsing, cleaning, chunking, embedder
 │   ├── retrieval/               # Vector store, BM25, hybrid search, reranker, manager
-│   ├── generation/              # Prompt builder (6 sections, attribution), LLM client (Groq)
+│   ├── generation/              # Prompt builder (6 sections, attribution), LLM client (OpenRouter)
 │   └── evaluation/              # Retrieval evaluator, tuning experiments, E2E evaluator
 ├── search_cli.py                # Canonical Clinical Search & RAG Console (6-step)
 ├── ingest.py                    # Canonical Document Ingestion Pipeline
+├── final_demo.py                # Day 5 Automated Demo Runner (5 queries + safety)
+├── setup.sh                     # One-command setup for fresh clones
 ├── test_generation.py           # Generation Layer Validation Suite (7 tests)
 ├── test_ingestion.py            # Ingestion Validation Tests
 ├── evaluate_retrieval.py        # 16-Query Ground-Truth Benchmark
-└── data/                        # chunks.json, vector_db, evaluation reports
+└── data/                        # chunks.json, vector_db, evaluation reports (auto-built)
 ```
 
 ---
 
 ## ⚠️ Known Limitations
 
-1. **Model Cascade & Endpoint Dependencies**: The system relies on a multi-stage LLM cascade (OpenRouter Claude Sonnet 4 primary → Claude 3.5 Sonnet → Llama-3.3-70B fallback → Mock fallback). Full 6-section grounded generation requires access to an active LLM endpoint with valid OpenRouter API credits.
+1. **Model Cascade & Endpoint Dependencies**: The system relies on a multi-stage LLM cascade (OpenRouter DeepSeek V3 primary → Llama-3.3-70B → Qwen3-235B fallback → Mock fallback). Full 6-section grounded generation requires access to an active LLM endpoint with valid OpenRouter API credits.
 2. **Mock Fallback Behavior**: When all configured LLM endpoints are completely unreachable or rate-limited, the system falls back to a Mock fallback which returns a generic simulated error or refusal without producing unverified clinical claims.
 3. **Universal 988 Touchpoint**: As an intentional clinical safety design decision, the 988 Suicide & Crisis Lifeline referral is appended to all in-scope responses alongside the USPSTF disclaimer.

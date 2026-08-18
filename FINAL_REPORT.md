@@ -25,8 +25,9 @@ medAI is a clinical decision support system built on the USPSTF Depression and S
 
 ## Architecture
 
-The system implements a 6-step pipeline:
+The system implements a 7-step pipeline:
 
+0. **Self-Healing Data Check** — If `chunks.json` or `vector_db` are missing (fresh clone), automatically builds them from `parsed_output.json` (preferred) or PDFs
 1. **Safety Gates** — Crisis (6 languages) and dosing gates short-circuit before any retrieval
 2. **Hybrid Retrieval** — Dense (ChromaDB) + Sparse (BM25) with Reciprocal Rank Fusion
 3. **Precision Ranking** — Cross-encoder reranker + section priors + population boosts
@@ -46,7 +47,7 @@ The system implements a 6-step pipeline:
 | Day 2 | Retrieval | P@3 / MRR | 100% / 1.0000 | hybrid_search.py, reranker.py, retrieval_evaluator.py |
 | Day 3 | Generation | LLM connected | OpenRouter DeepSeek V3 | llm_client.py, prompt_builder.py, test_generation.py |
 | Day 4 | Safety | Gate accuracy | 9/9 (100%) | guardrails.py, faithfulness checks |
-| Day 5 | Delivery | E2E scorecard | See below | demo_script.md, presentation.md, final_demo.py, FINAL_REPORT.md |
+| Day 5 | Delivery | E2E scorecard | See below | demo_script.md, presentation.md, final_demo.py, FINAL_REPORT.md, setup.sh |
 
 ---
 
@@ -84,7 +85,7 @@ Detects: citation recycling, suppressed caveats, missing attribution, ungrounded
 
 ## Lessons Learned
 
-1. **Free-tier LLMs are unreliable for clinical systems.** Rate limits (e.g., 20/day on Gemini free tier) and model availability gaps force constant cascading. Paid endpoints are essential for consistent clinical decision support.
+1. **Free-tier LLMs are unreliable for clinical systems.** During early development, rate limits (e.g., 20/day on Gemini free tier) and model availability gaps forced constant cascading. Paid endpoints (OpenRouter) are essential for consistent clinical decision support.
 
 2. **Safety must be deterministic.** LLM-based safety checks are too slow (seconds vs milliseconds) and unreliable for crisis situations. Our keyword-based gates are instant, testable, and 100% accurate.
 
@@ -107,6 +108,8 @@ Detects: citation recycling, suppressed caveats, missing attribution, ungrounded
 4. **988 referral is US-centric.** International users need local crisis numbers. The system acknowledges this limitation in its crisis response.
 
 5. **Embedding model is static.** The paraphrase-MiniLM-L6-v2 model was selected based on A/B testing but cannot be updated without re-ingesting all documents.
+
+6. **Self-healing ingestion requires parsed_output.json or raw PDFs.** On a fresh clone with no data, the system will auto-rebuild the index from `parsed_output.json` (committed in git) or by parsing PDFs one-by-one. If neither is available, the user must run `python ingest.py` manually.
 
 ---
 

@@ -251,9 +251,9 @@ def main() -> None:
         Panel(
             Align.center(
                 Text.from_markup(
-                    "[bold cyan]medAI — CLINICAL RAG PIPELINE CONSOLE (Day 3)[/bold cyan]\n"
+                    "[bold cyan]medAI — CLINICAL RAG PIPELINE CONSOLE[/bold cyan]\n"
                     f"[dim]LLM: {LLM_PROVIDER}/{LLM_MODEL} | Embedder: {EMBEDDING_MODEL} | Reranker: {RERANKER_MODEL}[/dim]\n"
-                    "[dim white]Safety → Hybrid RRF → Cross-Encoder → Confidence Gate → Groq LLM → Citation Verify → Disclaimer[/dim white]"
+                    "[dim white]Safety → Hybrid RRF → Cross-Encoder → Confidence Gate → OpenRouter LLM → Citation Verify → Disclaimer[/dim white]"
                 )
             ),
             box=box.DOUBLE_EDGE,
