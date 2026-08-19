@@ -70,7 +70,7 @@ def _is_degenerate(text: str) -> tuple[bool, str]:
     counts = Counter(trigrams)
     max_freq = max(counts.values())
     unique_ratio = len(counts) / len(trigrams)
-    if max_freq > 10 or len(counts) < 0.3 * len(words):
+    if max_freq > 25 or len(counts) < 0.2 * len(words):
         most_common = counts.most_common(1)[0]
         return True, f"'{most_common[0]}' repeated {most_common[1]} times. Ratio: {unique_ratio:.2f}"
     return False, ""

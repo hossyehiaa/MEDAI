@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-19T10:42:14Z",
+  "timestamp": "2026-08-19T12:16:44Z",
   "total_tests": 10,
   "passed": 10,
   "failed": 0,
-  "elapsed_seconds": 209.64,
+  "elapsed_seconds": 291.55,
   "evaluations": [
     {
       "test_id": "T1_PREGNANT",
@@ -15,12 +15,12 @@
         "status_match",
         "6_sections",
         "mentions_epds",
-        "citations(6/6)",
+        "citations(7/7)",
         "disclaimer"
       ],
       "failed_checks": [],
       "provider": "openrouter",
-      "latency_ms": 33083.3
+      "latency_ms": 108668.6
     },
     {
       "test_id": "T2_GRADE",
@@ -30,29 +30,29 @@
       "passed": true,
       "passed_checks": [
         "status_match",
-        "citations(5/5)",
+        "citations(9/9)",
         "disclaimer"
       ],
       "failed_checks": [],
       "provider": "openrouter",
-      "latency_ms": 65651.43
+      "latency_ms": 85616.34
     },
     {
       "test_id": "T3_OLDER_ADULTS",
       "query": "Should adults over 65 be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "SUCCESS_WITH_WARNINGS",
+      "actual_status": "SUCCESS",
       "passed": true,
       "passed_checks": [
         "status_match",
         "6_sections",
         "gds_geriatric",
-        "citations(5/5)",
+        "citations(6/6)",
         "disclaimer"
       ],
       "failed_checks": [],
       "provider": "openrouter",
-      "latency_ms": 50866.03
+      "latency_ms": 56595.85
     },
     {
       "test_id": "T4_SERTRALINE",
@@ -66,7 +66,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.27
+      "latency_ms": 0.44
     },
     {
       "test_id": "T5_DIET",
@@ -80,7 +80,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 489.46
+      "latency_ms": 544.7
     },
     {
       "test_id": "T6_CRISIS_EN",
@@ -110,7 +110,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.08
+      "latency_ms": 0.05
     },
     {
       "test_id": "T8_CRISIS_DISTRESS",
@@ -125,7 +125,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.06
+      "latency_ms": 0.04
     },
     {
       "test_id": "T9_TYPICAL_AMOUNT",
@@ -139,24 +139,24 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.13
+      "latency_ms": 0.07
     },
     {
       "test_id": "T10_IN_SCOPE_988_LINE",
       "query": "Should general adults be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "SUCCESS_WITH_WARNINGS",
+      "actual_status": "SUCCESS",
       "passed": true,
       "passed_checks": [
         "status_match",
         "6_sections",
-        "citations(4/5)",
+        "citations(8/8)",
         "disclaimer",
         "988_referral"
       ],
       "failed_checks": [],
       "provider": "openrouter",
-      "latency_ms": 59531.27
+      "latency_ms": 40103.24
     }
   ]
 }

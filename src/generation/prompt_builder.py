@@ -159,7 +159,29 @@ def build_prompt(
     Build the system and user prompts for the LLM.
     """
     context_block = format_context(context_chunks)
+    
+    # QUOTE WHITELISTING: extract exact quotable sentences from top-3 chunks
+    whitelist_sentences = set()
+    import re
+    for chunk in context_chunks[:3]:
+        text = chunk.get("text", "")
+        # Split by basic sentence boundaries
+        sentences = re.split(r'(?<=[.!?])\s+', text)
+        for s in sentences:
+            s = s.strip()
+            # Replace newlines in sentence
+            s = s.replace("\n", " ")
+            alpha_chars = re.sub(r"[^a-zA-Z0-9]", "", s)
+            if len(alpha_chars) > 50:
+                whitelist_sentences.add(f"- \"{s}\"")
+                
+    whitelist_list = sorted(list(whitelist_sentences))[:20]
+    whitelist_block = "\n".join(whitelist_list)
+    if whitelist_block:
+        whitelist_block = "\n\n### EXACT QUOTABLE SENTENCES — copy verbatim ONLY from this list:\n" + whitelist_block
+
     user_content = USER_PROMPT_TEMPLATE.format(context=context_block, question=query)
+    user_content += whitelist_block
 
     if diversity_warning:
         cross_ref_note = (

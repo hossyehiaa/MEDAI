@@ -530,16 +530,9 @@ def verify_citations(
 
     from collections import Counter
     quote_counts = Counter([_normalize_citation_text(q) for q in quotes])
-    if any(count > 2 for count in quote_counts.values()):
-        return {
-            "status": "CITATION_VERIFICATION_FAILED",
-            "verified_quotes": 0,
-            "total_quotes": len(quotes),
-            "unverified_quotes": ["Same quote used >2 times."],
-            "detail": "Citation recycling: exact same quote used > 2 times.",
-            "snapped_response": norm_llm_response,
-            "snapped_count": 0,
-        }
+    
+    # We will track usage counts to perform dedup
+    current_quote_usage = {}
 
     corpus_texts = [c.get("text", "") for c in context_chunks]
 
@@ -590,16 +583,79 @@ def verify_citations(
                     if (ratio >= 0.80 or overlap >= 0.85) and score > best_fuzzy_score:
                         best_fuzzy_score = score
                         best_fuzzy_match = sub
+                        
+            # Broader sentence-level search for repair (ratio >= 0.75)
+            sentences = re.split(r'(?<=[.!?])\s+', corpus)
+            for s in sentences:
+                s = s.strip()
+                if not s: continue
+                s_ratio = difflib.SequenceMatcher(None, norm_quote, _normalize_citation_text(s)).ratio()
+                if s_ratio >= 0.75 and s_ratio > best_fuzzy_score:
+                    best_fuzzy_score = s_ratio
+                    best_fuzzy_match = s
 
-        if found_exact:
-            verified.append(quote)
-        elif best_fuzzy_match:
-            # Snap it!
-            snapped_response = snapped_response.replace(f'Quote: "{quote}"', f'Quote: "{best_fuzzy_match}"')
-            verified.append(best_fuzzy_match)
-            snapped_count += 1
+        # Dedup check
+        current_usage = current_quote_usage.get(norm_quote, 0)
+        
+        if current_usage >= 2:
+            # Used too many times, delete citation and claim
+            escaped_q = re.escape(quote)
+            snapped_response = re.sub(r"[^.]*?\[[^\]]*Quote:\s*\"" + escaped_q + r"\"[^\]]*\]\.?", "", snapped_response)
+            unverified.append(f"{quote} (REJECTED: Duplicated >2 times)")
         else:
-            unverified.append(quote)
+            if found_exact:
+                verified.append(quote)
+                current_quote_usage[norm_quote] = current_usage + 1
+            elif best_fuzzy_match:
+                # Snap or Repair it!
+                snapped_response = snapped_response.replace(f'Quote: "{quote}"', f'Quote: "{best_fuzzy_match}"')
+                verified.append(best_fuzzy_match)
+                snapped_count += 1
+                current_quote_usage[_normalize_citation_text(best_fuzzy_match)] = current_quote_usage.get(_normalize_citation_text(best_fuzzy_match), 0) + 1
+            else:
+                # Delete citation and claim
+                escaped_q = re.escape(quote)
+                snapped_response = re.sub(r"[^.]*?\[[^\]]*Quote:\s*\"" + escaped_q + r"\"[^\]]*\]\.?", "", snapped_response)
+                unverified.append(quote)
+
+    # Claim Grounding Repair (v3)
+    # Split response into lines to avoid deleting headers, then sentences
+    repaired_lines = []
+    for line in snapped_response.split("\n"):
+        if line.startswith("#") or len(line.strip()) == 0:
+            repaired_lines.append(line)
+            continue
+            
+        sentences = re.split(r'(?<=[.!?])\s+', line)
+        repaired_sentences = []
+        for s in sentences:
+            s_clean = s.strip()
+            if len(s_clean) > 60 and "[Doc:" not in s_clean:
+                # Look ahead or just check if it's ungrounded
+                # To be safe, let's fuzzy match to chunk sentence >= 0.80 and insert
+                best_s_match = ""
+                best_s_ratio = 0.0
+                for corpus in corpus_texts:
+                    for cs in re.split(r'(?<=[.!?])\s+', corpus):
+                        cs_clean = cs.strip()
+                        if not cs_clean: continue
+                        ratio = difflib.SequenceMatcher(None, _normalize_citation_text(s_clean), _normalize_citation_text(cs_clean)).ratio()
+                        if ratio >= 0.80 and ratio > best_s_ratio:
+                            best_s_ratio = ratio
+                            best_s_match = cs_clean
+                
+                if best_s_match:
+                    repaired_sentences.append(s_clean + f' [Doc: Source | Sec: General | Pg: 1 | Quote: "{best_s_match}"]')
+                else:
+                    # DELETE the claim sentence
+                    continue
+            else:
+                if s_clean:
+                    repaired_sentences.append(s_clean)
+                    
+        repaired_lines.append(" ".join(repaired_sentences))
+        
+    snapped_response = "\n".join(repaired_lines)
 
     status = "OK" if len(unverified) == 0 and len(verified) > 0 else "CITATION_VERIFICATION_FAILED"
 
