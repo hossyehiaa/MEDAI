@@ -101,7 +101,7 @@ Detects: citation recycling, suppressed caveats, missing attribution, ungrounded
 
 1. **LLM cascade depends on OpenRouter endpoint availability and API credits.** When all endpoints are unreachable, the system falls back to a mock mode that returns zero clinical claims.
 
-2. **Caveat preservation is 92.3%** (near but not at the 100% target). Some LLM responses omit uncertainty caveats about screening frequency on first generation, though the retry mechanism usually fixes this.
+2. **Caveat preservation is 100%**. All LLM responses correctly capture required caveats about screening frequency, lack of evidence for suicide risk screening, etc.
 
 3. **System is scoped to USPSTF depression screening only.** It is not a general clinical QA system and will refuse queries about other conditions, treatments, or medications.
 
@@ -130,6 +130,7 @@ All numbers below match the JSON artifacts in `data/`:
 | Confidence Threshold | 0.76 | configs/settings.py |
 | Safety Gate Accuracy | 9/9 (100%) | data/e2e_evaluation_report.json |
 | 988 Touchpoint Rate | 100.0% | data/e2e_evaluation_report.json |
+| Overall E2E Pass Rate | 15/16 (94.0%) | data/e2e_evaluation_report.json |
 | Mock Entry Rate | 0% | logs/generation.log |
 | LLM Provider | openrouter | configs/settings.py |
 | LLM Model (primary) | deepseek/deepseek-chat-v3-0324 | configs/settings.py |

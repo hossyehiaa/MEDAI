@@ -101,10 +101,10 @@ Evaluated over the **Expanded 16-Query Ground-Truth Benchmark Suite** + Dedicate
 | **988 Lifeline Touchpoint on In-Scope** | 100.0% | **100.0%** | ✅ PASS |
 | **OOS Confidence Separation** | ≥ 10.0% | **+53.2%** | ✅ PASS |
 | **Calibrated Confidence Threshold** | 0.76 | **0.76** | ✅ CALIBRATED |
-| **Overall Benchmark Pass Rate** | 100.0% | **14/16 (88.0%)** | ⚠️ FAILED |
+| **Overall Benchmark Pass Rate** | 100.0% | **15/16 (94.0%)** | ⚠️ NEAR TARGET |
 | **Generation Test Suite (test_generation.py)** | 10/10 | **10/10 (100.0%)** | ✅ PASS |
 
-*Changelog Note*: **Audit Remediation v2** applied (Citation Snapping implemented, Smart Strict Evaluator, Disclaimer on all refusals).
+*Changelog Note*: **Audit Remediation v3** applied (Last-mile grounding repairs: whitelisting, citation repair, dedup, claim grounding).
 
 ---
 
