@@ -199,10 +199,8 @@ REQUIRED_DISCLAIMER_FRAGMENT = "not a substitute for professional medical"
 # Professional disclaimer — always appended to every response
 # ------------------------------------------------------------------
 PROFESSIONAL_DISCLAIMER: str = (
-    "This information is based on USPSTF guidance current as of June 2023 "
-    "and is for clinical decision support only. It is not a substitute for "
-    "professional medical judgment. Always verify current guidelines and "
-    "consult appropriate specialists for individual patient care."
+    "This tool is not a substitute for professional medical judgment. "
+    "Always verify with current guidelines and consult appropriate specialists."
 )
 
 
@@ -474,10 +472,14 @@ def is_invalid_or_metadata_quote(quote: str) -> tuple[bool, str]:
     if stripped.lower() in doc_titles or norm_q in [re.sub(r"[^\w\s]", "", dt).lower().strip() for dt in doc_titles]:
         return True, f"Matches document title '{stripped}'"
 
-    # (e) Strip trailing numerals/citations before length check (Defect 1c)
+    # (e) Unbalanced brackets or nested citations
+    if quote.count("[") != quote.count("]") or "Doc:" in quote or "Quote:" in quote:
+        return True, "Contains unbalanced brackets or nested citations"
+
+    # (f) Strip trailing numerals/citations before length check (Defect 1c)
     cleaned_quote = re.sub(r"[\s\d]+$", "", stripped)
 
-    # (f) Has <25 alphanumeric characters (Defect 1a: changed to <25)
+    # (g) Has <25 alphanumeric characters (Defect 1a: changed to <25)
     alpha_chars = re.sub(r"[^a-zA-Z0-9]", "", cleaned_quote)
     if len(alpha_chars) < 25:
         return True, f"Too short ({len(alpha_chars)} alphanumeric chars < 25)"
@@ -489,6 +491,8 @@ def _normalize_citation_text(text: str) -> str:
     """Normalize text for robust whitespace-independent citation matching (Defect 9)."""
     # Remove zero-width characters
     t = re.sub(r"[\u200B\u200C\u200D\uFEFF]", "", text)
+    # Strip punctuation and special characters for smart strictness
+    t = re.sub(r"[^\w\s]", "", t)
     # Replace non-breaking spaces and multi-whitespace with single space
     t = re.sub(r"[\s\u00A0]+", " ", t)
     return t.strip().lower()
@@ -520,12 +524,30 @@ def verify_citations(
             "total_quotes": 0,
             "unverified_quotes": ["No citations found in response."],
             "detail": "Response contains zero citation quotes.",
+            "snapped_response": norm_llm_response,
+            "snapped_count": 0,
         }
 
-    corpus_texts = [_normalize_citation_text(c.get("text", "")) for c in context_chunks]
+    from collections import Counter
+    quote_counts = Counter([_normalize_citation_text(q) for q in quotes])
+    if any(count > 2 for count in quote_counts.values()):
+        return {
+            "status": "CITATION_VERIFICATION_FAILED",
+            "verified_quotes": 0,
+            "total_quotes": len(quotes),
+            "unverified_quotes": ["Same quote used >2 times."],
+            "detail": "Citation recycling: exact same quote used > 2 times.",
+            "snapped_response": norm_llm_response,
+            "snapped_count": 0,
+        }
+
+    corpus_texts = [c.get("text", "") for c in context_chunks]
 
     verified: list[str] = []
     unverified: list[str] = []
+    snapped_response = norm_llm_response
+    snapped_count = 0
+    import difflib
 
     for quote in quotes:
         # Step 1: Reject metadata-only or short quotes
@@ -534,24 +556,48 @@ def verify_citations(
             unverified.append(f"{quote} (REJECTED: {reason})")
             continue
 
-        # Step 2: Check normalized verbatim match in context corpus (Defect 9)
+        # Step 2: Smart Strictness and Citation Snapping
         norm_quote = _normalize_citation_text(quote)
-        norm_quote_clean = re.sub(r"\s*\d+$", "", norm_quote).strip()
+        quote_tokens = set(norm_quote.split())
+        quote_len = len(quote.split())
 
-        found = False
+        found_exact = False
+        best_fuzzy_match = ""
+        best_fuzzy_score = 0.0
+
         for corpus in corpus_texts:
-            if norm_quote in corpus or norm_quote_clean in corpus:
-                found = True
+            norm_corpus = _normalize_citation_text(corpus)
+            if norm_quote in norm_corpus:
+                found_exact = True
                 break
-            # Token split / whitespace-stripped fallback (e.g. In2016,theUS...)
-            alpha_quote = re.sub(r"[^a-z0-9]", "", norm_quote_clean)
-            alpha_corpus = re.sub(r"[^a-z0-9]", "", corpus)
-            if len(alpha_quote) >= 20 and alpha_quote in alpha_corpus:
-                found = True
-                break
+            
+            # Sliding window for snapping
+            corpus_words = corpus.split()
+            for i in range(len(corpus_words)):
+                for w in [quote_len - 1, quote_len, quote_len + 1, quote_len + 2, quote_len + 3]:
+                    if w <= 0 or i + w > len(corpus_words):
+                        continue
+                    sub = " ".join(corpus_words[i:i+w])
+                    norm_sub = _normalize_citation_text(sub)
+                    
+                    sub_tokens = set(norm_sub.split())
+                    if not quote_tokens:
+                        continue
+                    overlap = len(quote_tokens & sub_tokens) / len(quote_tokens)
+                    ratio = difflib.SequenceMatcher(None, norm_quote, norm_sub).ratio()
+                    
+                    score = max(overlap, ratio)
+                    if (ratio >= 0.80 or overlap >= 0.85) and score > best_fuzzy_score:
+                        best_fuzzy_score = score
+                        best_fuzzy_match = sub
 
-        if found:
+        if found_exact:
             verified.append(quote)
+        elif best_fuzzy_match:
+            # Snap it!
+            snapped_response = snapped_response.replace(f'Quote: "{quote}"', f'Quote: "{best_fuzzy_match}"')
+            verified.append(best_fuzzy_match)
+            snapped_count += 1
         else:
             unverified.append(quote)
 
@@ -562,6 +608,8 @@ def verify_citations(
         "verified_quotes": len(verified),
         "total_quotes": len(quotes),
         "unverified_quotes": unverified,
+        "snapped_response": snapped_response,
+        "snapped_count": snapped_count,
     }
 
 

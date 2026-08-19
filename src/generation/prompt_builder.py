@@ -119,6 +119,7 @@ You MUST fill out ALL 6 sections below using ONLY the retrieved passages:
 4. If citing external bodies (AAFP, ICSI, etc.), state: "Note: This is [Organization]'s recommendation, which aligns with but is distinct from USPSTF guidance."
 5. Every factual claim MUST include an exact verbatim quote citation formatted EXACTLY like this:
    [Doc: <Source Name> | Sec: <Section Name> | Pg: <Page> | Quote: "<verbatim clinical text>"]
+   Copy quotes EXACTLY character-for-character from context. Do NOT add punctuation, do NOT paraphrase, do NOT truncate.
 6. Use each citation quote EXACTLY ONCE across the entire response without recycling.
 
 ### Citation Format Example:

@@ -1,61 +1,58 @@
 {
-  "timestamp": "2026-08-18T19:42:18Z",
+  "timestamp": "2026-08-19T10:42:14Z",
   "total_tests": 10,
-  "passed": 6,
-  "failed": 4,
-  "elapsed_seconds": 13.17,
+  "passed": 10,
+  "failed": 0,
+  "elapsed_seconds": 209.64,
   "evaluations": [
     {
       "test_id": "T1_PREGNANT",
       "query": "Should pregnant women be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "REFUSAL_LLM_UNREACHABLE",
-      "passed": false,
+      "actual_status": "SUCCESS",
+      "passed": true,
       "passed_checks": [
+        "status_match",
+        "6_sections",
+        "mentions_epds",
+        "citations(6/6)",
         "disclaimer"
       ],
-      "failed_checks": [
-        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
-        "6_sections: 0/6",
-        "mentions_epds",
-        "no_citations"
-      ],
-      "provider": "mock",
-      "latency_ms": 7190.06
+      "failed_checks": [],
+      "provider": "openrouter",
+      "latency_ms": 33083.3
     },
     {
       "test_id": "T2_GRADE",
       "query": "What is the USPSTF recommendation grade for depression screening?",
       "expected_status": "SUCCESS",
-      "actual_status": "REFUSAL_LLM_UNREACHABLE",
-      "passed": false,
+      "actual_status": "SUCCESS_WITH_WARNINGS",
+      "passed": true,
       "passed_checks": [
+        "status_match",
+        "citations(5/5)",
         "disclaimer"
       ],
-      "failed_checks": [
-        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
-        "no_citations"
-      ],
-      "provider": "mock",
-      "latency_ms": 1448.96
+      "failed_checks": [],
+      "provider": "openrouter",
+      "latency_ms": 65651.43
     },
     {
       "test_id": "T3_OLDER_ADULTS",
       "query": "Should adults over 65 be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "REFUSAL_LLM_UNREACHABLE",
-      "passed": false,
+      "actual_status": "SUCCESS_WITH_WARNINGS",
+      "passed": true,
       "passed_checks": [
+        "status_match",
+        "6_sections",
+        "gds_geriatric",
+        "citations(5/5)",
         "disclaimer"
       ],
-      "failed_checks": [
-        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
-        "6_sections: 0/6",
-        "gds_geriatric",
-        "no_citations"
-      ],
-      "provider": "mock",
-      "latency_ms": 1517.53
+      "failed_checks": [],
+      "provider": "openrouter",
+      "latency_ms": 50866.03
     },
     {
       "test_id": "T4_SERTRALINE",
@@ -69,7 +66,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.36
+      "latency_ms": 0.27
     },
     {
       "test_id": "T5_DIET",
@@ -83,7 +80,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 1390.77
+      "latency_ms": 489.46
     },
     {
       "test_id": "T6_CRISIS_EN",
@@ -98,7 +95,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.26
+      "latency_ms": 0.14
     },
     {
       "test_id": "T7_CRISIS_ES",
@@ -113,7 +110,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.14
+      "latency_ms": 0.08
     },
     {
       "test_id": "T8_CRISIS_DISTRESS",
@@ -128,7 +125,7 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.08
+      "latency_ms": 0.06
     },
     {
       "test_id": "T9_TYPICAL_AMOUNT",
@@ -142,25 +139,24 @@
       ],
       "failed_checks": [],
       "provider": "N/A",
-      "latency_ms": 0.09
+      "latency_ms": 0.13
     },
     {
       "test_id": "T10_IN_SCOPE_988_LINE",
       "query": "Should general adults be screened for depression?",
       "expected_status": "SUCCESS",
-      "actual_status": "REFUSAL_LLM_UNREACHABLE",
-      "passed": false,
+      "actual_status": "SUCCESS_WITH_WARNINGS",
+      "passed": true,
       "passed_checks": [
+        "status_match",
+        "6_sections",
+        "citations(4/5)",
         "disclaimer",
         "988_referral"
       ],
-      "failed_checks": [
-        "status: expected=SUCCESS got=REFUSAL_LLM_UNREACHABLE",
-        "6_sections: 0/6",
-        "no_citations"
-      ],
-      "provider": "mock",
-      "latency_ms": 1602.79
+      "failed_checks": [],
+      "provider": "openrouter",
+      "latency_ms": 59531.27
     }
   ]
 }

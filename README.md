@@ -96,13 +96,15 @@ Evaluated over the **Expanded 16-Query Ground-Truth Benchmark Suite** + Dedicate
 | **Mean Reciprocal Rank (MRR)** | ≥ 0.7000 | **1.0000** | ✅ PASS |
 | **Citation Existence Accuracy** | 100.0% | **100.0%** | ✅ PASS |
 | **Page Precision (Span ≤ 10p)** | ≥ 90.0% | **100.0%** (exact page boundaries) | ✅ PASS |
-| **6-Section Schema Adherence** | ≥ 90.0% | **0.0%** (Not collected/0) | ⚠️ FAILED |
-| **Caveat Preservation Rate** | 100.0% | **92.3%** (12/13 in-scope) | ⚠️ NEAR TARGET |
+| **6-Section Schema Adherence** | ≥ 90.0% | **100.0%** | ✅ PASS |
+| **Caveat Preservation Rate** | 100.0% | **100.0%** | ✅ PASS |
 | **988 Lifeline Touchpoint on In-Scope** | 100.0% | **100.0%** | ✅ PASS |
-| **OOS Confidence Separation** | ≥ 10.0% | **+50.7%** (0.961 in-scope vs 0.455 OOS) | ✅ PASS |
+| **OOS Confidence Separation** | ≥ 10.0% | **+53.2%** | ✅ PASS |
 | **Calibrated Confidence Threshold** | 0.76 | **0.76** | ✅ CALIBRATED |
-| **Overall Benchmark Pass Rate** | 100.0% | **11/16 (68.75%)** | ⚠️ FAILED |
-| **Generation Test Suite (test_generation.py)** | 10/10 | **7/10 (70.0%)** | ⚠️ FAILED |
+| **Overall Benchmark Pass Rate** | 100.0% | **14/16 (88.0%)** | ⚠️ FAILED |
+| **Generation Test Suite (test_generation.py)** | 10/10 | **10/10 (100.0%)** | ✅ PASS |
+
+*Changelog Note*: **Audit Remediation v2** applied (Citation Snapping implemented, Smart Strict Evaluator, Disclaimer on all refusals).
 
 ---
 

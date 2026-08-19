@@ -303,7 +303,7 @@ def run_pipeline(
         total_ms = round((time.perf_counter() - t0) * 1000, 2)
         # CRISIS refusal vs DOSING refusal
         refusal_response = safety_result.message
-        disclaimer_to_append = PROFESSIONAL_DISCLAIMER if safety_result.status != "CRISIS" else None
+        disclaimer_to_append = PROFESSIONAL_DISCLAIMER
         if disclaimer_to_append:
             refusal_response = refusal_response + "\n\n---\n\n" + disclaimer_to_append
 
@@ -410,8 +410,13 @@ def run_pipeline(
         "latency_ms": generation_result.get("latency_ms"),
     })
 
-    # ── Step 5: Citation, Faithfulness & Schema Verification ────────────
+    # ── Step 4: Verify Citations & Faithfulness ───────────────────────
     citation_result = verify_citations(llm_response, context_chunks)
+    
+    # Snap the response if quotes were fuzzy matched and fixed
+    if "snapped_response" in citation_result and citation_result["snapped_response"] != llm_response:
+        llm_response = citation_result["snapped_response"]
+        
     faithfulness_result = check_faithfulness(query, llm_response, context_chunks)
     schema_result = check_response_schema(llm_response)
 
